@@ -124,13 +124,41 @@ class EcommerceFacade {
   async getCatalog(filtros = {}) {
     try {
       const productos = await this.products.getAll(filtros);
-      
-      const productosEnriquecidos = productos.map(producto => ({
-        ...producto,
-        disponible: producto.stock > 0,
-        precioFormateado: `₡${producto.precio.toFixed(2)}`,
-        stockStatus: this._getStockStatus(producto.stock)
-      }));
+      // Normalizar y sanitizar posibles URLs con comillas/espacios y formatos variados
+      const sanitizeUrl = (u) => typeof u === 'string' ? u.trim().replace(/^['"]+|['"]+$/g, '') : u;
+      const normalizeImagenes = (raw) => {
+        try {
+          if (Array.isArray(raw)) {
+            return raw.map(sanitizeUrl).filter(Boolean);
+          }
+          if (typeof raw === 'string') {
+            const s = raw.trim();
+            if (!s) return [];
+            // Si viene como JSON en string
+            if (s.startsWith('[') && s.endsWith(']')) {
+              const arr = JSON.parse(s);
+              return Array.isArray(arr) ? arr.map(sanitizeUrl).filter(Boolean) : [];
+            }
+            // Caso: una sola URL en string
+            return [sanitizeUrl(s)].filter(Boolean);
+          }
+          return [];
+        } catch (_) {
+          return [];
+        }
+      };
+
+      const productosEnriquecidos = productos.map(producto => {
+        const imgs = normalizeImagenes(producto.imagenesUrl);
+        return {
+          ...producto,
+          imagenesUrl: imgs,
+          primaryImage: imgs[0] || null,
+          disponible: producto.stock > 0,
+          precioFormateado: `₡${producto.precio.toFixed(2)}`,
+          stockStatus: this._getStockStatus(producto.stock)
+        };
+      });
 
       return productosEnriquecidos;
     } catch (error) {
@@ -155,9 +183,31 @@ class EcommerceFacade {
   async getProductDetails(idProducto) {
     try {
       const producto = await this.products.getById(idProducto);
-      
+      const sanitizeUrl = (u) => typeof u === 'string' ? u.trim().replace(/^['"]+|['"]+$/g, '') : u;
+      const normalizeImagenes = (raw) => {
+        try {
+          if (Array.isArray(raw)) {
+            return raw.map(sanitizeUrl).filter(Boolean);
+          }
+          if (typeof raw === 'string') {
+            const s = raw.trim();
+            if (!s) return [];
+            if (s.startsWith('[') && s.endsWith(']')) {
+              const arr = JSON.parse(s);
+              return Array.isArray(arr) ? arr.map(sanitizeUrl).filter(Boolean) : [];
+            }
+            return [sanitizeUrl(s)].filter(Boolean);
+          }
+          return [];
+        } catch (_) {
+          return [];
+        }
+      };
+      const imgs = normalizeImagenes(producto.imagenesUrl);
       return {
         ...producto,
+        imagenesUrl: imgs,
+        primaryImage: imgs[0] || null,
         disponible: producto.stock > 0,
         precioFormateado: `₡${producto.precio.toFixed(2)}`,
         stockStatus: this._getStockStatus(producto.stock),

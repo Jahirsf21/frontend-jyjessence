@@ -9,7 +9,6 @@ import Register from './pages/auth/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import MiInformacion from './pages/account/MiInformacion';
-import Products from './pages/products/Products';
 import Cart from './pages/cart/Cart';
 import Orders from './pages/cart/Orders';
 import Dashboard from './pages/admin/Dashboard';
@@ -101,8 +100,6 @@ function AppLayout() {
             <Route path="orders" element={<OrdersManagement />} />
           </Route>
           
-          {/* Rutas de catálogo y carrito */}
-          <Route path="/products" element={<Products />} />
           
           <Route path="/cart" element={
             <ProtectedRoute>

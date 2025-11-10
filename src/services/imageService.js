@@ -18,9 +18,8 @@ export const imageService = {
         datosFormulario.append('images', archivo);
       });
 
-      const endpoint = import.meta.env.DEV 
-        ? '/productos/upload-image' 
-        : '/imagenes/upload';
+      // En producción el backend expone /api/imagenes/upload. axios baseURL ya incluye /api
+      const endpoint = '/imagenes/upload';
 
       const respuesta = await api.post(endpoint, datosFormulario, {
         headers: {
@@ -40,9 +39,7 @@ export const imageService = {
     try {
       const esArray = Array.isArray(idsPublicos);
       
-      const endpoint = import.meta.env.DEV 
-        ? '/productos/delete-image' 
-        : '/imagenes/delete';
+      const endpoint = '/imagenes/delete';
       
       const respuesta = await api.delete(endpoint, {
         data: esArray ? { publicIds: idsPublicos } : { publicId: idsPublicos }

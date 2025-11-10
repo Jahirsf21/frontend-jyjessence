@@ -25,6 +25,20 @@ const Products = () => {
     try {
       const data = await Ecommerce.getCatalog();
       setProductos(data);
+      // Debug: inspeccionar cómo llegan las imágenes
+      try {
+        // Muestra una vista compacta en consola
+        // eslint-disable-next-line no-console
+        console.table(
+          (Array.isArray(data) ? data : []).map(p => ({
+            id: p.idProducto,
+            nombre: p.nombre,
+            imagenesLen: Array.isArray(p.imagenesUrl) ? p.imagenesUrl.length : (typeof p.imagenesUrl),
+            first: Array.isArray(p.imagenesUrl) ? p.imagenesUrl[0] : null,
+            primaryImage: p.primaryImage || null
+          }))
+        );
+      } catch {}
     } catch (error) {
       console.error('Error al cargar productos:', error);
       Swal.fire({
@@ -241,9 +255,13 @@ const Products = () => {
               <div key={producto.idProducto} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
                 {/* Imagen */}
                 <div className="h-64 bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
-                  {producto.imagenesUrl && producto.imagenesUrl.length > 0 ? (
+                  {(() => {
+                    const firstImage = (producto.imagenesUrl && producto.imagenesUrl.length > 0)
+                      ? producto.imagenesUrl[0]
+                      : (producto.primaryImage || null);
+                    return firstImage ? (
                     <img
-                      src={producto.imagenesUrl[0]}
+                      src={firstImage}
                       alt={producto.nombre}
                       className="w-full h-full object-cover"
                     />
@@ -251,7 +269,7 @@ const Products = () => {
                     <svg className="w-24 h-24 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
-                  )}
+                  );})()}
                 </div>
 
                 {/* Información */}

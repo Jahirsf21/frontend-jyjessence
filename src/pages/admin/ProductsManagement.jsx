@@ -59,7 +59,7 @@ export default function ProductsManagement() {
     try {
       setSubiendoImagenes(true);
       const resultado = await ecommerceFacade.uploadProductImages(archivos);
-      const nuevasUrls = resultado.images.map(img => img.url);
+  const nuevasUrls = resultado.images.map(img => img.url || img.secure_url || img.url_secure).filter(Boolean);
       
       setFormulario(prev => ({
         ...prev,
@@ -93,11 +93,14 @@ export default function ProductsManagement() {
     e.preventDefault();
 
     try {
+      // Sanitizar URLs por si vienen con comillas pegadas
+      const sanitizeUrl = (u) => typeof u === 'string' ? u.trim().replace(/^['\"]+|['\"]+$/g, '') : u;
       const datosProducto = {
         ...formulario,
         mililitros: parseInt(formulario.mililitros),
         precio: parseFloat(formulario.precio),
-        stock: parseInt(formulario.stock)
+        stock: parseInt(formulario.stock),
+        imagenesUrl: Array.isArray(formulario.imagenesUrl) ? formulario.imagenesUrl.map(sanitizeUrl).filter(Boolean) : []
       };
 
       if (productoEditando) {
@@ -124,7 +127,7 @@ export default function ProductsManagement() {
       mililitros: producto.mililitros.toString(),
       precio: producto.precio.toString(),
       stock: producto.stock.toString(),
-      imagenesUrl: producto.imagenesUrl || []
+      imagenesUrl: Array.isArray(producto.imagenesUrl) ? producto.imagenesUrl.filter(Boolean) : []
     });
     setMostrarFormulario(true);
   };
