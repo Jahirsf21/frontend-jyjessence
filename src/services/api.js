@@ -1,10 +1,15 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-// Normaliza la URL base: si viene sin "/api" lo agregamos
+// Estrategia híbrida: permite usar proxy local o producción según flags
+const useLocalProxy = import.meta.env.VITE_USE_LOCAL_PROXY === 'true' && window.location.hostname === 'localhost';
 const rawBase = import.meta.env.VITE_API_URL;
 const normalizedBase = (() => {
-  if (!rawBase) return '/api';
+  if (useLocalProxy) {
+    // Usa rutas relativas para que Vite proxy redirija a microservicios locales
+    return '/api';
+  }
+  if (!rawBase) return '/api'; // fallback seguro
   const trimmed = rawBase.replace(/\/$/, '');
   return /\/api$/.test(trimmed) ? trimmed : `${trimmed}/api`;
 })();
@@ -15,6 +20,8 @@ const api = axios.create({
     'Content-Type': 'application/json'
   }
 });
+
+//
 
 api.interceptors.request.use(
   (configuracion) => {

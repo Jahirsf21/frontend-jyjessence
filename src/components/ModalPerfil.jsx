@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/authService';
 import Swal from 'sweetalert2';
+import Button from './ui/Button.jsx';
 
 const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, t }) => {
   // Detectar si no está en la página principal
@@ -171,7 +172,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
     >
       <div 
         ref={modalRef}
-        className="w-full max-w-[500px] bg-[#F9F6F2] rounded-2xl shadow-2xl flex flex-col"
+        className="w-full max-w-[500px] bg-white rounded-2xl shadow-2xl flex flex-col"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -194,50 +195,50 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
 
         <main className="px-5 pb-5 flex flex-col gap-4">
           {noEsHome && (
-            <button
+            <Button
               onClick={() => { navegar('/'); onClose(); }}
-              className="flex items-center w-full p-3 bg-none border-none text-left rounded-lg cursor-pointer transition-colors hover:bg-gray-200"
+              variant="light"
+              block
+              className="flex items-center justify-start gap-4 !py-3"
             >
-              <div className="flex items-center gap-4 text-base text-gray-800">
-                <img
-                  src="https://res.cloudinary.com/drec8g03e/image/upload/v1762713857/inicio_x1zmf8.svg"
-                  alt="Inicio"
-                  className="w-6 h-6"
-                />
-                <span>Inicio</span>
-              </div>
-            </button>
+              <img
+                src="https://res.cloudinary.com/drec8g03e/image/upload/v1762713857/inicio_x1zmf8.svg"
+                alt="Inicio"
+                className="w-6 h-6"
+              />
+              <span>Inicio</span>
+            </Button>
           )}
           {!estaAutenticado ? (
             <>
-              <button
+              <Button
                 onClick={irALogin}
-                className="flex items-center w-full p-3 bg-none border-none text-left rounded-lg cursor-pointer transition-colors hover:bg-gray-200"
+                variant="light"
+                block
+                className="flex items-center justify-start gap-4 !py-3"
               >
-                <div className="flex items-center gap-4 text-base text-gray-800">
-                  <img
-                    src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
-                    alt=""
-                    className="w-6 h-6"
-                  />
-                  <span>{t('nav.login') || 'Iniciar Sesión'}</span>
-                </div>
-              </button>
+                <img
+                  src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
+                  alt=""
+                  className="w-6 h-6"
+                />
+                <span>{t('nav.login') || 'Iniciar Sesión'}</span>
+              </Button>
 
-              <button
+              <Button
                 onClick={irARegistro}
-                className="flex items-center w-full p-3 bg-none border-none text-left rounded-lg cursor-pointer transition-colors hover:bg-gray-200"
+                variant="light"
+                block
+                className="flex items-center justify-start gap-4 !py-3"
               >
-                <div className="flex items-center gap-4 text-base text-gray-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="8.5" cy="7" r="4"></circle>
-                    <line x1="20" y1="8" x2="20" y2="14"></line>
-                    <line x1="23" y1="11" x2="17" y2="11"></line>
-                  </svg>
-                  <span>{t('nav.register') || 'Crear Cuenta'}</span>
-                </div>
-              </button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="8.5" cy="7" r="4"></circle>
+                  <line x1="20" y1="8" x2="20" y2="14"></line>
+                  <line x1="23" y1="11" x2="17" y2="11"></line>
+                </svg>
+                <span>{t('nav.register') || 'Crear Cuenta'}</span>
+              </Button>
 
               <h2 className="text-base font-semibold text-gray-600 m-0 mb-2.5 uppercase px-2.5">
                 {t('profile.general') || 'General'}
@@ -246,70 +247,66 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
           ) : (
             <>
               <div className="border-t border-gray-300 pt-4 flex flex-col gap-6">
-                <button
+                <Button
                   onClick={() => { navegar('/account/mi-informacion'); onClose(); }}
-                  className="flex items-center w-full p-3 bg-none border-none text-left rounded-lg cursor-pointer transition-colors hover:bg-gray-200"
+                  variant="light"
+                  block
+                  className="flex items-center justify-start gap-4 !py-3"
                 >
-                  <div className="flex items-center gap-4 text-base text-gray-800">
-                    <img
-                      src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
-                      alt="Perfil"
-                      className="w-6 h-6"
-                    />
-                    <span>Mi Información</span>
-                  </div>
-                </button>
+                  <img
+                    src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
+                    alt="Perfil"
+                    className="w-6 h-6"
+                  />
+                  <span>Mi Información</span>
+                </Button>
 
-                <button
+                <Button
                   onClick={manejarCierreSesion}
-                  className="flex items-center w-full p-3 bg-none border-none text-left rounded-lg cursor-pointer transition-colors hover:bg-gray-200"
+                  variant="light"
+                  block
+                  className="flex items-center justify-start gap-4 !py-3"
                 >
-                  <div className="flex items-center gap-4 text-base text-gray-800">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                      <polyline points="16 17 21 12 16 7"></polyline>
-                      <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                    <span>{t('nav.logout') || 'Cerrar Sesión'}</span>
-                  </div>
-                </button>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                  <span>{t('nav.logout') || 'Cerrar Sesión'}</span>
+                </Button>
 
                 <h2 className="text-base font-semibold text-gray-600 m-0 mb-2.5 uppercase px-2.5 mt-4">
                   {t('profile.general') || 'General'}
                 </h2>
-                <button
+                <Button
                   onClick={() => { navegar('/orders'); onClose(); }}
-                  className="flex items-center w-full p-3 bg-none border-none text-left rounded-lg cursor-pointer transition-colors hover:bg-gray-200"
+                  variant="light"
+                  block
+                  className="flex items-center justify-start gap-4 !py-3"
                 >
-                  <div className="flex items-center gap-4 text-base text-gray-800">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                      <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                      <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                    </svg>
-                    <span>{t('nav.orders') || 'Mis Pedidos'}</span>
-                  </div>
-                </button>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                  <span>{t('nav.orders') || 'Mis Pedidos'}</span>
+                </Button>
               </div>
 
-              {usuario?.rol === 'ADMIN' && (
+              {(usuario?.rol === 'ADMIN' || usuario?.role === 'ADMIN') && (
                 <div className="border-t border-gray-300 pt-4">
-                  <button
+                  <Button
                     onClick={() => { navegar('/admin'); onClose(); }}
-                    className="flex items-center justify-between w-full p-3 bg-none border-none text-left rounded-lg cursor-pointer transition-colors hover:bg-gray-200"
+                    variant="light"
+                    block
+                    className="flex items-center gap-4 !py-3 justify-start"
                   >
-                    <div className="flex items-center gap-4 text-base text-gray-800">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span>{t('nav.admin') || 'Administración'}</span>
-                    </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
+                      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
                     </svg>
-                  </button>
+                    <span>{t('nav.admin') || 'Administración'}</span>
+                  </Button>
                 </div>
               )}
             </>

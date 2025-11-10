@@ -19,6 +19,8 @@ import { productService } from '../services/productService';
 import { cartService } from '../services/cartService';
 import { orderService } from '../services/orderService';
 import { addressService } from '../services/addressService';
+import { imageService } from '../services/imageService';
+import { clientService } from '../services/clientService';
 
 class EcommerceFacade {
   constructor() {
@@ -26,6 +28,8 @@ class EcommerceFacade {
     this.products = productService;
     this.cart = cartService;
     this.orders = orderService;
+    this.images = imageService;
+    this.clients = clientService;
   }
 
   // ==========================================
@@ -416,6 +420,221 @@ class EcommerceFacade {
         .slice(0, 4);
     } catch (error) {
       return [];
+    }
+  }
+
+  // ==========================================
+  // == OPERACIONES DE ADMINISTRACIÓN - PRODUCTOS
+  // ==========================================
+
+  /**
+   * Crear un nuevo producto (admin only)
+   */
+  async createProduct(datosProducto) {
+    try {
+      const producto = await this.products.create(datosProducto);
+      return {
+        success: true,
+        message: 'Producto creado exitosamente',
+        product: producto
+      };
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Error al crear producto');
+    }
+  }
+
+  /**
+   * Actualizar un producto existente (admin only)
+   */
+  async updateProduct(idProducto, datosProducto) {
+    try {
+      const producto = await this.products.update(idProducto, datosProducto);
+      return {
+        success: true,
+        message: 'Producto actualizado exitosamente',
+        product: producto
+      };
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Error al actualizar producto');
+    }
+  }
+
+  /**
+   * Eliminar un producto (admin only)
+   */
+  async deleteProduct(idProducto) {
+    try {
+      await this.products.delete(idProducto);
+      return {
+        success: true,
+        message: 'Producto eliminado exitosamente'
+      };
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Error al eliminar producto');
+    }
+  }
+
+  /**
+   * Clonar un producto (admin only)
+   */
+  async cloneProduct(idProducto, modificaciones = {}) {
+    try {
+      const producto = await this.products.clone(idProducto, modificaciones);
+      return {
+        success: true,
+        message: 'Producto clonado exitosamente',
+        product: producto
+      };
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Error al clonar producto');
+    }
+  }
+
+  /**
+   * Actualizar solo el stock de un producto (admin only)
+   */
+  async updateProductStock(idProducto, stock) {
+    try {
+      const producto = await this.products.updateStock(idProducto, stock);
+      return {
+        success: true,
+        message: 'Stock actualizado exitosamente',
+        product: producto
+      };
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Error al actualizar stock');
+    }
+  }
+
+  /**
+   * Subir imágenes para productos (admin only)
+   */
+  async uploadProductImages(archivos) {
+    try {
+      const resultado = await this.images.uploadImage(archivos);
+      return {
+        success: true,
+        images: Array.isArray(resultado) ? resultado : [resultado]
+      };
+    } catch (error) {
+      throw new Error(error.message || 'Error al subir imágenes');
+    }
+  }
+
+  /**
+   * Eliminar imágenes de productos (admin only)
+   */
+  async deleteProductImages(publicIds) {
+    try {
+      await this.images.deleteImage(publicIds);
+      return {
+        success: true,
+        message: 'Imágenes eliminadas exitosamente'
+      };
+    } catch (error) {
+      throw new Error(error.message || 'Error al eliminar imágenes');
+    }
+  }
+
+  // ==========================================
+  // == OPERACIONES DE ADMINISTRACIÓN - CLIENTES
+  // ==========================================
+
+  /**
+   * Obtener todos los clientes (admin only)
+   */
+  async getAllClients() {
+    try {
+      const clientes = await this.clients.getAll();
+      return clientes.map(cliente => ({
+        ...cliente
+      }));
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Error al cargar clientes');
+    }
+  }
+
+  /**
+   * Obtener detalles de un cliente (admin only)
+   */
+  async getClientDetails(idCliente) {
+    try {
+      const cliente = await this.clients.getById(idCliente);
+      return cliente;
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Cliente no encontrado');
+    }
+  }
+
+  /**
+   * Eliminar un cliente (admin only)
+   * Nota: puede no estar implementado en backend
+   */
+  async deleteClient(idCliente) {
+    try {
+      await this.clients.delete(idCliente);
+      return {
+        success: true,
+        message: 'Cliente eliminado exitosamente'
+      };
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Error al eliminar cliente');
+    }
+  }
+
+  /**
+   * Actualizar datos de un cliente (admin only): email y role
+   */
+  async updateClient(idCliente, datos) {
+    try {
+      const actualizado = await this.clients.updateAdmin(idCliente, datos);
+      return {
+        success: true,
+        message: 'Cliente actualizado exitosamente',
+        client: actualizado
+      };
+    } catch (error) {
+      const msg = error.response?.data?.error || error.message || 'Error al actualizar cliente';
+      const err = new Error(msg);
+      err.response = error.response;
+      throw err;
+    }
+  }
+
+  // ==========================================
+  // == OPERACIONES DE ADMINISTRACIÓN - PEDIDOS
+  // ==========================================
+
+  /**
+   * Obtener todos los pedidos (admin only)
+   */
+  async getAllOrders() {
+    try {
+      const pedidos = await this.orders.getAllOrders();
+      return pedidos.map(pedido => ({
+        ...pedido,
+        fechaFormateada: new Date(pedido.fecha).toLocaleDateString('es-CR'),
+        totalFormateado: `₡${(pedido.montoTotal ?? 0).toFixed(2)}`,
+        itemCount: pedido.articulos?.length || 0
+      }));
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Error al cargar pedidos');
+    }
+  }
+
+  /**
+   * Actualizar estado de un pedido (admin only)
+   */
+  async updateOrderStatus(idPedido, nuevoEstado) {
+    try {
+      const pedido = await this.orders.updateStatus(idPedido, nuevoEstado);
+      return {
+        success: true,
+        message: 'Estado del pedido actualizado',
+        order: pedido
+      };
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Error al actualizar estado del pedido');
     }
   }
 }

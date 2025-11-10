@@ -30,11 +30,15 @@ const ProtectedRoute = ({ children, requiredRole = null, redirectTo = '/auth/log
     );
   }
 
-  if (requiredRole && usuario?.rol !== requiredRole) {
-    if (requiredRole === 'ADMIN') {
-      return <Navigate to="/" replace />;
+  if (requiredRole) {
+    const tieneRol = usuario?.rol === requiredRole || usuario?.role === requiredRole;
+    
+    if (!tieneRol) {
+      if (requiredRole === 'ADMIN') {
+        return <Navigate to="/" replace />;
+      }
+      return <Navigate to="/auth/login" replace />;
     }
-    return <Navigate to="/auth/login" replace />;
   }
 
   return children;

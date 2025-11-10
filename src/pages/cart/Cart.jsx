@@ -16,7 +16,6 @@ const Cart = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log('Cart component mounted, estaAutenticado:', estaAutenticado);
     if (estaAutenticado) {
       cargarCarrito();
       cargarDirecciones();
@@ -30,7 +29,6 @@ const Cart = () => {
     try {
       setError(null);
       const data = await Ecommerce.getCartSummary();
-      console.log('Datos del carrito recibidos:', data);
       
       // Asegurar que data tiene la estructura correcta
       if (data && typeof data === 'object') {
@@ -43,7 +41,6 @@ const Cart = () => {
         setCarrito({ items: [], total: 0, cantidadItems: 0 });
       }
     } catch (error) {
-  console.error('Error al cargar carrito:', error);
   setError(error.response?.data?.error || t('cart.loadError'));
       
       // Si es error 401, redirigir al login
@@ -69,7 +66,6 @@ const Cart = () => {
         setDireccionSeleccionada(data[0].idDireccion);
       }
     } catch (e) {
-      console.error('Error al cargar direcciones:', e);
     }
   };
 
@@ -80,7 +76,6 @@ const Cart = () => {
       await Ecommerce.updateCartItem(productoId, nuevaCantidad);
       await cargarCarrito();
     } catch (error) {
-      console.error('Error al actualizar cantidad:', error);
       Swal.fire({
         icon: 'error',
         title: t('error'),
@@ -113,7 +108,6 @@ const Cart = () => {
           showConfirmButton: false,
         });
       } catch (error) {
-        console.error('Error al eliminar producto:', error);
         Swal.fire({
           icon: 'error',
           title: t('error'),

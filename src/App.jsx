@@ -12,6 +12,10 @@ import MiInformacion from './pages/account/MiInformacion';
 import Products from './pages/products/Products';
 import Cart from './pages/cart/Cart';
 import Orders from './pages/cart/Orders';
+import Dashboard from './pages/admin/Dashboard';
+import ProductsManagement from './pages/admin/ProductsManagement';
+import ClientsManagement from './pages/admin/ClientsManagement';
+import OrdersManagement from './pages/admin/OrdersManagement';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
@@ -31,6 +35,25 @@ function AppLayout() {
   const location = useLocation();
   const rutasAutenticacion = ['/auth/login', '/auth/register'];
   const ocultarHeader = rutasAutenticacion.includes(location.pathname);
+
+  // Desactivar restauración automática del scroll del navegador para controlarlo manualmente
+  React.useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      const prev = window.history.scrollRestoration;
+      window.history.scrollRestoration = 'manual';
+      return () => {
+        window.history.scrollRestoration = prev;
+      };
+    }
+  }, []);
+
+  // Scroll al inicio en cada cambio de ruta o carga inicial
+  React.useEffect(() => {
+    // Uso setTimeout para garantizar que el layout esté montado antes de forzar el scroll
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }, 0);
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -65,18 +88,18 @@ function AppLayout() {
               <MiInformacion />
             </ProtectedRoute>
           } />
+          
+          {/* Rutas de administración */}
           <Route path="/admin" element={
             <ProtectedRoute requiredRole="ADMIN">
-              <div className="text-center">
-                <h1 className="text-4xl font-bold text-blue-600 mb-8">
-                  Panel de Administración
-                </h1>
-                <p className="text-gray-600">
-                  Solo visible para administradores
-                </p>
-              </div>
+              <Dashboard />
             </ProtectedRoute>
-          } />
+          }>
+            <Route index element={<Navigate to="/admin/products" replace />} />
+            <Route path="products" element={<ProductsManagement />} />
+            <Route path="clients" element={<ClientsManagement />} />
+            <Route path="orders" element={<OrdersManagement />} />
+          </Route>
           
           {/* Rutas de catálogo y carrito */}
           <Route path="/products" element={<Products />} />
