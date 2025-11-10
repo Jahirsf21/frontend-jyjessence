@@ -1,8 +1,16 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
+// Normaliza la URL base: si viene sin "/api" lo agregamos
+const rawBase = import.meta.env.VITE_API_URL;
+const normalizedBase = (() => {
+  if (!rawBase) return '/api';
+  const trimmed = rawBase.replace(/\/$/, '');
+  return /\/api$/.test(trimmed) ? trimmed : `${trimmed}/api`;
+})();
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: normalizedBase,
   headers: {
     'Content-Type': 'application/json'
   }
