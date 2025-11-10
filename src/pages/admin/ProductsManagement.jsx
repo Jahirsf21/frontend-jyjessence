@@ -13,8 +13,8 @@ export default function ProductsManagement() {
   const [formulario, setFormulario] = useState({
     nombre: '',
     descripcion: '',
-    categoria: 'Perfume',
-    genero: 'Unisex',
+  categoria: 'Parfum',
+  genero: 'Unisex',
     mililitros: '',
     precio: '',
     stock: '',
@@ -176,7 +176,7 @@ export default function ProductsManagement() {
     setFormulario({
       nombre: '',
       descripcion: '',
-      categoria: 'Perfume',
+      categoria: 'Parfum',
       genero: 'Unisex',
       mililitros: '',
       precio: '',
@@ -248,10 +248,12 @@ export default function ProductsManagement() {
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                   >
-                    <option value="Perfume">Perfume</option>
-                    <option value="Colonia">Colonia</option>
-                    <option value="Eau de Toilette">Eau de Toilette</option>
+                    <option value="Parfum">Parfum</option>
+                    <option value="Elixir">Elixir</option>
                     <option value="Eau de Parfum">Eau de Parfum</option>
+                    <option value="Eau de Toilette">Eau de Toilette</option>
+                    <option value="Eau Fraiche">Eau Fraiche</option>
+                    <option value="Extrait de Parfum">Extrait de Parfum</option>
                   </select>
                 </div>
 
