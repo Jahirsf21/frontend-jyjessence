@@ -49,13 +49,13 @@ const Header = () => {
         <div className="mx-auto flex w-full items-center gap-2 px-3 py-2 md:gap-4 md:px-6 md:py-3 max-w-[1280px]">
           {/* Logo */}
           <Link to="/" className="no-underline flex-shrink-0">
-            <h1 className="flex items-center gap-1.5 sm:gap-2 md:gap-3 m-0 text-blue-600 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
+            <h1 className="flex items-center gap-2 m-0 text-blue-600 text-xl sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
               <img
                 src="https://res.cloudinary.com/drec8g03e/image/upload/v1762655746/jyjessence_y75wqc.webp"
                 alt="JyJ Essence Logo"
-                className="h-8 sm:h-9 md:h-12 lg:h-14 xl:h-16"
+                className="h-12 w-12 sm:h-9 sm:w-9 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16"
               />
-              <span className="hidden sm:inline">JyJ Essence</span>
+              <span className="inline sm:inline md:inline">JyJ Essence</span>
             </h1>
           </Link>
 
@@ -102,7 +102,7 @@ const Header = () => {
                 </span>
               </button>
               {mostrarMenuIdioma && (
-                <div className="absolute top-full left-0 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[140px] md:min-w-[180px] z-[1001] mt-2 overflow-hidden">
+                <div className="absolute top-full right-0 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[140px] md:min-w-[180px] z-[1001] mt-2 overflow-hidden">
                   <button 
                     onClick={() => cambiarIdioma('es')} 
                     className={`block w-full px-4 md:px-5 py-2 md:py-3 text-left bg-none border-none text-gray-700 text-sm md:text-base cursor-pointer transition-colors hover:bg-gray-100 ${
@@ -123,10 +123,10 @@ const Header = () => {
               )}
             </div>
 
-            {/* Cart button */}
+            {/* Cart button - oculto en móvil */}
             <Link 
               to="/cart" 
-              className="bg-white border border-gray-300 rounded-full px-2 py-1.5 flex items-center gap-1 transition-all hover:shadow-sm hover:border-gray-400 h-8 sm:h-9 md:h-10 no-underline md:gap-2 md:px-3 lg:px-4" 
+              className="hidden md:flex bg-white border border-gray-300 rounded-full px-2 py-1.5 items-center gap-1 transition-all hover:shadow-sm hover:border-gray-400 h-8 sm:h-9 md:h-10 no-underline md:gap-2 md:px-3 lg:px-4" 
               aria-label="Carrito"
             >
               <img
@@ -137,9 +137,9 @@ const Header = () => {
               <span className="hidden lg:inline font-semibold text-gray-800 text-xs lg:text-sm whitespace-nowrap">{t('nav.cart', { defaultValue: 'Carrito' })}</span>
             </Link>
 
-            {/* Profile button */}
+            {/* Profile button - oculto en móvil */}
             <button
-              className="bg-white border border-gray-300 rounded-full px-2 py-1.5 flex items-center gap-1 transition-all hover:shadow-sm hover:border-gray-400 h-8 sm:h-9 md:h-10 md:gap-2 md:px-3 lg:px-4"
+              className="hidden md:flex bg-white border border-gray-300 rounded-full px-2 py-1.5 items-center gap-1 transition-all hover:shadow-sm hover:border-gray-400 h-8 sm:h-9 md:h-10 md:gap-2 md:px-3 lg:px-4"
               onClick={() => setMostrarModalPerfil(true)}
               aria-label="Menú de usuario"
             >
@@ -155,9 +155,9 @@ const Header = () => {
           </div>
         </div>
         
-        {/* Barra de búsqueda móvil/tablet */}
+        {/* Barra de búsqueda tablet (oculta en móvil) */}
         {esHome && (
-          <div className="lg:hidden px-3 pb-2 md:pb-3">
+          <div className="hidden md:block lg:hidden px-3 pb-2 md:pb-3">
             <form className="flex items-center bg-white border border-gray-300 rounded-full px-2 py-1.5 shadow-sm w-full transition-shadow hover:shadow-md">
               <input
                 type="text"
