@@ -1,14 +1,8 @@
 
-
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import ModalPerfil from '../ModalPerfil';
 
 export default function BottomNav() {
   const navigate = useNavigate();
-  const { usuario, estaAutenticado } = useAuth();
-  const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white shadow-lg flex justify-around items-center h-16 rounded-t-2xl z-50 md:hidden">
@@ -45,7 +39,7 @@ export default function BottomNav() {
         />
         <div className="text-xs">Pedidos</div>
       </button>
-      <button type="button" onClick={() => setMostrarModalPerfil(true)} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 rounded-full w-14 h-14 mb-1">
+      <button onClick={() => navigate('/account')} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 rounded-full w-14 h-14 mb-1">
         <img
           src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
           alt="Perfil"
@@ -53,13 +47,6 @@ export default function BottomNav() {
         />
         <div className="text-xs">Mi perfil</div>
       </button>
-      {mostrarModalPerfil && (
-        <ModalPerfil
-          onClose={() => setMostrarModalPerfil(false)}
-          estaAutenticado={estaAutenticado}
-          usuario={usuario}
-        />
-      )}
     </nav>
   );
 }
