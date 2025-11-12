@@ -45,7 +45,7 @@ export default function BottomNav() {
         />
         <div className="text-xs">Pedidos</div>
       </button>
-      <button onClick={() => setMostrarModalPerfil(true)} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 rounded-full w-14 h-14 mb-1">
+      <button type="button" onClick={() => setMostrarModalPerfil(true)} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 rounded-full w-14 h-14 mb-1">
         <img
           src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
           alt="Perfil"
