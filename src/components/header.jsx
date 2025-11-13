@@ -13,9 +13,6 @@ const Header = () => {
   const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
   const idiomaRef = useRef(null);
 
-  // Detectar si estamos en la página principal
-  const esHome = location.pathname === '/' || location.pathname === '/home';
-
   // Cerrar dropdown de idioma al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -58,31 +55,7 @@ const Header = () => {
               <span className="inline sm:inline md:inline">JyJ Essence</span>
             </h1>
           </Link>
-
-          {/* --- Barra de búsqueda centrada en pantallas medianas en adelante --- */}
-          {esHome && (
-            <div className="hidden flex-1 lg:flex lg:justify-center lg:px-4">
-              <form className="flex w-full max-w-[480px] xl:max-w-[520px] items-center rounded-full border border-gray-200 bg-white px-2 py-1.5 shadow-sm transition-shadow hover:shadow-md">
-                <input
-                  type="text"
-                  className="min-w-0 flex-grow border-none bg-transparent px-3 py-2 text-sm text-gray-700 outline-none placeholder:text-gray-400"
-                  placeholder={t('header.searchPlaceholder', { defaultValue: 'Buscar productos...' })}
-                />
-                <button
-                  type="submit"
-                  className="flex h-8 w-8 xl:h-9 xl:w-9 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700"
-                  aria-label="Buscar"
-                >
-                  <img
-                    src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/search_mntlda.svg"
-                    alt="Buscar"
-                    className="w-4 h-4 xl:w-5 xl:h-5 invert"
-                  />
-                </button>
-              </form>
-            </div>
-          )}
-
+          
           {/* Botones de la derecha */}
           <div className="ml-auto flex flex-shrink-0 items-center gap-1 sm:gap-2 md:gap-2 lg:gap-3">
             {/* Language dropdown */}
@@ -154,30 +127,6 @@ const Header = () => {
             </button>
           </div>
         </div>
-        
-        {/* Barra de búsqueda tablet (oculta en móvil) */}
-        {esHome && (
-          <div className="hidden md:block lg:hidden px-3 pb-2 md:pb-3">
-            <form className="flex items-center bg-white border border-gray-300 rounded-full px-2 py-1.5 shadow-sm w-full transition-shadow hover:shadow-md">
-              <input
-                type="text"
-                className="border-none outline-none flex-grow px-3 py-2 text-sm bg-transparent text-gray-700 placeholder-gray-400"
-                placeholder={t('header.searchPlaceholder', { defaultValue: 'Buscar productos...' })}
-              />
-              <button
-                type="submit"
-                className="bg-blue-600 border-none rounded-full w-8 h-8 sm:w-9 sm:h-9 flex justify-center items-center text-white transition-colors hover:bg-blue-700 flex-shrink-0"
-                aria-label="Buscar"
-              >
-                <img
-                  src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/search_mntlda.svg"
-                  alt="Buscar"
-                  className="w-4 h-4 invert"
-                />
-              </button>
-            </form>
-          </div>
-        )}
       </header>
 
       {mostrarModalPerfil && (

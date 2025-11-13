@@ -10,8 +10,9 @@ const resources = {
       "nav.home": "Inicio",
       "nav.catalog": "Catálogo",
       "nav.cart": "Carrito",
-      "nav.orders": "Mis Pedidos",
-      "nav.myAccount": "Mi Cuenta",
+      "orders": "Pedidos",
+      "profile": "Perfil",
+      "nav.search": "Buscar",
       "nav.login": "Iniciar Sesión",
       "nav.register": "Registrarse",
       "nav.logout": "Cerrar Sesión",
@@ -99,9 +100,25 @@ const resources = {
       "category.AMADERADO": "Amaderado",
       "category.FRESCO": "Fresco",
       
+      // Categorías Prisma
+      "category.ExtraitDeParfum": "Extrait de Parfum",
+      "category.Parfum": "Parfum",
+      "category.EauDeParfum": "Eau de Parfum",
+      "category.EauDeToilette": "Eau de Toilette",
+      "category.EauFraiche": "Eau Fraîche",
+      "category.Elixir": "Elixir",
+
       // Género
       "gender.MASCULINO": "Masculino",
       "gender.FEMENINO": "Femenino",
+      "gender.UNISEX": "Unisex",
+      
+      // Géneros Prisma
+      "gender.Male": "Hombre",
+      "gender.Female": "Mujer",
+      "gender.Unisex": "Unisex",
+      "gender.MALE": "Hombre",
+      "gender.FEMALE": "Mujer",
       "gender.UNISEX": "Unisex",
       
       // Carrito
@@ -260,8 +277,9 @@ const resources = {
       "nav.home": "Home",
       "nav.catalog": "Catalog",
       "nav.cart": "Cart",
-      "nav.orders": "My Orders",
-      "nav.myAccount": "My Account",
+      "orders": "Orders",
+      "profile": "Profile",
+      "nav.search": "Search",
       "nav.login": "Login",
       "nav.register": "Sign Up",
       "nav.logout": "Logout",
@@ -349,9 +367,25 @@ const resources = {
       "category.AMADERADO": "Woody",
       "category.FRESCO": "Fresh",
       
+      // Categorías Prisma
+      "category.ExtraitDeParfum": "Extrait de Parfum",
+      "category.Parfum": "Parfum",
+      "category.EauDeParfum": "Eau de Parfum",
+      "category.EauDeToilette": "Eau de Toilette",
+      "category.EauFraiche": "Eau Fraîche",
+      "category.Elixir": "Elixir",
+
       // Gender
       "gender.MASCULINO": "Male",
       "gender.FEMENINO": "Female",
+      "gender.UNISEX": "Unisex",
+      
+      // Géneros Prisma
+      "gender.Male": "Male",
+      "gender.Female": "Female",
+      "gender.Unisex": "Unisex",
+      "gender.MALE": "Male",
+      "gender.FEMALE": "Female",
       "gender.UNISEX": "Unisex",
       
       // Cart

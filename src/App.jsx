@@ -57,61 +57,25 @@ function AppLayout() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50">
-        {/* Header - Solo se muestra si NO estamos en rutas de autenticación */}
-        {!ocultarHeader && <Header />}
-        {/* Contenido principal */}
-        <main className={!ocultarHeader ? "w-full px-4 py-8" : ""}>
-          <Routes>
-            {/* Rutas públicas */}
-            <Route path="/" element={<Home />} />
-            {/* Rutas de autenticación */}
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
-            {/* Rutas protegidas */}
-            <Route path="/account" element={
-              <ProtectedRoute>
-                <div className="text-center">
-                  <h1 className="text-4xl font-bold text-blue-600 mb-8">
-                    Mi Cuenta
-                  </h1>
-                  <p className="text-gray-600">
-                    Bienvenido a tu panel de usuario
-                  </p>
-                </div>
-              </ProtectedRoute>
-            } />
-            <Route path="/account/mi-informacion" element={
-              <ProtectedRoute>
-                <MiInformacion />
-              </ProtectedRoute>
-            } />
-            {/* Rutas de administración */}
-            <Route path="/admin" element={
-              <ProtectedRoute requiredRole="ADMIN">
-                <Dashboard />
-              </ProtectedRoute>
-            }>
-              <Route index element={<Navigate to="/admin/products" replace />} />
-              <Route path="products" element={<ProductsManagement />} />
-              <Route path="clients" element={<ClientsManagement />} />
-              <Route path="orders" element={<OrdersManagement />} />
-            </Route>
-            <Route path="/cart" element={
-              <ProtectedRoute>
-                <Cart />
-              </ProtectedRoute>
-            } />
-            <Route path="/orders" element={
-              <ProtectedRoute>
-                <Orders />
-              </ProtectedRoute>
-            } />
-            {/* Redirección por defecto */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
-      </div>
+      {/* Header - Solo se muestra si NO estamos en rutas de autenticación */}
+      {!ocultarHeader && <Header />}
+      <main className={!ocultarHeader ? "w-full px-4 py-8" : ""}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
+          <Route path="/account/mi-informacion" element={<ProtectedRoute><MiInformacion /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><Dashboard /></ProtectedRoute>}>
+            <Route index element={<Navigate to="/admin/products" replace />} />
+            <Route path="products" element={<ProductsManagement />} />
+            <Route path="clients" element={<ClientsManagement />} />
+            <Route path="orders" element={<OrdersManagement />} />
+          </Route>
+          <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+          <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
       <ButtonNav />
     </>
   );

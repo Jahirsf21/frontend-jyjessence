@@ -37,6 +37,7 @@ export default function LanguageDropdown({ value, onChange }) {
     }
   }, [abierto, value]);
 
+  const { t } = require('react-i18next').useTranslation();
   const actual = IDIOMAS.find(l => l.codigo === value);
 
   const manejarMouseEnter = () => {
@@ -96,7 +97,7 @@ export default function LanguageDropdown({ value, onChange }) {
           alt="Language"
           className="w-4 h-4 mr-2"
         />
-        <span className="mr-2 font-semibold">{actual ? actual.etiqueta : 'Idioma'}</span>
+        <span className="mr-2 font-semibold">{actual ? t(`language.${actual.codigo}`, { defaultValue: actual.etiqueta }) : t('language.select', { defaultValue: 'Idioma' })}</span>
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
@@ -135,7 +136,7 @@ export default function LanguageDropdown({ value, onChange }) {
               aria-selected={idioma.codigo === value}
               onMouseEnter={() => setIndiceEnfocado(idx)}
             >
-              {idioma.etiqueta}
+              {t(`language.${idioma.codigo}`, { defaultValue: idioma.etiqueta })}
             </li>
           ))}
         </ul>

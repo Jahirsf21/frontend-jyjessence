@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Ecommerce from '../../patterns/EcommerceFacade';
+import { fetchEnums } from '../../services/api';
 
 const Products = () => {
   const { t } = useTranslation();
@@ -12,13 +13,25 @@ const Products = () => {
   const [busqueda, setBusqueda] = useState('');
   const [categoriaFiltro, setCategoriaFiltro] = useState('');
   const [generoFiltro, setGeneroFiltro] = useState('');
+  const [categorias, setCategorias] = useState([]);
+  const [generos, setGeneros] = useState([]);
   const [precioMin, setPrecioMin] = useState('');
   const [precioMax, setPrecioMax] = useState('');
   const [mililitrosMin, setMililitrosMin] = useState('');
   const [mililitrosMax, setMililitrosMax] = useState('');
 
+
   useEffect(() => {
-    cargarProductos();
+    const cargarDatos = async () => {
+      const [data, enums] = await Promise.all([
+        Ecommerce.getCatalog(),
+        fetchEnums()
+      ]);
+      setProductos(data);
+      setCategorias(enums.CategoriaPerfume || []);
+      setGeneros(enums.Genero || []);
+    };
+    cargarDatos();
   }, []);
 
   const cargarProductos = async () => {
@@ -160,10 +173,9 @@ const Products = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">{t('common.clear')}</option>
-                <option value="EauDeParfum">Eau de Parfum</option>
-                <option value="Parfum">Parfum</option>
-                <option value="EauDeToilette">Eau de Toilette</option>
-                <option value="Colonia">Colonia</option>
+                {categorias.map(cat => (
+                  <option key={cat} value={cat}>{t(`category.${cat}`, { defaultValue: cat })}</option>
+                ))}
               </select>
             </div>
 
@@ -176,9 +188,9 @@ const Products = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">{t('common.clear')}</option>
-                <option value="Female">Mujer</option>
-                <option value="Male">Hombre</option>
-                <option value="Unisex">Unisex</option>
+                {generos.map(gen => (
+                  <option key={gen} value={gen}>{t(`gender.${gen.toUpperCase()}`, { defaultValue: gen })}</option>
+                ))}
               </select>
             </div>
 

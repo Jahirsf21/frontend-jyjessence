@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import ecommerceFacade from '../../patterns/EcommerceFacade';
 import Button from '../../components/ui/Button.jsx';
 
 export default function ProductsManagement() {
+  const { t } = useTranslation();
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -13,12 +15,13 @@ export default function ProductsManagement() {
   const [formulario, setFormulario] = useState({
     nombre: '',
     descripcion: '',
-  categoria: 'Parfum',
-  genero: 'Unisex',
+    categoria: 'Parfum',
+    genero: 'Unisex',
     mililitros: '',
     precio: '',
     stock: '',
-    imagenesUrl: []
+    imagenesUrl: [],
+    imagenesUrlInput: '' // For direct URL entry
   });
 
   useEffect(() => {
@@ -43,6 +46,28 @@ export default function ProductsManagement() {
     setFormulario(prev => ({ ...prev, [name]: value }));
   };
 
+  // Handle direct image URL input
+  const handleImageUrlInputChange = (e) => {
+    const value = e.target.value;
+    setFormulario(prev => ({
+      ...prev,
+      imagenesUrlInput: value,
+      imagenesUrl: mergeImageUrls(value, prev.imagenesUrl)
+    }));
+  };
+
+  // Merge URLs from textarea and uploaded images
+  function mergeImageUrls(urlInput, uploadedUrls) {
+    // Always keep uploadedUrls, and add URLs from textarea if present
+    const urlsFromInput = urlInput
+      .split(/[\n,]+/)
+      .map(u => u.trim())
+      .filter(Boolean);
+    // Remove duplicates, uploaded first
+    const allUrls = Array.from(new Set([...uploadedUrls, ...urlsFromInput]));
+    return allUrls;
+  }
+
   const handleImageUpload = async (e) => {
     const archivos = Array.from(e.target.files);
     if (archivos.length === 0) return;
@@ -59,11 +84,10 @@ export default function ProductsManagement() {
     try {
       setSubiendoImagenes(true);
       const resultado = await ecommerceFacade.uploadProductImages(archivos);
-  const nuevasUrls = resultado.images.map(img => img.url || img.secure_url || img.url_secure).filter(Boolean);
-      
+      const nuevasUrls = resultado.images.map(img => img.url || img.secure_url || img.url_secure).filter(Boolean);
       setFormulario(prev => ({
         ...prev,
-        imagenesUrl: [...prev.imagenesUrl, ...nuevasUrls]
+        imagenesUrl: [...prev.imagenesUrl, ...nuevasUrls], // Only add new uploads
       }));
     } catch (err) {
       alert(err.message);
@@ -74,7 +98,6 @@ export default function ProductsManagement() {
 
   const handleRemoveImage = async (url, index) => {
     const publicId = ecommerceFacade.images.extractPublicId(url);
-    
     if (publicId) {
       try {
         await ecommerceFacade.deleteProductImages(publicId);
@@ -82,11 +105,21 @@ export default function ProductsManagement() {
         console.error('Error al eliminar imagen de Cloudinary:', err);
       }
     }
-
-    setFormulario(prev => ({
-      ...prev,
-      imagenesUrl: prev.imagenesUrl.filter((_, i) => i !== index)
-    }));
+    setFormulario(prev => {
+      // Remove from imagenesUrl
+      const newUrls = prev.imagenesUrl.filter((_, i) => i !== index);
+      // Also update imagenesUrlInput to remove the URL if present
+      const urlList = prev.imagenesUrlInput
+        .split(/[,\n]+/)
+        .map(u => u.trim())
+        .filter(Boolean)
+        .filter(u => u !== url);
+      return {
+        ...prev,
+        imagenesUrl: newUrls,
+        imagenesUrlInput: urlList.join('\n')
+      };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -127,7 +160,8 @@ export default function ProductsManagement() {
       mililitros: producto.mililitros.toString(),
       precio: producto.precio.toString(),
       stock: producto.stock.toString(),
-      imagenesUrl: Array.isArray(producto.imagenesUrl) ? producto.imagenesUrl.filter(Boolean) : []
+      imagenesUrl: Array.isArray(producto.imagenesUrl) ? producto.imagenesUrl.filter(Boolean) : [],
+      imagenesUrlInput: Array.isArray(producto.imagenesUrl) ? producto.imagenesUrl.filter(Boolean).join('\n') : ''
     });
     setMostrarFormulario(true);
   };
@@ -184,23 +218,24 @@ export default function ProductsManagement() {
       mililitros: '',
       precio: '',
       stock: '',
-      imagenesUrl: []
+      imagenesUrl: [],
+      imagenesUrlInput: ''
     });
   };
 
   if (cargando) {
-    return <div className="text-center py-8">Cargando productos...</div>;
+    return <div className="text-center py-8">{t('products.loading')}</div>;
   }
 
   if (error) {
-    return <div className="text-red-600 text-center py-8">Error: {error}</div>;
+    return <div className="text-red-600 text-center py-8">{t('products.error')}: {error}</div>;
   }
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Gestión de Productos</h2>
-        <Button onClick={() => setMostrarFormulario(true)} variant="primary">+ Nuevo Producto</Button>
+        <h2 className="text-2xl font-bold text-gray-900">{t('admin.products.title')}</h2>
+        <Button onClick={() => setMostrarFormulario(true)} variant="primary">+ {t('admin.products.newProduct')}</Button>
       </div>
 
       {/* Formulario Modal */}
@@ -208,13 +243,13 @@ export default function ProductsManagement() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
             <h3 className="text-xl font-bold mb-4">
-              {productoEditando ? 'Editar Producto' : 'Nuevo Producto'}
+              {productoEditando ? t('admin.products.editProduct') : t('admin.products.newProduct')}
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nombre
+                  {t('product.name')}
                 </label>
                 <input
                   type="text"
@@ -228,7 +263,7 @@ export default function ProductsManagement() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Descripción
+                  {t('product.description')}
                 </label>
                 <textarea
                   name="descripcion"
@@ -243,7 +278,7 @@ export default function ProductsManagement() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Categoría
+                    {t('product.category')}
                   </label>
                   <select
                     name="categoria"
@@ -262,7 +297,7 @@ export default function ProductsManagement() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Género
+                    {t('product.gender')}
                   </label>
                   <select
                     name="genero"
@@ -280,7 +315,7 @@ export default function ProductsManagement() {
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mililitros
+                    {t('product.mililiters')}
                   </label>
                   <input
                     type="number"
@@ -295,7 +330,7 @@ export default function ProductsManagement() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Precio (₡)
+                    {t('product.price')}
                   </label>
                   <input
                     type="number"
@@ -311,7 +346,7 @@ export default function ProductsManagement() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Stock
+                    {t('product.stock')}
                   </label>
                   <input
                     type="number"
@@ -327,7 +362,7 @@ export default function ProductsManagement() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Imágenes
+                  {t('product.images')}
                 </label>
                 <input
                   type="file"
@@ -340,6 +375,18 @@ export default function ProductsManagement() {
                 {subiendoImagenes && (
                   <p className="text-sm text-gray-500 mt-1">Subiendo imágenes...</p>
                 )}
+
+                <label className="block text-sm font-medium text-gray-700 mt-4 mb-1">
+                  Agregar URLs de imágenes (una por línea o separadas por coma)
+                </label>
+                <textarea
+                  name="imagenesUrlInput"
+                  value={formulario.imagenesUrlInput}
+                  onChange={handleImageUrlInputChange}
+                  rows="3"
+                  placeholder="https://ejemplo.com/imagen1.jpg\nhttps://ejemplo.com/imagen2.jpg"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                />
 
                 {formulario.imagenesUrl.length > 0 && (
                   <div className="mt-3 grid grid-cols-4 gap-2">
@@ -364,8 +411,8 @@ export default function ProductsManagement() {
               </div>
 
               <div className="flex gap-3 pt-4">
-                <Button type="submit" className="flex-1" variant="primary">{productoEditando ? 'Actualizar' : 'Crear'} Producto</Button>
-                <Button type="button" onClick={cerrarFormulario} className="flex-1" variant="secondary">Cancelar</Button>
+                <Button type="submit" className="flex-1" variant="primary">{productoEditando ? t('common.update') : t('common.create')} {t('product.product')}</Button>
+                <Button type="button" onClick={cerrarFormulario} className="flex-1" variant="secondary">{t('common.cancel')}</Button>
               </div>
             </form>
           </div>
@@ -426,7 +473,7 @@ export default function ProductsManagement() {
 
         {productos.length === 0 && (
           <div className="text-center py-12 text-gray-500">
-            No hay productos registrados. Crea el primero.
+            {t('products.empty')}
           </div>
         )}
       </div>

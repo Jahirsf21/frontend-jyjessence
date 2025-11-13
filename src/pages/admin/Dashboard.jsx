@@ -7,9 +7,21 @@ export default function Dashboard() {
   const location = useLocation();
 
   const menuItems = [
-    { path: '/admin/products', label: 'Gestión de Productos', icon: '📦' },
-    { path: '/admin/clients', label: 'Gestión de Clientes', icon: '👥' },
-    { path: '/admin/orders', label: 'Gestión de Pedidos', icon: '🛍️' }
+    {
+      path: '/admin/products',
+      label: 'Gestión de Productos',
+      icon: <img src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/producto_ozuzjz.png" alt="Productos" className="w-7 h-7 lg:w-8 lg:h-8" />
+    },
+    {
+      path: '/admin/clients',
+      label: 'Gestión de Clientes',
+      icon: <img src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/clientes_pootfq.png" alt="Clientes" className="w-7 h-7 lg:w-8 lg:h-8" />
+    },
+    {
+      path: '/admin/orders',
+      label: 'Gestión de Pedidos',
+      icon: <img src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/pedidos_yifcqb.png" alt="Pedidos" className="w-7 h-7 lg:w-8 lg:h-8" />
+    }
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -42,7 +54,7 @@ export default function Dashboard() {
                           : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      <span className="text-xl lg:text-2xl">{item.icon}</span>
+                      <span className="flex items-center justify-center">{item.icon}</span>
                       <span className="truncate">{item.label}</span>
                     </Link>
                   </li>

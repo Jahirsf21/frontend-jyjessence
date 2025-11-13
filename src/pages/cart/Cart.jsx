@@ -29,20 +29,28 @@ const Cart = () => {
     try {
       setError(null);
       const data = await Ecommerce.getCartSummary();
-      
-      // Asegurar que data tiene la estructura correcta
-      if (data && typeof data === 'object') {
-        setCarrito({
-          items: data.items || [],
-          total: data.total || 0,
-          cantidadItems: data.cantidadItems || (data.items ? data.items.length : 0)
-        });
-      } else {
-        setCarrito({ items: [], total: 0, cantidadItems: 0 });
-      }
+      // Enriquecer items con imagen si no la tiene
+      const itemsConImagenYPrecio = await Promise.all((data.items || []).map(async (item) => {
+        let imagen = item.imagen;
+        let precioUnitario = item.precioUnitario;
+        if (!imagen || !precioUnitario) {
+          try {
+            const producto = await Ecommerce.getProductDetails(item.productoId);
+            if (!imagen) imagen = producto.primaryImage;
+            if (!precioUnitario) precioUnitario = producto.precio;
+          } catch {}
+        }
+        return { ...item, imagen, precioUnitario };
+      }));
+      // Calcular total
+      const total = itemsConImagenYPrecio.reduce((sum, item) => sum + (item.precioUnitario * item.cantidad), 0);
+      setCarrito({
+        items: itemsConImagenYPrecio,
+        total,
+        cantidadItems: data.cantidadItems || itemsConImagenYPrecio.length
+      });
     } catch (error) {
-  setError(error.response?.data?.error || t('cart.loadError'));
-      
+      setError(error.response?.data?.error || t('cart.loadError'));
       // Si es error 401, redirigir al login
       if (error.response?.status === 401) {
         Swal.fire({
@@ -177,14 +185,14 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-white py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">{t('cart.title')}</h1>
           <p className="text-gray-600">
-            {carrito.cantidadItems > 0 
-              ? t('cart.itemCount', { count: carrito.cantidadItems })
+            {carrito.cantidadItems > 0
+              ? `${carrito.cantidadItems} ${t('cart.itemsInCart')}`
               : t('cart.emptyTitle')}
           </p>
         </div>
@@ -212,10 +220,15 @@ const Cart = () => {
                 <div key={item.productoId} className="bg-white rounded-lg shadow-md p-6">
                   <div className="flex items-center gap-4">
                     {/* Imagen */}
-                    <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-12 h-12 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                      </svg>
+                    <div className="w-24 h-24 rounded-lg flex items-center justify-center flex-shrink-0 bg-white border border-gray-200">
+                      {item.imagen && (
+                        <img src={item.imagen} alt={item.nombre} className="w-24 h-24 object-cover rounded-lg" />
+                      )}
+                      {!item.imagen && (
+                        <svg className="w-12 h-12 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                      )}
                     </div>
 
                     {/* Información */}

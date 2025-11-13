@@ -81,4 +81,10 @@ api.interceptors.response.use(
   }
 );
 
+
+export async function fetchEnums() {
+  const response = await api.get('/enums');
+  return response.data;
+}
+
 export default api;

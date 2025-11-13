@@ -250,14 +250,12 @@ class EcommerceFacade {
   async updateCartItem(idProducto, cantidad) {
     try {
       const producto = await this.products.getById(idProducto);
-      
       if (producto.stock < cantidad) {
         throw new Error(`Solo hay ${producto.stock} unidades disponibles`);
       }
-
-      const resultado = await this.cart.updateItem(idProducto, cantidad);
+      // El backend espera productoId, no idProducto
+      const resultado = await this.cart.updateQuantity(idProducto, cantidad);
       const carritoActualizado = await this.cart.getCart();
-
       return {
         success: true,
         cart: carritoActualizado
@@ -300,7 +298,10 @@ class EcommerceFacade {
       }
 
       const subtotal = carrito.items.reduce((suma, item) => {
-        return suma + (item.producto.precio * item.cantidad);
+        if (item.producto && typeof item.producto.precio === 'number') {
+          return suma + (item.producto.precio * item.cantidad);
+        }
+        return suma;
       }, 0);
 
       return {

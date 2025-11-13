@@ -179,7 +179,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
       >
         <header className="flex items-center px-5 py-4 gap-4 justify-between">
           <h1 className="text-2xl font-bold text-gray-800 m-0">
-            {t('nav.myAccount') || 'Mi Cuenta'}
+            {t('profile', { defaultValue: 'Perfil' })}
           </h1>
           <button
             onClick={onClose}
@@ -243,6 +243,19 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
               <h2 className="text-base font-semibold text-gray-600 m-0 mb-2.5 uppercase px-2.5">
                 {t('profile.general') || 'General'}
               </h2>
+              <Button
+                onClick={() => navegar('/accessibility')}
+                variant="light"
+                block
+                className="flex items-center justify-start gap-4 !py-3"
+              >
+                <img
+                  src="https://res.cloudinary.com/drec8g03e/image/upload/v1762996848/accesibilidad_zoiwzy.svg"
+                  alt="Accesibilidad"
+                  className="w-6 h-6"
+                />
+                <span>{t('accessibility', { defaultValue: 'Accesibilidad' })}</span>
+              </Button>
             </>
           ) : (
             <>
@@ -258,7 +271,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                     alt="Perfil"
                     className="w-6 h-6"
                   />
-                  <span>Mi Información</span>
+                  <span>{t('profile', { defaultValue: 'Perfil' })}</span>
                 </Button>
 
                 <Button
@@ -289,7 +302,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                     <line x1="12" y1="22.08" x2="12" y2="12"></line>
                   </svg>
-                  <span>{t('nav.orders') || 'Mis Pedidos'}</span>
+                  <span>{t('orders', { defaultValue: 'Pedidos' })}</span>
                 </Button>
               </div>
 
