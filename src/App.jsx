@@ -16,6 +16,7 @@ import ProductsManagement from './pages/admin/ProductsManagement';
 import ClientsManagement from './pages/admin/ClientsManagement';
 import OrdersManagement from './pages/admin/OrdersManagement';
 import ButtonNav from './components/ui/ButtonNav';
+import { SearchPanelProvider } from './context/SearchPanelContext';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
@@ -85,21 +86,23 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Router>
-          <AppLayout />
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-        </Router>
+        <SearchPanelProvider>
+          <Router>
+            <AppLayout />
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
+          </Router>
+        </SearchPanelProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

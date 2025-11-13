@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import ModalPerfil from '../ModalPerfil';
 import { useAuth } from '../../context/AuthContext';
+import { useSearchPanel } from '../../context/SearchPanelContext';
 import { useTranslation } from 'react-i18next';
 
-export default function BottomNav(props) {
+export default function ButtonNav(props) {
+  const { openSearch } = useSearchPanel();
   const navigate = useNavigate();
   const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
   const { usuario, estaAutenticado } = useAuth();
@@ -24,9 +26,7 @@ export default function BottomNav(props) {
       <button 
         className="flex flex-col items-center text-gray-600 hover:text-blue-600 transition-colors"
         onClick={() => {
-          if (props.onOpenSearchPanel) {
-            props.onOpenSearchPanel();
-          }
+          openSearch();
         }}
       >
         <img

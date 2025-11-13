@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchEnums } from '../../services/api';
+import Ecommerce from '../../patterns/EcommerceFacade';
 import { useTranslation } from 'react-i18next';
 
 export default function SearchPanel({
@@ -9,6 +10,8 @@ export default function SearchPanel({
   setBusqueda,
   categoriaFiltro,
   setCategoriaFiltro,
+  marcaFiltro,
+  setMarcaFiltro,
   generoFiltro,
   setGeneroFiltro,
   precioMin,
@@ -19,21 +22,27 @@ export default function SearchPanel({
 }) {
   const { t } = useTranslation();
   const [categorias, setCategorias] = useState([]);
+  const [marcas, setMarcas] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [minPrecio, setMinPrecioLocal] = useState(0);
   const [maxPrecio, setMaxPrecioLocal] = useState(0);
 
   useEffect(() => {
-    const cargarEnums = async () => {
+    const cargarDatos = async () => {
       try {
-        const enums = await fetchEnums();
+        const [enums, catalog] = await Promise.all([
+          fetchEnums(),
+          Ecommerce.getCatalog()
+        ]);
         setCategorias(enums?.CategoriaPerfume || []);
         setGeneros(enums?.Genero || []);
+        const marcas = [...new Set(catalog.map(p => p.marca).filter(Boolean))].sort();
+        setMarcas(marcas);
       } catch (err) {
-        console.error('Error al obtener enums:', err);
+        console.error('Error al obtener datos:', err);
       }
     };
-    if (open) cargarEnums();
+    if (open) cargarDatos();
   }, [open]);
 
   // Cierra el panel si la resolución es tablet o mayor
@@ -105,6 +114,44 @@ export default function SearchPanel({
                   }`}
                 >
                   {t(`category.${cat}`, { defaultValue: cat })}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold mb-3 text-gray-700">
+            {t('product.brand', { defaultValue: 'Marca' })}
+          </label>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setMarcaFiltro([])}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                marcaFiltro.length === 0
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {t('nav.all', { defaultValue: 'Todas' })}
+            </button>
+            {marcas.map(marca => {
+              const selected = marcaFiltro.includes(marca);
+              return (
+                <button
+                  key={marca}
+                  onClick={() => {
+                    setMarcaFiltro(selected
+                      ? marcaFiltro.filter(m => m !== marca)
+                      : [...marcaFiltro, marca]
+                    );
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    selected
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {marca}
                 </button>
               );
             })}

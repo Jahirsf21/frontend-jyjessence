@@ -5,8 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { fetchEnums } from '../services/api';
 import Ecommerce from '../patterns/EcommerceFacade';
 import SearchPanel from '../components/ui/SearchPanel';
-const [openSearchPanel, setOpenSearchPanel] = useState(false);
-
+import { useSearchPanel } from '../context/SearchPanelContext';
 
 const PRODUCTS_PER_PAGE = 20;
 const SORT_OPTIONS = [
@@ -118,6 +117,7 @@ function FiltrosContent({
 
 function Home() {
 	const { t } = useTranslation();
+	const { openSearchPanel, closeSearch } = useSearchPanel();
 	const [productos, setProductos] = useState([]);
 	const [busqueda, setBusqueda] = useState("");
 	const [categorias, setCategorias] = useState([]);
@@ -132,9 +132,7 @@ function Home() {
 	const [maxPrecio, setMaxPrecio] = useState(0);
 	const [pagina, setPagina] = useState(1);
 	const [orden, setOrden] = useState('relevancia');
-	const [mostrarFiltrosMovil, setMostrarFiltrosMovil] = useState(false);
-	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-	const [openSearchPanel, setOpenSearchPanel] = useState(false);
+		const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
 	useEffect(() => {
 		const cargarDatos = async () => {
@@ -161,11 +159,7 @@ function Home() {
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
 
-	useEffect(() => {
-		document.body.style.overflow = mostrarFiltrosMovil ? 'hidden' : 'unset';
-		return () => { document.body.style.overflow = 'unset'; };
-	}, [mostrarFiltrosMovil]);
-
+	
 	let productosFiltrados = productos.filter(producto => {
 		const coincideBusqueda = busqueda.trim() === "" || (producto.nombre?.toLowerCase().includes(busqueda.toLowerCase()) || producto.marca?.toLowerCase().includes(busqueda.toLowerCase()) || producto.categoria?.toLowerCase().includes(busqueda.toLowerCase()));
 		const coincideCategoria = categoriaFiltro.length === 0 || categoriaFiltro.includes(producto.categoria);
@@ -201,23 +195,7 @@ function Home() {
 
 return (
   <div className="min-h-screen bg-white flex flex-col">
-    {/* Panel de Filtros para Móvil */}
-    <div
-      className={`fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden transition-opacity ${
-        mostrarFiltrosMovil ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      }`}
-      onClick={() => setMostrarFiltrosMovil(false)}
-    >
-      <div
-        className={`fixed top-0 left-0 w-80 max-w-[90%] h-full bg-white shadow-xl p-6 overflow-y-auto transform transition-transform duration-300 ease-in-out ${
-          mostrarFiltrosMovil ? 'translate-x-0' : '-translate-x-full'
-        }`}
-        onClick={e => e.stopPropagation()}
-      >
-        <FiltrosContent {...filtroProps} />
-      </div>
-    </div>
-
+    
     {/* CONTENIDO PRINCIPAL */}
     <div className="flex flex-1 max-w-7xl mx-auto w-full pt-4 md:pt-8 gap-4 md:gap-8 px-4 md:px-0">
       {/* Sidebar de filtros (solo escritorio) */}
@@ -228,38 +206,14 @@ return (
       {/* Listado de productos */}
       <section className="flex-1 flex flex-col">
         <div className="bg-white rounded-xl shadow-md px-4 md:px-8 py-4 md:py-6 sticky top-0 z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900">
-                {t('products.catalogTitle', { defaultValue: 'Todos los Productos' })}
-              </h1>
-              <span className="text-gray-500 text-xs md:text-sm">
-                ({productosFiltrados.length}{' '}
-                {t('products.productCount', { defaultValue: 'productos' })})
-              </span>
-            </div>
-
-            {/* Botón de filtros móviles */}
-            <button
-              onClick={() => setMostrarFiltrosMovil(true)}
-              className="md:hidden bg-gray-100 hover:bg-gray-200 p-2 rounded-lg flex items-center gap-2 text-sm font-semibold"
-              aria-label="Mostrar filtros"
-            >
-              <svg
-                className="w-5 h-5 text-gray-700"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                ></path>
-              </svg>
-              {t('filters.title', { defaultValue: 'Filtros' })}
-            </button>
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">
+              {t('products.catalogTitle', { defaultValue: 'Todos los Productos' })}
+            </h1>
+            <span className="text-gray-500 text-xs md:text-sm">
+              ({productosFiltrados.length}{' '}
+              {t('products.productCount', { defaultValue: 'productos' })})
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -396,11 +350,13 @@ return (
     {/* 🔍 Panel lateral de búsqueda */}
     <SearchPanel
       open={openSearchPanel}
-      onClose={() => setOpenSearchPanel(false)}
+      onClose={closeSearch}
       busqueda={busqueda}
       setBusqueda={setBusqueda}
       categoriaFiltro={categoriaFiltro}
       setCategoriaFiltro={setCategoriaFiltro}
+      marcaFiltro={marcaFiltro}
+      setMarcaFiltro={setMarcaFiltro}
       generoFiltro={generoFiltro}
       setGeneroFiltro={setGeneroFiltro}
       precioMin={precioMin}
@@ -410,9 +366,7 @@ return (
       limpiarFiltros={limpiarFiltros}
     />
 
-    {/* 🧭 Barra inferior de navegación */}
-    <ButtonNav onOpenSearchPanel={() => setOpenSearchPanel(true)} />
-  </div>
+      </div>
 );
 }
 export default Home;
