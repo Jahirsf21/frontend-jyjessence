@@ -10,8 +10,6 @@ export default function SearchPanel({
   setBusqueda,
   categoriaFiltro,
   setCategoriaFiltro,
-  marcaFiltro,
-  setMarcaFiltro,
   generoFiltro,
   setGeneroFiltro,
   precioMin,
@@ -22,7 +20,6 @@ export default function SearchPanel({
 }) {
   const { t } = useTranslation();
   const [categorias, setCategorias] = useState([]);
-  const [marcas, setMarcas] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [minPrecio, setMinPrecioLocal] = useState(0);
   const [maxPrecio, setMaxPrecioLocal] = useState(0);
@@ -36,8 +33,6 @@ export default function SearchPanel({
         ]);
         setCategorias(enums?.CategoriaPerfume || []);
         setGeneros(enums?.Genero || []);
-        const marcas = [...new Set(catalog.map(p => p.marca).filter(Boolean))].sort();
-        setMarcas(marcas);
       } catch (err) {
         console.error('Error al obtener datos:', err);
       }
@@ -59,8 +54,8 @@ export default function SearchPanel({
   return (
     <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[1002] transition-all duration-300 ${open ? 'translate-x-0' : 'translate-x-full'} flex flex-col`}>
       <div className="flex items-center justify-between p-4 border-b bg-gray-50">
-        <h2 className="text-lg font-bold">{t('filters.title', { defaultValue: 'Filtros' })}</h2>
-        <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-200" aria-label={t('search.close', { defaultValue: 'Cerrar filtros' })}>
+        <h2 className="text-lg font-bold">{t('filters.title')}</h2>
+        <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-200" aria-label={t('search.close')}>
           <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -68,7 +63,7 @@ export default function SearchPanel({
         <div className="mb-4">
           <input
             type="text"
-            placeholder={t('search.placeholder', { defaultValue: 'Buscar productos...' })}
+            placeholder={t('search.placeholder')}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
             value={busqueda}
             onChange={e => setBusqueda(e.target.value)}
@@ -78,12 +73,12 @@ export default function SearchPanel({
             className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
             onClick={limpiarFiltros}
           >
-            {t('filters.clearFilters', { defaultValue: 'Limpiar filtros' })}
+            {t('filters.clearFilters')}
           </button>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-3 text-gray-700">
-            {t('product.category', { defaultValue: 'Categoría' })}
+            {t('product.category')}
           </label>
           <div className="flex flex-wrap gap-2">
             <button
@@ -94,7 +89,7 @@ export default function SearchPanel({
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              {t('nav.all', { defaultValue: 'Todas' })}
+              {t('nav.all')}
             </button>
             {categorias.map(cat => {
               const selected = categoriaFiltro.includes(cat);
@@ -113,7 +108,7 @@ export default function SearchPanel({
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {t(`category.${cat}`, { defaultValue: cat })}
+                  {t(`category.${cat}`)}
                 </button>
               );
             })}
@@ -121,45 +116,7 @@ export default function SearchPanel({
         </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-3 text-gray-700">
-            {t('product.brand', { defaultValue: 'Marca' })}
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setMarcaFiltro([])}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                marcaFiltro.length === 0
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {t('nav.all', { defaultValue: 'Todas' })}
-            </button>
-            {marcas.map(marca => {
-              const selected = marcaFiltro.includes(marca);
-              return (
-                <button
-                  key={marca}
-                  onClick={() => {
-                    setMarcaFiltro(selected
-                      ? marcaFiltro.filter(m => m !== marca)
-                      : [...marcaFiltro, marca]
-                    );
-                  }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    selected
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {marca}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-3 text-gray-700">
-            {t('product.gender', { defaultValue: 'Género' })}
+            {t('product.gender')}
           </label>
           <div className="flex flex-wrap gap-2">
             <button
@@ -170,7 +127,7 @@ export default function SearchPanel({
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              {t('nav.all', { defaultValue: 'Todos' })}
+              {t('nav.all')}
             </button>
             {generos.map(gen => (
               <button
@@ -182,14 +139,14 @@ export default function SearchPanel({
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                {t(`gender.${gen}`, { defaultValue: gen })}
+                {t(`gender.${gen}`)}
               </button>
             ))}
           </div>
         </div>
         <div className="mb-4 flex gap-2">
           <div className="flex-1">
-            <label className="block text-sm font-medium mb-1">{t('product.priceMin', { defaultValue: 'Precio mín.' })}</label>
+            <label className="block text-sm font-medium mb-1">{t('product.priceMin')}</label>
             <input
               type="number"
               value={precioMin}
@@ -199,7 +156,7 @@ export default function SearchPanel({
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium mb-1">{t('product.priceMax', { defaultValue: 'Precio máx.' })}</label>
+            <label className="block text-sm font-medium mb-1">{t('product.priceMax')}</label>
             <input
               type="number"
               value={precioMax}

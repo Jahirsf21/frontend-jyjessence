@@ -56,8 +56,8 @@ const Products = () => {
       console.error('Error al cargar productos:', error);
       Swal.fire({
         icon: 'error',
-        title: t('error'),
-        text: 'Error al cargar productos',
+        title: t('message.error'),
+        text: t('error.loadProducts'),
       });
     } finally {
       setLoading(false);
@@ -70,7 +70,7 @@ const Products = () => {
       Swal.fire({
         icon: 'success',
         title: t('message.success'),
-        text: `${nombreProducto} agregado al carrito`,
+        text: t('success.addedToCart', { productName: nombreProducto }),
         timer: 2000,
         showConfirmButton: false,
       });
@@ -79,9 +79,9 @@ const Products = () => {
       if (error.response?.status === 401) {
         Swal.fire({
           icon: 'warning',
-          title: 'Inicia sesión',
-          text: 'Debes iniciar sesión para agregar productos al carrito',
-          confirmButtonText: 'Ir a Login',
+          title: t('auth.loginRequired'),
+          text: t('auth.loginRequiredForCart'),
+          confirmButtonText: t('auth.goToLogin'),
         }).then((result) => {
           if (result.isConfirmed) {
             navigate('/auth/login');
@@ -90,8 +90,8 @@ const Products = () => {
       } else {
         Swal.fire({
           icon: 'error',
-          title: t('error'),
-          text: error.response?.data?.error || 'Error al agregar al carrito',
+          title: t('message.error'),
+          text: error.response?.data?.error || t('error.addToCart'),
         });
       }
     }
@@ -174,7 +174,7 @@ const Products = () => {
               >
                 <option value="">{t('common.clear')}</option>
                 {categorias.map(cat => (
-                  <option key={cat} value={cat}>{t(`category.${cat}`, { defaultValue: cat })}</option>
+                  <option key={cat} value={cat}>{t(`category.${cat}`)}</option>
                 ))}
               </select>
             </div>
@@ -189,7 +189,7 @@ const Products = () => {
               >
                 <option value="">{t('common.clear')}</option>
                 {generos.map(gen => (
-                  <option key={gen} value={gen}>{t(`gender.${gen.toUpperCase()}`, { defaultValue: gen })}</option>
+                  <option key={gen} value={gen}>{t(`gender.${gen.toUpperCase()}`)}</option>
                 ))}
               </select>
             </div>
@@ -200,14 +200,14 @@ const Products = () => {
               <div className="flex gap-2">
                 <input
                   type="number"
-                  placeholder="Min"
+                  placeholder={t('common.min')}
                   value={precioMin}
                   onChange={(e) => setPrecioMin(e.target.value)}
                   className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                   type="number"
-                  placeholder="Max"
+                  placeholder={t('common.max')}
                   value={precioMax}
                   onChange={(e) => setPrecioMax(e.target.value)}
                   className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -217,18 +217,18 @@ const Products = () => {
 
             {/* Mililitros */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Mililitros</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('product.volume')}</label>
               <div className="flex gap-2">
                 <input
                   type="number"
-                  placeholder="Min"
+                  placeholder={t('common.min')}
                   value={mililitrosMin}
                   onChange={(e) => setMililitrosMin(e.target.value)}
                   className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                   type="number"
-                  placeholder="Max"
+                  placeholder={t('common.max')}
                   value={mililitrosMax}
                   onChange={(e) => setMililitrosMax(e.target.value)}
                   className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"

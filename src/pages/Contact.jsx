@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Contact = () => {
+  const { t } = useTranslation();
   const [mensaje, setMensaje] = useState('');
   const [enviado, setEnviado] = useState(false);
 
@@ -13,16 +15,18 @@ const Contact = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 font-['Lato',sans-serif]">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Contáctanos</h1>
-        <p className="mb-6 text-gray-600">Envíanos tu consulta y la recibiremos en <span className="font-semibold">jyjessence@gmail.com</span></p>
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">{t('contact.title')}</h1>
+        <p className="mb-6 text-gray-600">
+          {t('contact.description')} <span className="font-semibold">{t('contact.email')}</span>
+        </p>
         {enviado ? (
-          <div className="text-green-600 font-semibold text-center">¡Tu mensaje ha sido enviado!</div>
+          <div className="text-green-600 font-semibold text-center">{t('contact.successMessage')}</div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <textarea
               className="border border-gray-300 rounded-lg p-3 resize-none text-base text-gray-800"
               rows={6}
-              placeholder="Escribe tu mensaje aquí..."
+              placeholder={t('contact.messagePlaceholder')}
               value={mensaje}
               onChange={e => setMensaje(e.target.value)}
               required
@@ -30,7 +34,7 @@ const Contact = () => {
             <button
               type="submit"
               className="bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >Enviar</button>
+            >{t('contact.sendButton')}</button>
           </form>
         )}
       </div>
