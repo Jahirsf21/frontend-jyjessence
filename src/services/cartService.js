@@ -48,5 +48,10 @@ export const cartService = {
       items 
     });
     return respuesta.data;
+  },
+
+  async clearCart() {
+    const respuesta = await api.delete('/carrito/limpiar');
+    return respuesta.data;
   }
 };

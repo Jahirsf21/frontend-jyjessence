@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
 import Ecommerce from '../../patterns/EcommerceFacade';
+import { cartService } from '../../services/cartService';
 import guestCartService from '../../services/guestCartService';
 import AddressForm from '../../components/AddressForm';
 
@@ -185,6 +186,8 @@ const Cart = () => {
           });
         }
         await Ecommerce.completePurchase(direccionSeleccionada);
+        // Limpiar carrito después del pedido exitoso
+        await cartService.clearCart();
       } else {
         // Usuario invitado - validar información completa
         const { email, nombre, telefono, direccion } = guestInfo;
