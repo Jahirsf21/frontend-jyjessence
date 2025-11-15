@@ -1,5 +1,6 @@
 const translation = {
   "nav.home": "首页",
+  "home.button": "首页",
   "nav.catalog": "目录",
   "nav.cart": "购物车",
   "orders": "订单",
@@ -146,6 +147,8 @@ const translation = {
   "cart.guestLoginPrompt": "您也可以",
   "cart.guestLoginLink": "登录",
   "cart.guestLoginText": "以访问您的订单历史。",
+  "cart.added": "产品已添加到购物车",
+  "cart.addError": "添加产品时出错",
   "error.login": "登录错误",
   "error.addToCart": "添加到购物车时出错",
   "error.unknown": "未知错误",
@@ -223,6 +226,9 @@ const translation = {
     "delivered": "已送达",
     "cancelled": "已取消"
   },
+  "orders": "订单",
+  "orders.title": "我的订单",
+  "orders.none": "暂无订单",
   "admin.orders.title": "订单管理",
   "admin.orders.total": "订单总数",
   "admin.orders.details": "订单详情",
@@ -283,7 +289,31 @@ const translation = {
   "common.edit": "编辑",
   "common.delete": "删除",
   "common.close": "关闭",
-  "common.loading": "加载中..."
+  "common.loading": "加载中...",
+  "swal.error": "错误",
+  "swal.profileLoadError": "无法加载个人资料",
+  "swal.success": "成功",
+  "swal.profileUpdated": "{{field}}已更新",
+  "swal.profileUpdateError": "无法更新{{field}}",
+  "swal.addressAdded": "地址已添加",
+  "swal.addressAddError": "无法添加地址",
+  "swal.addressUpdated": "地址已更新",
+  "swal.addressUpdateError": "无法更新地址",
+  "swal.addressDeleted": "地址已删除",
+  "swal.addressDeleteError": "无法删除地址",
+  "swal.emailUpdated": "邮箱已更新",
+  "swal.emailUpdateError": "无法更新邮箱",
+  "swal.phoneUpdated": "电话已更新",
+  "swal.phoneUpdateError": "无法更新电话",
+  "swal.passwordUpdated": "密码已更新",
+  "swal.passwordUpdateError": "无法更新密码",
+  "footer.description": "您的高品质香水专卖店",
+  "footer.hours": "营业时间",
+  "footer.hours.week": "周一至周日",
+  "footer.contact": "联系我们",
+  "footer.follow": "关注我们",
+  "footer.shipping": "全国配送",
+  "footer.shipping.correos": "通过哥斯达黎加邮政"
 };
 
 export default { translation };

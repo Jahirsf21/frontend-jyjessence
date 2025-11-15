@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import EcommerceFacade from '../../patterns/EcommerceFacade';
 
 const MiInformacion = () => {
+  const { t } = useTranslation();
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -33,7 +35,7 @@ const MiInformacion = () => {
         setDirecciones(data.direcciones || []);
       })
       .catch(() => {
-        Swal.fire('Error', 'No se pudo cargar el perfil', 'error');
+        Swal.fire(t('swal.error'), t('swal.profileLoadError'), 'error');
       })
       .finally(() => setLoading(false));
   }, []);
@@ -43,9 +45,9 @@ const MiInformacion = () => {
     try {
       const updated = await EcommerceFacade.auth.updateProfile({ [field]: value });
       setUsuario(updated);
-      Swal.fire('Éxito', `${field.charAt(0).toUpperCase() + field.slice(1)} actualizado`, 'success');
+      Swal.fire(t('swal.success'), t('swal.profileUpdated', {field: field.charAt(0).toUpperCase() + field.slice(1)}), 'success');
     } catch {
-      Swal.fire('Error', `No se pudo actualizar el ${field}`, 'error');
+      Swal.fire(t('swal.error'), t('swal.profileUpdateError', {field: field}), 'error');
     } finally {
       setLoading(false);
     }
@@ -61,9 +63,9 @@ const MiInformacion = () => {
       setDirecciones(actualizado.direcciones || []);
       setNuevaDireccion({ provincia: '', canton: '', distrito: '', barrio: '', senas: '', codigoPostal: '', referencia: '' });
       setMostrarFormAgregar(false);
-      Swal.fire('Éxito', 'Dirección agregada', 'success');
+      Swal.fire(t('swal.success'), t('swal.addressAdded'), 'success');
     } catch (error) {
-      Swal.fire('Error', error.message || 'No se pudo agregar la dirección', 'error');
+      Swal.fire(t('swal.error'), error.message || t('swal.addressAddError'), 'error');
     } finally {
       setLoading(false);
     }
@@ -78,9 +80,9 @@ const MiInformacion = () => {
       setUsuario(actualizado);
       setDirecciones(actualizado.direcciones || []);
       setEditandoDireccion(null);
-      Swal.fire('Éxito', 'Dirección actualizada', 'success');
+      Swal.fire(t('swal.success'), t('swal.addressUpdated'), 'success');
     } catch (error) {
-      Swal.fire('Error', error.message || 'No se pudo actualizar la dirección', 'error');
+      Swal.fire(t('swal.error'), error.message || t('swal.addressUpdateError'), 'error');
     } finally {
       setLoading(false);
     }
@@ -103,9 +105,9 @@ const MiInformacion = () => {
         const actualizado = await EcommerceFacade.auth.getProfile();
         setUsuario(actualizado);
         setDirecciones(actualizado.direcciones || []);
-        Swal.fire('Éxito', 'Dirección eliminada', 'success');
+        Swal.fire(t('swal.success'), t('swal.addressDeleted'), 'success');
       } catch (error) {
-        Swal.fire('Error', error.message || 'No se pudo eliminar la dirección', 'error');
+        Swal.fire(t('swal.error'), error.message || t('swal.addressDeleteError'), 'error');
       } finally {
         setLoading(false);
       }

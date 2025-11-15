@@ -1,5 +1,6 @@
 const translation = {
   "nav.home": "Início",
+  "home.button": "Início",
   "nav.catalog": "Catálogo",
   "nav.cart": "Carrinho",
   "orders": "Pedidos",
@@ -146,6 +147,8 @@ const translation = {
   "cart.guestLoginPrompt": "Você também pode",
   "cart.guestLoginLink": "entrar",
   "cart.guestLoginText": "para acessar o histórico de pedidos.",
+  "cart.added": "Produto adicionado ao carrinho",
+  "cart.addError": "Erro ao adicionar produto",
   "error.login": "Erro de login",
   "error.addToCart": "Erro ao adicionar ao carrinho",
   "error.unknown": "Erro desconhecido",
@@ -223,6 +226,9 @@ const translation = {
     "delivered": "Entregue",
     "cancelled": "Cancelado"
   },
+  "orders": "Pedidos",
+  "orders.title": "Meus Pedidos",
+  "orders.none": "Nenhum pedido encontrado",
   "admin.orders.title": "Gestão de Pedidos",
   "admin.orders.total": "Total de pedidos",
   "admin.orders.details": "Detalhes do Pedido",
@@ -283,7 +289,31 @@ const translation = {
   "common.edit": "Editar",
   "common.delete": "Excluir",
   "common.close": "Fechar",
-  "common.loading": "Carregando..."
+  "common.loading": "Carregando...",
+  "swal.error": "Erro",
+  "swal.profileLoadError": "Não foi possível carregar o perfil",
+  "swal.success": "Sucesso",
+  "swal.profileUpdated": "{{field}} atualizado",
+  "swal.profileUpdateError": "Não foi possível atualizar {{field}}",
+  "swal.addressAdded": "Endereço adicionado",
+  "swal.addressAddError": "Não foi possível adicionar o endereço",
+  "swal.addressUpdated": "Endereço atualizado",
+  "swal.addressUpdateError": "Não foi possível atualizar o endereço",
+  "swal.addressDeleted": "Endereço excluído",
+  "swal.addressDeleteError": "Não foi possível excluir o endereço",
+  "swal.emailUpdated": "Email atualizado",
+  "swal.emailUpdateError": "Não foi possível atualizar o email",
+  "swal.phoneUpdated": "Telefone atualizado",
+  "swal.phoneUpdateError": "Não foi possível atualizar o telefone",
+  "swal.passwordUpdated": "Senha atualizada",
+  "swal.passwordUpdateError": "Não foi possível atualizar a senha",
+  "footer.description": "Sua loja especializada em fragrâncias de alta qualidade",
+  "footer.hours": "Horário de Atendimento",
+  "footer.hours.week": "Segunda a Domingo",
+  "footer.contact": "Contato",
+  "footer.follow": "Siga-nos",
+  "footer.shipping": "Envios para todo o país",
+  "footer.shipping.correos": "Através dos Correios da Costa Rica"
 };
 
 export default { translation };

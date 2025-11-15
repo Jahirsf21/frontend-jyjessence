@@ -16,6 +16,10 @@ export default function SearchPanel({
   setPrecioMin,
   precioMax,
   setPrecioMax,
+  mililitrosMin,
+  setMililitrosMin,
+  mililitrosMax,
+  setMililitrosMax,
   limpiarFiltros
 }) {
   const { t } = useTranslation();
@@ -163,6 +167,29 @@ export default function SearchPanel({
               onChange={e => setPrecioMax(e.target.value)}
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder={maxPrecio.toString()}
+            />
+          </div>
+        </div>
+
+        <div className="mb-4 flex gap-2">
+          <div className="flex-1">
+            <label className="block text-sm font-medium mb-1">{t('product.volumeMin', { defaultValue: 'Min ml' })}</label>
+            <input
+              type="number"
+              value={mililitrosMin}
+              onChange={e => setMililitrosMin(e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder={t('common.min')}
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block text-sm font-medium mb-1">{t('product.volumeMax', { defaultValue: 'Max ml' })}</label>
+            <input
+              type="number"
+              value={mililitrosMax}
+              onChange={e => setMililitrosMax(e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder={t('common.max')}
             />
           </div>
         </div>

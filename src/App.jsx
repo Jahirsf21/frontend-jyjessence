@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import Header from './components/header';
+import Footer from './components/footer';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -78,6 +79,8 @@ function AppLayout() {
         </Routes>
       </main>
       <ButtonNav />
+      {/* Footer - Se muestra siempre */}
+      <Footer />
     </>
   );
 }

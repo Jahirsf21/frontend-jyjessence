@@ -33,6 +33,10 @@ function FiltrosContent({
 	setPrecioMin,
 	precioMax,
 	setPrecioMax,
+	mililitrosMin,
+	setMililitrosMin,
+	mililitrosMax,
+	setMililitrosMax,
 	minPrecio,
 	maxPrecio
 }) {
@@ -61,7 +65,7 @@ function FiltrosContent({
 
 			<div className="mb-6">
 				<h3 className="font-semibold mb-2">{t('product.category')}</h3>
-				<div className="flex flex-col gap-2 max-h-60 overflow-y-auto pr-2">
+				<div className="flex flex-col gap-2 max-h-60 overflow-y-auto pr-2 scrollbar-hide">
 					<button onClick={() => setCategoriaFiltro([])} className={`text-left px-4 py-2 rounded-lg text-sm font-medium transition-all ${categoriaFiltro.length === 0 ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
 						{t('nav.all')}
 					</button>
@@ -94,6 +98,26 @@ function FiltrosContent({
 					<input type="number" min={minPrecio} max={maxPrecio} value={precioMax} onChange={e => setPrecioMax(e.target.value)} className="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder={maxPrecio.toString()} />
 				</div>
 			</div>
+
+			<div>
+				<h3 className="font-semibold mb-2">{t('product.volume')}</h3>
+				<div className="flex gap-2">
+					<input 
+						type="number" 
+						value={mililitrosMin} 
+						onChange={e => setMililitrosMin(e.target.value)} 
+						className="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+						placeholder={t('common.min')} 
+					/>
+					<input 
+						type="number" 
+						value={mililitrosMax} 
+						onChange={e => setMililitrosMax(e.target.value)} 
+						className="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+						placeholder={t('common.max')} 
+					/>
+				</div>
+			</div>
 		</>
 	);
 }
@@ -109,6 +133,10 @@ function Home() {
 	const [generoFiltro, setGeneroFiltro] = useState([]);
 	const [precioMin, setPrecioMin] = useState('');
 	const [precioMax, setPrecioMax] = useState('');
+	const [mililitrosMin, setMililitrosMin] = useState('');
+	const [mililitrosMax, setMililitrosMax] = useState('');
+	const [selectedProduct, setSelectedProduct] = useState(null);
+	const [currentImageIndex, setCurrentImageIndex] = useState({});
 	const [minPrecio, setMinPrecio] = useState(0);
 	const [maxPrecio, setMaxPrecio] = useState(0);
 	const [pagina, setPagina] = useState(1);
@@ -139,14 +167,54 @@ function Home() {
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
 
+	// Carrusel automático de imágenes
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setCurrentImageIndex(prev => {
+				const newIndex = {};
+				productos.forEach(producto => {
+					const imagenes = producto.imagenesUrl || [];
+					if (imagenes.length > 1) {
+						const currentIndex = prev[producto.idProducto] || 0;
+						newIndex[producto.idProducto] = (currentIndex + 1) % imagenes.length;
+					}
+				});
+				return newIndex;
+			});
+		}, 3000); // Cambiar imagen cada 3 segundos
+
+		return () => clearInterval(interval);
+	}, [productos]);
+
 	
-	let productosFiltrados = productos.filter(producto => {
+	// Agrupar productos por nombre base
+	const productosAgrupados = productos.reduce((acc, producto) => {
+		const nombreBase = producto.nombre;
+		if (!acc[nombreBase]) {
+			acc[nombreBase] = [];
+		}
+		acc[nombreBase].push(producto);
+		return acc;
+	}, {});
+
+	// Obtener productos únicos (uno por cada nombre)
+	const productosUnicos = Object.keys(productosAgrupados).map(nombre => {
+		const productosDelNombre = productosAgrupados[nombre];
+		// Seleccionar el producto con menor precio como predeterminado
+		return productosDelNombre.reduce((min, p) => p.precio < min.precio ? p : min, productosDelNombre[0]);
+	});
+
+	let productosFiltrados = productosUnicos.filter(producto => {
 		const coincideBusqueda = busqueda.trim() === "" || (producto.nombre?.toLowerCase().includes(busqueda.toLowerCase()) || producto.categoria?.toLowerCase().includes(busqueda.toLowerCase()));
 		const coincideCategoria = categoriaFiltro.length === 0 || categoriaFiltro.includes(producto.categoria);
 		const coincideGenero = generoFiltro.length === 0 || generoFiltro.includes(producto.genero);
 		const coincidePrecioMin = !precioMin || producto.precio >= parseFloat(precioMin);
 		const coincidePrecioMax = !precioMax || producto.precio <= parseFloat(precioMax);
-		return coincideBusqueda && coincideCategoria && coincideGenero && coincidePrecioMin && coincidePrecioMax;
+		// Filtro de mililitros - verificar si alguna versión coincide
+		const productosDelNombre = productosAgrupados[producto.nombre] || [];
+		const coincideMlMin = !mililitrosMin || productosDelNombre.some(p => p.mililitros >= parseFloat(mililitrosMin));
+		const coincideMlMax = !mililitrosMax || productosDelNombre.some(p => p.mililitros <= parseFloat(mililitrosMax));
+		return coincideBusqueda && coincideCategoria && coincideGenero && coincidePrecioMin && coincidePrecioMax && coincideMlMin && coincideMlMax;
 	});
 
 	if (orden === 'precio-asc') {
@@ -166,10 +234,12 @@ function Home() {
 		setGeneroFiltro([]);
 		setPrecioMin('');
 		setPrecioMax('');
+		setMililitrosMin('');
+		setMililitrosMax('');
 		setPagina(1);
 	};
 
-	const filtroProps = { t, limpiarFiltros, busqueda, setBusqueda, setPagina, categorias, categoriaFiltro, setCategoriaFiltro, generos, generoFiltro, setGeneroFiltro, precioMin, setPrecioMin, precioMax, setPrecioMax, minPrecio, maxPrecio };
+	const filtroProps = { t, limpiarFiltros, busqueda, setBusqueda, setPagina, categorias, categoriaFiltro, setCategoriaFiltro, generos, generoFiltro, setGeneroFiltro, precioMin, setPrecioMin, precioMax, setPrecioMax, mililitrosMin, setMililitrosMin, mililitrosMax, setMililitrosMax, minPrecio, maxPrecio };
 
 return (
   <div className="min-h-screen bg-white flex flex-col">
@@ -220,38 +290,87 @@ return (
           {productosPagina.map(producto => (
             <div
               key={producto.idProducto}
-              className="bg-white rounded-xl shadow-md p-3 md:p-4 flex flex-col"
+              className="bg-white rounded-xl shadow-md p-3 md:p-4 flex flex-col relative"
             >
-              <img
-                src={producto.imagenesUrl?.[0] || producto.primaryImage}
-                alt={producto.nombre}
-                className="w-full h-32 md:h-48 object-cover rounded mb-2 md:mb-4"
-              />
-              <div className="font-bold text-gray-800 text-sm md:text-lg mb-1 md:mb-2 line-clamp-2">
+              {(() => {
+                // Usar el producto seleccionado o el producto base
+                const productoActual = selectedProduct || producto;
+                const imagenes = productoActual.imagenesUrl || [];
+                const imagenActual = imagenes.length > 0 
+                  ? imagenes[currentImageIndex[productoActual.idProducto] || 0] 
+                  : productoActual.primaryImage;
+                
+                return (
+                  <>
+                    <img
+                      src={imagenActual}
+                      alt={productoActual.nombre}
+                      className="w-full h-32 md:h-48 object-cover rounded mb-2 md:mb-4 transition-opacity duration-500"
+                    />
+                    {/* Indicadores de imágenes */}
+                    {imagenes.length > 1 && (
+                      <div className="absolute top-3 right-3 flex gap-1">
+                        {imagenes.map((_, index) => (
+                          <div
+                            key={index}
+                            className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                              index === (currentImageIndex[productoActual.idProducto] || 0)
+                                ? 'bg-white'
+                                : 'bg-white/50'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
+              <div className="font-bold text-gray-900 text-sm md:text-base mb-2 line-clamp-2 text-left">
                 {producto.nombre}
               </div>
-              <div className="text-xs text-gray-500 mb-1 md:mb-2 hidden md:block">
-                {producto.marca}
+              
+              <div className="text-xs text-gray-600 mb-3 text-left">
+                {t(`category.${producto.categoria}`, { defaultValue: producto.categoria })} • {t(`gender.${producto.genero}`, { defaultValue: producto.genero })}
               </div>
-              <div className="text-xs text-gray-500 mb-1 hidden md:block">
-                {t(`category.${producto.categoria}`, { defaultValue: producto.categoria })}
+              
+              {/* Botones de unidades - agrupar por nombre de producto */}
+              <div className="mb-3">
+                <div className="flex flex-wrap gap-1 justify-center">
+                  {productos
+                    .filter(p => p.nombre === producto.nombre)
+                    .map(p => (
+                      <button
+                        key={p.idProducto}
+                        onClick={() => {
+                          // Seleccionar este producto
+                          setSelectedProduct(p);
+                        }}
+                        className={`px-2 py-1 text-xs rounded transition-colors ${
+                          selectedProduct?.idProducto === p.idProducto
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {p.mililitros} ml
+                      </button>
+                    ))}
+                </div>
               </div>
-              <div className="text-xs text-gray-500 mb-2 hidden md:block">
-                {t(`gender.${producto.genero}`, { defaultValue: producto.genero })}
-              </div>
-              <div className="font-bold text-blue-600 text-lg md:text-xl mb-2">
-                ₡{producto.precio.toLocaleString('es-CR')}
+              
+              <div className="font-bold text-blue-600 text-lg md:text-xl mb-3 text-left">
+                ₡{(selectedProduct || producto).precio.toLocaleString('es-CR')}
               </div>
               <button
                 className="mt-auto bg-blue-600 text-white py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-blue-700 transition-colors"
                 onClick={async e => {
                   e.stopPropagation();
                   try {
-                    await Ecommerce.addToCart(producto.idProducto, 1);
+                    const productoAAgregar = selectedProduct || producto;
+                    await Ecommerce.addToCart(productoAAgregar.idProducto, 1);
                     Swal.fire({
                       icon: 'success',
                       title: t('cart.added'),
-                      text: producto.nombre,
+                      text: `${productoAAgregar.nombre} (${productoAAgregar.mililitros}ml)`,
                       timer: 1500,
                       showConfirmButton: false
                     });
@@ -339,6 +458,10 @@ return (
       setPrecioMin={setPrecioMin}
       precioMax={precioMax}
       setPrecioMax={setPrecioMax}
+      mililitrosMin={mililitrosMin}
+      setMililitrosMin={setMililitrosMin}
+      mililitrosMax={mililitrosMax}
+      setMililitrosMax={setMililitrosMax}
       limpiarFiltros={limpiarFiltros}
     />
 

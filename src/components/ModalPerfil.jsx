@@ -32,7 +32,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
           }
         })
         .catch(() => {
-          Swal.fire('Error', 'No se pudo cargar el perfil', 'error');
+          Swal.fire(t('swal.error'), t('swal.profileLoadError'), 'error');
         })
         .finally(() => setLoading(false));
     }
@@ -106,9 +106,9 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
     try {
       const updated = await authService.updateProfile({ email });
       setUsuario(updated);
-      Swal.fire('Éxito', 'Correo actualizado', 'success');
+      Swal.fire(t('swal.success'), t('swal.emailUpdated'), 'success');
     } catch {
-      Swal.fire('Error', 'No se pudo actualizar el correo', 'error');
+      Swal.fire(t('swal.error'), t('swal.emailUpdateError'), 'error');
     } finally {
       setLoading(false);
     }
@@ -121,9 +121,9 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
     try {
       const updated = await authService.updateProfile({ telefono });
       setUsuario(updated);
-      Swal.fire('Éxito', 'Teléfono actualizado', 'success');
+      Swal.fire(t('swal.success'), t('swal.phoneUpdated'), 'success');
     } catch {
-      Swal.fire('Error', 'No se pudo actualizar el teléfono', 'error');
+      Swal.fire(t('swal.error'), t('swal.phoneUpdateError'), 'error');
     } finally {
       setLoading(false);
     }
@@ -141,9 +141,9 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
       // Enviar solo la dirección editada
       const updated = await authService.updateProfile({ direccion: nuevaDireccion });
       setUsuario(updated);
-      Swal.fire('Éxito', 'Dirección actualizada', 'success');
+      Swal.fire(t('swal.success'), t('swal.addressUpdated'), 'success');
     } catch {
-      Swal.fire('Error', 'No se pudo actualizar la dirección', 'error');
+      Swal.fire(t('swal.error'), t('swal.addressUpdateError'), 'error');
     } finally {
       setLoading(false);
     }
@@ -157,9 +157,9 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
       const updated = await authService.updateProfile({ contrasena: password });
       setUsuario(updated);
       setPassword('');
-      Swal.fire('Éxito', 'Contraseña actualizada', 'success');
+      Swal.fire(t('swal.success'), t('swal.passwordUpdated'), 'success');
     } catch {
-      Swal.fire('Error', 'No se pudo actualizar la contraseña', 'error');
+      Swal.fire(t('swal.error'), t('swal.passwordUpdateError'), 'error');
     } finally {
       setLoading(false);
     }
@@ -203,10 +203,10 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
             >
               <img
                 src="https://res.cloudinary.com/drec8g03e/image/upload/v1762713857/inicio_x1zmf8.svg"
-                alt="Inicio"
+                alt={t('home.button')}
                 className="w-6 h-6"
               />
-              <span>Inicio</span>
+              <span>{t('home.button')}</span>
             </Button>
           )}
           {!estaAutenticado ? (
