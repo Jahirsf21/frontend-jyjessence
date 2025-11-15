@@ -20,6 +20,7 @@ const Cart = () => {
   const [guestInfo, setGuestInfo] = useState({
     email: '',
     nombre: '',
+    telefono: '',
     direccion: {
       provincia: '',
       canton: '',
@@ -186,9 +187,9 @@ const Cart = () => {
         await Ecommerce.completePurchase(direccionSeleccionada);
       } else {
         // Usuario invitado - validar información completa
-        const { email, nombre, direccion } = guestInfo;
+        const { email, nombre, telefono, direccion } = guestInfo;
         
-        if (!email || !nombre) {
+        if (!email || !nombre || !telefono) {
           return Swal.fire({
             icon: 'warning',
             title: t('error'),
@@ -453,6 +454,19 @@ const Cart = () => {
                             onChange={(e) => setGuestInfo({...guestInfo, nombre: e.target.value})}
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder={t('cart.guestNamePlaceholder')}
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('cart.guestPhone')}
+                          </label>
+                          <input
+                            type="tel"
+                            value={guestInfo.telefono}
+                            onChange={(e) => setGuestInfo({...guestInfo, telefono: e.target.value})}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder={t('cart.guestPhonePlaceholder')}
                           />
                         </div>
                         
