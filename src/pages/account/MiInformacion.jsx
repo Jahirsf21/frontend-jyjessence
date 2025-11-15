@@ -136,7 +136,7 @@ const MiInformacion = () => {
             className="w-7 h-7"
           />
         </button>
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">Mi Información</h1>
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">{t('profile.title')}</h1>
         
         {loading && (
           <div className="flex items-center justify-center py-8">
@@ -148,11 +148,11 @@ const MiInformacion = () => {
           <div className="space-y-8">
             {/* Sección de datos personales */}
             <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-xl font-semibold mb-6 text-gray-800 border-b pb-3">Datos Personales</h2>
+              <h2 className="text-xl font-semibold mb-6 text-gray-800 border-b pb-3">{t('profile.personalData')}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Correo electrónico */}
                 <div>
-                  <label className={labelClass}>Correo electrónico</label>
+                  <label className={labelClass}>{t('profile.email')}</label>
                   <input 
                     type="email" 
                     value={email} 
@@ -165,13 +165,13 @@ const MiInformacion = () => {
                     className={`${buttonPrimaryClass} mt-3`}
                     disabled={loading}
                   >
-                    Guardar
+                    {t('profile.save')}
                   </button>
                 </div>
 
                 {/* Teléfono */}
                 <div>
-                  <label className={labelClass}>Teléfono</label>
+                  <label className={labelClass}>{t('profile.phone')}</label>
                   <input 
                     type="tel" 
                     value={telefono} 
@@ -184,16 +184,16 @@ const MiInformacion = () => {
                     className={`${buttonPrimaryClass} mt-3`}
                     disabled={loading}
                   >
-                    Guardar
+                    {t('profile.save')}
                   </button>
                 </div>
 
                 {/* Restaurar contraseña */}
                 <div className="md:col-span-2">
-                  <label className={labelClass}>Restaurar contraseña</label>
+                  <label className={labelClass}>{t('profile.resetPassword')}</label>
                   <input 
                     type="password" 
-                    placeholder="Nueva contraseña" 
+                    placeholder={t('profile.newPassword')} 
                     value={password} 
                     onChange={e => setPassword(e.target.value)} 
                     className={inputClass}
@@ -204,7 +204,7 @@ const MiInformacion = () => {
                     className={`${buttonPrimaryClass} mt-3`}
                     disabled={loading || !password}
                   >
-                    Restaurar
+                    {t('profile.restore')}
                   </button>
                 </div>
               </div>
