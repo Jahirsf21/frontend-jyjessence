@@ -122,7 +122,7 @@ const MiInformacion = () => {
   const buttonDangerClass = "bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed font-medium";
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 pt-24 px-4 pb-8">
+    <div className="w-full min-h-screen bg-white pt-24 px-4 pb-8">
       <div className="max-w-6xl mx-auto relative">
         {/* Botón de inicio en la esquina superior derecha */}
         <button
