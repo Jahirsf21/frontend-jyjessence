@@ -72,7 +72,7 @@ function AppLayout() {
             <Route path="clients" element={<ClientsManagement />} />
             <Route path="orders" element={<OrdersManagement />} />
           </Route>
-          <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

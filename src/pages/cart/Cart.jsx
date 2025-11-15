@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
 import Ecommerce from '../../patterns/EcommerceFacade';
+import guestCartService from '../../services/guestCartService';
 
 const Cart = () => {
   const { t } = useTranslation();
@@ -14,21 +15,35 @@ const Cart = () => {
   const [direccionSeleccionada, setDireccionSeleccionada] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isGuest, setIsGuest] = useState(false);
+  const [guestInfo, setGuestInfo] = useState({
+    email: '',
+    nombre: '',
+    direccion: ''
+  });
+  const [showGuestForm, setShowGuestForm] = useState(false);
 
   useEffect(() => {
+    cargarCarrito();
     if (estaAutenticado) {
-      cargarCarrito();
       cargarDirecciones();
     } else {
-      setLoading(false);
-      setError(t('cart.authRequired'));
+      setIsGuest(true);
     }
   }, [estaAutenticado]);
 
   const cargarCarrito = async () => {
     try {
       setError(null);
-      const data = await Ecommerce.getCartSummary();
+      setLoading(true);
+      
+      let data;
+      if (estaAutenticado) {
+        data = await Ecommerce.getCartSummary();
+      } else {
+        data = guestCartService.getCart();
+      }
+      
       // Enriquecer items con imagen si no la tiene
       const itemsConImagenYPrecio = await Promise.all((data.items || []).map(async (item) => {
         let imagen = item.imagen;
@@ -42,6 +57,7 @@ const Cart = () => {
         }
         return { ...item, imagen, precioUnitario };
       }));
+      
       // Calcular total
       const total = itemsConImagenYPrecio.reduce((sum, item) => sum + (item.precioUnitario * item.cantidad), 0);
       setCarrito({
@@ -81,13 +97,20 @@ const Cart = () => {
     if (nuevaCantidad < 1) return;
 
     try {
-      await Ecommerce.updateCartItem(productoId, nuevaCantidad);
+      if (estaAutenticado) {
+        await Ecommerce.updateCartItem(productoId, nuevaCantidad);
+      } else {
+        // Para usuarios invitados, actualizar directamente en localStorage
+        guestCartService.updateQuantity(productoId, nuevaCantidad);
+      }
+      // Recargar el carrito para actualizar la UI
       await cargarCarrito();
     } catch (error) {
+      console.error('Error updating quantity:', error);
       Swal.fire({
         icon: 'error',
         title: t('error'),
-        text: error.response?.data?.error || t('cart.updateQuantityError'),
+        text: error.message || error.response?.data?.error || t('cart.updateQuantityError'),
       });
     }
   };
@@ -106,7 +129,13 @@ const Cart = () => {
 
     if (result.isConfirmed) {
       try {
-        await Ecommerce.removeFromCart(productoId);
+        if (estaAutenticado) {
+          await Ecommerce.removeFromCart(productoId);
+        } else {
+          // Para usuarios invitados, eliminar directamente del localStorage
+          guestCartService.removeItem(productoId);
+        }
+        // Recargar el carrito para actualizar la UI
         await cargarCarrito();
         Swal.fire({
           icon: 'success',
@@ -116,10 +145,11 @@ const Cart = () => {
           showConfirmButton: false,
         });
       } catch (error) {
+        console.error('Error removing item:', error);
         Swal.fire({
           icon: 'error',
           title: t('error'),
-          text: error.response?.data?.error || t('cart.removeError'),
+          text: error.message || error.response?.data?.error || t('cart.removeError'),
         });
       }
     }
@@ -128,14 +158,31 @@ const Cart = () => {
   // Finalizar pedido sin pasarela
   const finalizarPedido = async () => {
     try {
-      if (!direccionSeleccionada) {
-        return Swal.fire({
-          icon: 'warning',
-          title: t('error'),
-          text: t('cart.addressRequired')
-        });
+      if (estaAutenticado) {
+        // Usuario autenticado - validar dirección
+        if (!direccionSeleccionada) {
+          return Swal.fire({
+            icon: 'warning',
+            title: t('error'),
+            text: t('cart.addressRequired')
+          });
+        }
+        await Ecommerce.completePurchase(direccionSeleccionada);
+      } else {
+        // Usuario invitado - validar información
+        if (!guestInfo.email || !guestInfo.nombre || !guestInfo.direccion) {
+          return Swal.fire({
+            icon: 'warning',
+            title: t('error'),
+            text: t('cart.guestInfoRequired')
+          });
+        }
+        await Ecommerce.completePurchase(null, guestInfo);
+        // Limpiar carrito de invitado después del pedido
+        guestCartService.clearCart();
+        guestCartService.clearGuestInfo();
       }
-  await Ecommerce.completePurchase(direccionSeleccionada);
+      
       Swal.fire({
         icon: 'success',
         title: t('cart.finalizedTitle'),
@@ -143,7 +190,12 @@ const Cart = () => {
         timer: 2500,
         showConfirmButton: false,
       });
-      navigate('/orders');
+      
+      if (estaAutenticado) {
+        navigate('/orders');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -304,35 +356,102 @@ const Cart = () => {
                   </div>
                 </div>
 
-                {/* Selección de Dirección */}
+                {/* Selección de Dirección o Información de Invitado */}
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('cart.selectAddress')}
-                  </label>
-                  {direcciones.length === 0 && (
-                    <p className="text-sm text-gray-500 mb-2">{t('address.noAddresses')}</p>
-                  )}
-                  {direcciones.length > 0 && (
-                    <select
-                      value={direccionSeleccionada}
-                      onChange={(e) => setDireccionSeleccionada(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">--</option>
-                      {direcciones.map(dir => (
-                        <option key={dir.idDireccion} value={dir.idDireccion}>
-                          {dir.provincia}, {dir.canton}, {dir.distrito} {dir.barrio ? `- ${dir.barrio}` : ''}
-                        </option>
-                      ))}
-                    </select>
+                  {estaAutenticado ? (
+                    <>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {t('cart.selectAddress')}
+                      </label>
+                      {direcciones.length === 0 && (
+                        <p className="text-sm text-gray-500 mb-2">{t('address.noAddresses')}</p>
+                      )}
+                      {direcciones.length > 0 && (
+                        <select
+                          value={direccionSeleccionada}
+                          onChange={(e) => setDireccionSeleccionada(e.target.value)}
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">--</option>
+                          {direcciones.map(dir => (
+                            <option key={dir.idDireccion} value={dir.idDireccion}>
+                              {dir.provincia}, {dir.canton}, {dir.distrito} {dir.barrio ? `- ${dir.barrio}` : ''}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p className="text-sm text-blue-800 font-medium mb-2">
+                          {t('cart.guestCheckout')}
+                        </p>
+                        <p className="text-sm text-blue-600">
+                          {t('cart.guestInstructions')}
+                        </p>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('cart.guestEmail')}
+                          </label>
+                          <input
+                            type="email"
+                            value={guestInfo.email}
+                            onChange={(e) => setGuestInfo({...guestInfo, email: e.target.value})}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder={t('cart.guestEmailPlaceholder')}
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('cart.guestName')}
+                          </label>
+                          <input
+                            type="text"
+                            value={guestInfo.nombre}
+                            onChange={(e) => setGuestInfo({...guestInfo, nombre: e.target.value})}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder={t('cart.guestNamePlaceholder')}
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('cart.guestAddress')}
+                          </label>
+                          <textarea
+                            value={guestInfo.direccion}
+                            onChange={(e) => setGuestInfo({...guestInfo, direccion: e.target.value})}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            rows="3"
+                            placeholder={t('cart.guestAddressPlaceholder')}
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        <p className="text-xs text-gray-600">
+                          {t('cart.guestLoginPrompt')} <button 
+                            onClick={() => navigate('/auth/login')} 
+                            className="text-blue-600 hover:text-blue-800 underline"
+                          >
+                            {t('cart.guestLoginLink')}
+                          </button> {t('cart.guestLoginText')}
+                        </p>
+                      </div>
+                    </>
                   )}
                 </div>
 
                 <button
                   onClick={finalizarPedido}
-                  disabled={!direccionSeleccionada}
+                  disabled={estaAutenticado ? !direccionSeleccionada : (!guestInfo.email || !guestInfo.nombre || !guestInfo.direccion)}
                   className={`w-full px-6 py-3 rounded-lg font-medium mb-3 transition-colors ${
-                    direccionSeleccionada
+                    (estaAutenticado ? direccionSeleccionada : (guestInfo.email && guestInfo.nombre && guestInfo.direccion))
                       ? 'bg-blue-600 text-white hover:bg-blue-700'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}

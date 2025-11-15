@@ -40,5 +40,13 @@ export const cartService = {
   async finalize(direccionId) {
     const respuesta = await api.post('/pedidos/finalizar', { direccionId });
     return respuesta.data;
+  },
+
+  async finalizeGuestOrder(guestInfo, items) {
+    const respuesta = await api.post('/pedidos/finalizar-invitado', { 
+      guestInfo, 
+      items 
+    });
+    return respuesta.data;
   }
 };

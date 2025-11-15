@@ -21,6 +21,7 @@ import { orderService } from '../services/orderService';
 import { addressService } from '../services/addressService';
 import { imageService } from '../services/imageService';
 import { clientService } from '../services/clientService';
+import guestCartService from '../services/guestCartService';
 
 class EcommerceFacade {
   constructor() {
@@ -223,7 +224,7 @@ class EcommerceFacade {
   // ==========================================
 
   /**
-   * Agregar producto al carrito con validaciones
+   * Agregar producto al carrito con validaciones (soporta invitados)
    */
   async addToCart(idProducto, cantidad = 1) {
     try {
@@ -233,17 +234,34 @@ class EcommerceFacade {
         throw new Error(`Solo hay ${producto.stock} unidades disponibles`);
       }
 
-      const resultado = await this.cart.addItem(idProducto, cantidad);
-
-      const carritoActualizado = await this.cart.getCart();
-
-      return {
-        success: true,
-        message: `${producto.nombre} agregado al carrito`,
-        cart: carritoActualizado
-      };
+      // Verificar si el usuario está autenticado
+      const isAuthenticated = this.auth.isAuthenticated();
+      
+      if (isAuthenticated) {
+        // Usuario autenticado - usar carrito normal
+        const resultado = await this.cart.addItem(idProducto, cantidad);
+        const carritoActualizado = await this.cart.getCart();
+        
+        return {
+          success: true,
+          message: `${producto.nombre} agregado al carrito`,
+          cart: carritoActualizado
+        };
+      } else {
+        // Usuario invitado - usar localStorage
+        const carritoActualizado = guestCartService.addItem(idProducto, cantidad, producto);
+        
+        return {
+          success: true,
+          message: `${producto.nombre} agregado al carrito`,
+          cart: carritoActualizado
+        };
+      }
     } catch (error) {
       throw new Error(error.response?.data?.error || error.message);
+    } finally {
+      // Emitir evento para actualizar el contador del carrito en el header
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
     }
   }
 
@@ -253,39 +271,80 @@ class EcommerceFacade {
       if (producto.stock < cantidad) {
         throw new Error(`Solo hay ${producto.stock} unidades disponibles`);
       }
-      // El backend espera productoId, no idProducto
-      const resultado = await this.cart.updateQuantity(idProducto, cantidad);
-      const carritoActualizado = await this.cart.getCart();
-      return {
-        success: true,
-        cart: carritoActualizado
-      };
+      
+      // Verificar si el usuario está autenticado
+      const isAuthenticated = this.auth.isAuthenticated();
+      
+      if (isAuthenticated) {
+        // Usuario autenticado - usar carrito normal
+        const resultado = await this.cart.updateQuantity(idProducto, cantidad);
+        const carritoActualizado = await this.cart.getCart();
+        return {
+          success: true,
+          cart: carritoActualizado
+        };
+      } else {
+        // Usuario invitado - usar localStorage
+        const carritoActualizado = guestCartService.updateQuantity(idProducto, cantidad);
+        return {
+          success: true,
+          cart: carritoActualizado
+        };
+      }
     } catch (error) {
       throw new Error(error.response?.data?.error || error.message);
+    } finally {
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
     }
   }
 
   async removeFromCart(idProducto) {
     try {
-      await this.cart.removeItem(idProducto);
-      const carritoActualizado = await this.cart.getCart();
-
-      return {
-        success: true,
-        message: 'Producto eliminado del carrito',
-        cart: carritoActualizado
-      };
+      // Verificar si el usuario está autenticado
+      const isAuthenticated = this.auth.isAuthenticated();
+      
+      if (isAuthenticated) {
+        // Usuario autenticado - usar carrito normal
+        await this.cart.removeItem(idProducto);
+        const carritoActualizado = await this.cart.getCart();
+        
+        return {
+          success: true,
+          message: 'Producto eliminado del carrito',
+          cart: carritoActualizado
+        };
+      } else {
+        // Usuario invitado - usar localStorage
+        const carritoActualizado = guestCartService.removeItem(idProducto);
+        return {
+          success: true,
+          message: 'Producto eliminado del carrito',
+          cart: carritoActualizado
+        };
+      }
     } catch (error) {
       throw new Error(error.response?.data?.error || error.message);
+    } finally {
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
     }
   }
 
   /**
-   * Obtener resumen del carrito
+   * Obtener resumen del carrito (soporta invitados)
    */
   async getCartSummary() {
     try {
-      const carrito = await this.cart.getCart();
+      // Verificar si el usuario está autenticado
+      const isAuthenticated = this.auth.isAuthenticated();
+      
+      let carrito;
+      if (isAuthenticated) {
+        // Usuario autenticado - usar carrito normal
+        carrito = await this.cart.getCart();
+      } else {
+        // Usuario invitado - usar localStorage
+        carrito = guestCartService.getCart();
+      }
       
       if (!carrito.items || carrito.items.length === 0) {
         return {
@@ -298,10 +357,8 @@ class EcommerceFacade {
       }
 
       const subtotal = carrito.items.reduce((suma, item) => {
-        if (item.producto && typeof item.producto.precio === 'number') {
-          return suma + (item.producto.precio * item.cantidad);
-        }
-        return suma;
+        const precio = item.precioUnitario || (item.producto && item.producto.precio) || 0;
+        return suma + (precio * item.cantidad);
       }, 0);
 
       return {
@@ -330,9 +387,9 @@ class EcommerceFacade {
   // ==========================================
 
   /**
-   * Finalizar compra validando stock y perfil (sin pasarela de pago)
+   * Finalizar compra validando stock y perfil (soporta invitados)
    */
-  async completePurchase(direccionId) {
+  async completePurchase(direccionId, guestInfo = null) {
     try {
       const resumenCarrito = await this.getCartSummary();
       
@@ -349,22 +406,43 @@ class EcommerceFacade {
         }
       }
 
-      // Dirección es obligatoria para el pedido
-      if (!direccionId) {
-        throw new Error('Debes seleccionar una dirección de envío');
-      }
-
-  // Ahora finalizamos el pedido sin pasarela de pago, con dirección
-  const pedido = await this.cart.finalize(direccionId);
-
-      return {
-        success: true,
-        message: 'Pedido realizado exitosamente',
-        order: {
-          ...pedido.pedido,
-          totalFormateado: `₡${(pedido.pedido?.montoTotal || pedido.pedido?.total || 0).toFixed(2)}`
+      // Verificar si el usuario está autenticado
+      const isAuthenticated = this.auth.isAuthenticated();
+      
+      if (isAuthenticated) {
+        // Usuario autenticado - usar flujo normal
+        if (!direccionId) {
+          throw new Error('Debes seleccionar una dirección de envío');
         }
-      };
+
+        const pedido = await this.cart.finalize(direccionId);
+
+        return {
+          success: true,
+          message: 'Pedido realizado exitosamente',
+          order: {
+            ...pedido.pedido,
+            totalFormateado: `₡${(pedido.pedido?.montoTotal || pedido.pedido?.total || 0).toFixed(2)}`
+          }
+        };
+      } else {
+        // Usuario invitado - requiere información de invitado
+        if (!guestInfo || !guestInfo.email || !guestInfo.nombre || !guestInfo.direccion) {
+          throw new Error('Para continuar como invitado, debes proporcionar tu email, nombre y dirección');
+        }
+
+        // Crear pedido de invitado
+        const pedido = await this.cart.finalizeGuestOrder(guestInfo, resumenCarrito.items);
+
+        return {
+          success: true,
+          message: 'Pedido realizado exitosamente',
+          order: {
+            ...pedido.pedido,
+            totalFormateado: `₡${(pedido.pedido?.montoTotal || pedido.pedido?.total || 0).toFixed(2)}`
+          }
+        };
+      }
     } catch (error) {
       throw new Error(error.response?.data?.error || error.message);
     }

@@ -53,7 +53,7 @@ const Products = () => {
         );
       } catch {}
     } catch (error) {
-      console.error('Error al cargar productos:', error);
+      console.error(t('error.loadingProducts'), error);
       Swal.fire({
         icon: 'error',
         title: t('message.error'),
@@ -75,7 +75,7 @@ const Products = () => {
         showConfirmButton: false,
       });
     } catch (error) {
-      console.error('Error al agregar al carrito:', error);
+      console.error(t('error.addToCart'), error);
       if (error.response?.status === 401) {
         Swal.fire({
           icon: 'warning',

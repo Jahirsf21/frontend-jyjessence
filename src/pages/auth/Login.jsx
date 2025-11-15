@@ -101,7 +101,7 @@ const Login = () => {
       }
       
     } catch (error) {
-      console.error('Error en login:', error);
+      console.error(t('error.login'), error);
       
       let mensajeError = t('error.login.title');
       let tituloError = t('error.login.title');

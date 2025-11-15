@@ -144,7 +144,7 @@ export default function ProductsManagement() {
 
       await cargarProductos();
       cerrarFormulario();
-      alert(productoEditando ? 'Producto actualizado exitosamente' : 'Producto creado exitosamente');
+      alert(productoEditando ? t('admin.products.updated') : t('admin.products.created'));
     } catch (err) {
       alert(err.message);
     }
@@ -167,12 +167,12 @@ export default function ProductsManagement() {
   };
 
   const handleDelete = async (idProducto) => {
-    if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+    if (!confirm(t('admin.products.deleteConfirm'))) return;
 
     try {
       await ecommerceFacade.deleteProduct(idProducto);
       await cargarProductos();
-      alert('Producto eliminado exitosamente');
+      alert(t('admin.products.deleted'));
     } catch (err) {
       alert(err.message);
     }
@@ -182,26 +182,26 @@ export default function ProductsManagement() {
     try {
       await ecommerceFacade.cloneProduct(idProducto);
       await cargarProductos();
-      alert('Producto clonado exitosamente');
+      alert(t('admin.products.cloned'));
     } catch (err) {
       alert(err.message);
     }
   };
 
   const handleStockUpdate = async (idProducto, stockActual) => {
-    const nuevoStock = prompt('Ingrese el nuevo stock:', stockActual);
+    const nuevoStock = prompt(t('admin.products.stockUpdatePrompt'), stockActual);
     if (nuevoStock === null) return;
 
     const stock = parseInt(nuevoStock);
     if (isNaN(stock) || stock < 0) {
-      alert('Stock inválido');
+      alert(t('admin.products.invalidStock'));
       return;
     }
 
     try {
       await ecommerceFacade.updateProductStock(idProducto, stock);
       await cargarProductos();
-      alert('Stock actualizado exitosamente');
+      alert(t('admin.products.stockUpdated'));
     } catch (err) {
       alert(err.message);
     }
@@ -224,11 +224,11 @@ export default function ProductsManagement() {
   };
 
   if (cargando) {
-    return <div className="text-center py-8">{t('products.loading')}</div>;
+    return <div className="text-center py-8">{t('admin.loadingProducts')}</div>;
   }
 
   if (error) {
-    return <div className="text-red-600 text-center py-8">{t('products.error')}: {error}</div>;
+    return <div className="text-red-600 text-center py-8">{t('admin.errorPrefix')}: {error}</div>;
   }
 
   return (
@@ -373,18 +373,18 @@ export default function ProductsManagement() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                 />
                 {subiendoImagenes && (
-                  <p className="text-sm text-gray-500 mt-1">Subiendo imágenes...</p>
+                  <p className="text-sm text-gray-500 mt-1">{t('admin.products.uploadingImages')}</p>
                 )}
 
                 <label className="block text-sm font-medium text-gray-700 mt-4 mb-1">
-                  Agregar URLs de imágenes (una por línea o separadas por coma)
+                  {t('admin.products.imageUrlsLabel')}
                 </label>
                 <textarea
                   name="imagenesUrlInput"
                   value={formulario.imagenesUrlInput}
                   onChange={handleImageUrlInputChange}
                   rows="3"
-                  placeholder="https://ejemplo.com/imagen1.jpg\nhttps://ejemplo.com/imagen2.jpg"
+                  placeholder={t('admin.products.imageUrlsPlaceholder')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                 />
 
@@ -424,11 +424,11 @@ export default function ProductsManagement() {
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-100 border-b">
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Producto</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Categoría</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Precio</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Stock</th>
-              <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">Acciones</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.product')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.category')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.price')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.stock')}</th>
+              <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.actions')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -456,14 +456,14 @@ export default function ProductsManagement() {
                     onClick={() => handleStockUpdate(producto.idProducto, producto.stock)}
                     className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
                   >
-                    {producto.stock} unidades
+                    {producto.stock} {t('admin.products.units')}
                   </button>
                 </td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex flex-wrap justify-end gap-2">
-                    <Button size="sm" variant="info" onClick={() => handleEdit(producto)}>Editar</Button>
-                    <Button size="sm" variant="success" onClick={() => handleClone(producto.idProducto)}>Clonar</Button>
-                    <Button size="sm" variant="danger" onClick={() => handleDelete(producto.idProducto)}>Eliminar</Button>
+                    <Button size="sm" variant="info" onClick={() => handleEdit(producto)}>{t('admin.products.edit')}</Button>
+                    <Button size="sm" variant="success" onClick={() => handleClone(producto.idProducto)}>{t('admin.products.clone')}</Button>
+                    <Button size="sm" variant="danger" onClick={() => handleDelete(producto.idProducto)}>{t('admin.products.delete')}</Button>
                   </div>
                 </td>
               </tr>

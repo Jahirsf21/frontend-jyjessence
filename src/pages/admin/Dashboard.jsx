@@ -1,25 +1,27 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/ui/Button.jsx';
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const location = useLocation();
 
   const menuItems = [
     {
       path: '/admin/products',
-      label: 'Gestión de Productos',
+      label: t('admin.dashboard.productsManagement'),
       icon: <img src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/producto_ozuzjz.png" alt="Productos" className="w-7 h-7 lg:w-8 lg:h-8" />
     },
     {
       path: '/admin/clients',
-      label: 'Gestión de Clientes',
+      label: t('admin.dashboard.clientsManagement'),
       icon: <img src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/clientes_pootfq.png" alt="Clientes" className="w-7 h-7 lg:w-8 lg:h-8" />
     },
     {
       path: '/admin/orders',
-      label: 'Gestión de Pedidos',
+      label: t('admin.dashboard.ordersManagement'),
       icon: <img src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/pedidos_yifcqb.png" alt="Pedidos" className="w-7 h-7 lg:w-8 lg:h-8" />
     }
   ];
@@ -30,9 +32,9 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Panel de Administración</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('admin.dashboard.title')}</h1>
           <p className="mt-2 text-sm text-gray-600">
-            Bienvenido, {user?.email}
+            {t('admin.dashboard.welcome')}, {user?.email}
           </p>
         </div>
 
@@ -41,7 +43,7 @@ export default function Dashboard() {
           <aside className="w-full lg:w-64 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="flex lg:hidden justify-between items-center px-4 py-3 border-b">
-                <h2 className="font-semibold text-gray-700">Menú</h2>
+                <h2 className="font-semibold text-gray-700">{t('admin.dashboard.menu')}</h2>
               </div>
               <ul className="divide-y divide-gray-200">
                 {menuItems.map((item) => (
@@ -63,7 +65,7 @@ export default function Dashboard() {
             </div>
 
             <div className="mt-4">
-              <Button as={Link} to="/" variant="light" block size="md">← Volver a la tienda</Button>
+              <Button as={Link} to="/" variant="light" block size="md">{t('admin.dashboard.backToStore')}</Button>
             </div>
           </aside>
 

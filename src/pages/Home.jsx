@@ -259,7 +259,7 @@ return (
                     Swal.fire({
                       icon: 'error',
                       title: t('cart.addError'),
-                      text: error.message || 'Error desconocido'
+                      text: error.message || t('error.unknown')
                     });
                   }
                 }}
