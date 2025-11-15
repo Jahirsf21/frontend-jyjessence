@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import MiInformacion from './pages/account/MiInformacion';
 import Cart from './pages/cart/Cart';
 import Orders from './pages/cart/Orders';
+import Accessibility from './pages/Accessibility';
 import Dashboard from './pages/admin/Dashboard';
 import ProductsManagement from './pages/admin/ProductsManagement';
 import ClientsManagement from './pages/admin/ClientsManagement';
@@ -75,6 +76,7 @@ function AppLayout() {
           </Route>
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+          <Route path="/accessibility" element={<Accessibility />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

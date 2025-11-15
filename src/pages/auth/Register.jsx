@@ -61,14 +61,11 @@ const Register = () => {
     return () => clearInterval(intervalo);
   }, []);
 
-  // Función para validar formato de cédula costarricense
   const validarFormatoCedula = (cedula) => {
-    // Debe tener exactamente 9 dígitos (sin guiones)
     const cleaned = cedula.replace(/\D/g, '');
     return cleaned.length === 9;
   };
 
-  // Función para formatear cédula mientras el usuario escribe
   const formatCedula = (value) => {
     const limpia = value.replace(/\D/g, '');
     
@@ -189,7 +186,7 @@ const Register = () => {
       nuevosErrores.confirmPassword = t('auth.confirmPasswordRequired');
     } else if (datosFormulario.password !== datosFormulario.confirmPassword) {
       nuevosErrores.confirmPassword = t('auth.passwordMismatch');
-      // Mostrar alerta inmediatamente si las contraseñas no coinciden
+
       Swal.fire({
         icon: 'error',
         title: t('error.register.passwordMismatchTitle'),
@@ -264,7 +261,6 @@ const Register = () => {
         contrasena: datosFormulario.password
       };
 
-      // Agregar dirección solo si el usuario marcó el checkbox
       if (agregarDireccion) {
         datosRegistro.direccion = datosDireccion;
       }
@@ -288,7 +284,6 @@ const Register = () => {
       let tituloError = t('error.register.title');
       let iconoError = 'error';
       
-      // Verificar el código de error del backend
       const codigoError = error.response?.data?.codigo;
       
       if (codigoError === 'CEDULA_DUPLICADA') {

@@ -29,11 +29,10 @@ export const AuthProvider = ({ children }) => {
       setUsuario(datosUsuario);
       return datosUsuario;
     } catch (error) {
-      // Extraer el mensaje de error del backend
       const mensaje = error.response?.data?.mensaje || 
                       error.response?.data?.error || 
                       'Credenciales incorrectas. Por favor verifica tu email y contraseña.';
-      // Lanzar error con mensaje para que Login.jsx lo maneje con SweetAlert
+
       const nuevoError = new Error(mensaje);
       nuevoError.response = error.response;
       throw nuevoError;

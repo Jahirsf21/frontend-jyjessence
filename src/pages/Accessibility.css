@@ -1,0 +1,45 @@
+
+.high-contrast {
+  /* Elimina el filtro para evitar distorsión de colores */
+  background-color: #fff !important;
+  color: #111 !important;
+}
+
+.high-contrast * {
+  background-color: transparent !important;
+  color: #111 !important;
+  border-color: #222 !important;
+}
+
+.high-contrast a,
+.high-contrast .text-blue-600,
+.high-contrast .text-blue-800 {
+  color: #0645ad !important; /* Azul accesible para enlaces */
+  text-decoration: underline !important;
+}
+
+.high-contrast button,
+.high-contrast .btn,
+.high-contrast [role="button"] {
+  background-color: #222 !important;
+  color: #fff !important;
+  border: 2px solid #111 !important;
+}
+
+.high-contrast input,
+.high-contrast textarea,
+.high-contrast select {
+  background-color: #fff !important;
+  color: #111 !important;
+  border: 2px solid #222 !important;
+}
+
+.high-contrast .bg-gray-50,
+.high-contrast .bg-blue-50 {
+  background-color: #fff !important;
+}
+
+.high-contrast .shadow-md,
+.high-contrast .shadow-lg {
+  box-shadow: none !important;
+}

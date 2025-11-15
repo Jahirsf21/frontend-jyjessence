@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
+import { useVoiceReader } from '../hooks/useVoiceReader';
 import ModalPerfil from './ModalPerfil';
 import LanguageDropdown from './LanguageDropdown';
 import Ecommerce from '../patterns/EcommerceFacade';
@@ -12,24 +13,32 @@ const Header = () => {
   const navegar = useNavigate();
   const location = useLocation();
   const { usuario, estaAutenticado } = useAuth();
+  const voiceReader = useVoiceReader();
   const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
 
+
+  useEffect(() => {
+    if (voiceReader.isEnabled) {
+      voiceReader.setLanguage(i18n.language);
+    }
+  }, [i18n.language, voiceReader.isEnabled]);
+
   const cambiarIdioma = (codigo) => {
     i18n.changeLanguage(codigo);
-    // No debug info needed
+    
   }
 
-  // Cargar contador de items del carrito
+
   useEffect(() => {
     const loadCartCount = async () => {
       try {
         if (estaAutenticado) {
-          // Usuario autenticado - obtener del backend
+ 
           const cartSummary = await Ecommerce.getCartSummary();
           setCartItemCount(cartSummary.itemCount || 0);
         } else {
-          // Usuario invitado - obtener del localStorage
+
           const guestCart = guestCartService.getCart();
           const itemCount = guestCart.items.reduce((sum, item) => sum + item.cantidad, 0);
           setCartItemCount(itemCount);
@@ -42,12 +51,12 @@ const Header = () => {
 
     loadCartCount();
 
-    // Escuchar cambios en el carrito (para actualizaciones en tiempo real)
+    
     const handleCartUpdate = () => {
       loadCartCount();
     };
 
-    // Escuchar eventos de actualización del carrito
+   
     window.addEventListener('cartUpdated', handleCartUpdate);
     
     return () => {
@@ -134,6 +143,8 @@ const Header = () => {
           t={t}
         />
       )}
+
+      {/* Botones flotantes de lector de voz eliminados. Los controles permanecen solo en el menú de accesibilidad. */}
     </>
   );
 };

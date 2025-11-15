@@ -8,7 +8,6 @@ const ProtectedRoute = ({ children, requiredRole = null, redirectTo = '/auth/log
   const ubicacion = useLocation();
   const { t } = useTranslation();
 
-  // Mostrar un loader mientras se verifica la autenticación
   if (cargando) {
     return (
       <div className="flex items-center justify-center min-h-screen">

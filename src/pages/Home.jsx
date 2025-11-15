@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useVoiceReader } from '../hooks/useVoiceReader';
 import ButtonNav from '../components/ui/ButtonNav';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
@@ -15,8 +16,7 @@ const SORT_OPTIONS = [
 	{ value: 'categoria', label: 'products.sort.category', defaultValue: 'Categoría' }
 ];
 
-// --- Componente de Filtros Extraído para Evitar Pérdida de Foco ---
-// Se define fuera del componente Home y recibe todo por props.
+
 function FiltrosContent({
 	t,
 	limpiarFiltros,
@@ -123,6 +123,7 @@ function FiltrosContent({
 }
 
 function Home() {
+  const { mouseReadingEnabled, readElement } = useVoiceReader();
 	const { t } = useTranslation();
 	const { openSearchPanel, closeSearch } = useSearchPanel();
 	const [productos, setProductos] = useState([]);
@@ -167,7 +168,6 @@ function Home() {
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
 
-	// Carrusel automático de imágenes
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setCurrentImageIndex(prev => {
@@ -181,13 +181,11 @@ function Home() {
 				});
 				return newIndex;
 			});
-		}, 3000); // Cambiar imagen cada 3 segundos
+		}, 3000); 
 
 		return () => clearInterval(interval);
 	}, [productos]);
 
-	
-	// Agrupar productos por nombre base
 	const productosAgrupados = productos.reduce((acc, producto) => {
 		const nombreBase = producto.nombre;
 		if (!acc[nombreBase]) {
@@ -197,10 +195,8 @@ function Home() {
 		return acc;
 	}, {});
 
-	// Obtener productos únicos (uno por cada nombre)
 	const productosUnicos = Object.keys(productosAgrupados).map(nombre => {
 		const productosDelNombre = productosAgrupados[nombre];
-		// Seleccionar el producto con menor precio como predeterminado
 		return productosDelNombre.reduce((min, p) => p.precio < min.precio ? p : min, productosDelNombre[0]);
 	});
 
@@ -210,7 +206,6 @@ function Home() {
 		const coincideGenero = generoFiltro.length === 0 || generoFiltro.includes(producto.genero);
 		const coincidePrecioMin = !precioMin || producto.precio >= parseFloat(precioMin);
 		const coincidePrecioMax = !precioMax || producto.precio <= parseFloat(precioMax);
-		// Filtro de mililitros - verificar si alguna versión coincide
 		const productosDelNombre = productosAgrupados[producto.nombre] || [];
 		const coincideMlMin = !mililitrosMin || productosDelNombre.some(p => p.mililitros >= parseFloat(mililitrosMin));
 		const coincideMlMax = !mililitrosMax || productosDelNombre.some(p => p.mililitros <= parseFloat(mililitrosMax));
@@ -291,9 +286,15 @@ return (
             <div
               key={producto.idProducto}
               className="bg-white rounded-xl shadow-md p-3 md:p-4 flex flex-col relative"
+              tabIndex={0}
+              onMouseEnter={e => {
+                if (mouseReadingEnabled) {
+                  const texto = `${producto.nombre}, ${t(`category.${producto.categoria}`, { defaultValue: producto.categoria })}, ${t(`gender.${producto.genero}`, { defaultValue: producto.genero })}, ₡${producto.precio.toLocaleString('es-CR')}`;
+                  readElement(texto);
+                }
+              }}
             >
               {(() => {
-                // Usar el producto seleccionado o el producto base
                 const productoActual = selectedProduct || producto;
                 const imagenes = productoActual.imagenesUrl || [];
                 const imagenActual = imagenes.length > 0 
@@ -342,7 +343,6 @@ return (
                       <button
                         key={p.idProducto}
                         onClick={() => {
-                          // Seleccionar este producto
                           setSelectedProduct(p);
                         }}
                         className={`px-2 py-1 text-xs rounded transition-colors ${

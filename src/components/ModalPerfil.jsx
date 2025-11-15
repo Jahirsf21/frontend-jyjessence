@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import Button from './ui/Button.jsx';
 
 const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, t }) => {
-  // Detectar si no está en la página principal
+
   const location = window.location.pathname;
   const noEsHome = location !== '/' && location !== '/home';
   const { cerrarSesion } = useAuth();
@@ -38,7 +38,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
     }
   }, [estaAutenticado]);
 
-  // Focus trap - mantener el foco dentro del modal
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Tab') {
@@ -52,13 +52,13 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
         const lastElement = focusableElements[focusableElements.length - 1];
 
         if (e.shiftKey) {
-          // Si Shift+Tab en el primer elemento, ir al último
+       
           if (document.activeElement === firstElement) {
             e.preventDefault();
             lastElement.focus();
           }
         } else {
-          // Si Tab en el último elemento, ir al primero
+   
           if (document.activeElement === lastElement) {
             e.preventDefault();
             firstElement.focus();
@@ -66,7 +66,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
         }
       }
 
-      // Cerrar modal con Escape
+
       if (e.key === 'Escape') {
         onClose();
       }
@@ -74,7 +74,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
 
     document.addEventListener('keydown', handleKeyDown);
     
-    // Enfocar el primer elemento al abrir el modal
+
     const firstFocusable = modalRef.current?.querySelector('button');
     firstFocusable?.focus();
 
@@ -99,7 +99,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
     onClose();
   };
 
-  // Actualizar email
+
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -114,7 +114,6 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
     }
   };
 
-  // Actualizar teléfono
   const handleTelefonoSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -129,16 +128,16 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
     }
   };
 
-  // Actualizar dirección
+  
   const handleDireccionSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Solo actualiza la dirección seleccionada
+      
       const direcciones = usuario?.direcciones || [];
       const direccionObj = direcciones.find(d => d.idDireccion === selectedDireccion);
       const nuevaDireccion = { ...direccionObj, senas: direccionEdit };
-      // Enviar solo la dirección editada
+      
       const updated = await authService.updateProfile({ direccion: nuevaDireccion });
       setUsuario(updated);
       Swal.fire(t('swal.success'), t('swal.addressUpdated'), 'success');
@@ -149,7 +148,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
     }
   };
 
-  // Actualizar contraseña
+  
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -244,7 +243,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                 {t('profile.general') || 'General'}
               </h2>
               <Button
-                onClick={() => navegar('/accessibility')}
+                onClick={() => { navegar('/accessibility'); onClose(); }}
                 variant="light"
                 block
                 className="flex items-center justify-start gap-4 !py-3"
@@ -306,7 +305,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                 </Button>
 
                 <Button
-                  onClick={() => navegar('/accessibility')}
+                  onClick={() => { navegar('/accessibility'); onClose(); }}
                   variant="light"
                   block
                   className="flex items-center justify-start gap-4 !py-3"

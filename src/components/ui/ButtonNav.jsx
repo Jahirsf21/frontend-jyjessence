@@ -15,16 +15,16 @@ export default function ButtonNav(props) {
   const { t } = useTranslation();
   const [cartItemCount, setCartItemCount] = useState(0);
 
-  // Cargar contador de items del carrito
+
   useEffect(() => {
     const loadCartCount = async () => {
       try {
         if (estaAutenticado) {
-          // Usuario autenticado - obtener del backend
+          
           const cartSummary = await Ecommerce.getCartSummary();
           setCartItemCount(cartSummary.itemCount || 0);
         } else {
-          // Usuario invitado - obtener del localStorage
+          
           const guestCart = guestCartService.getCart();
           const itemCount = guestCart.items.reduce((sum, item) => sum + item.cantidad, 0);
           setCartItemCount(itemCount);
@@ -37,7 +37,7 @@ export default function ButtonNav(props) {
 
     loadCartCount();
 
-    // Escuchar cambios en el carrito
+    
     const handleCartUpdate = () => {
       loadCartCount();
     };
@@ -81,7 +81,7 @@ export default function ButtonNav(props) {
           style={{ filter: 'invert(1)' }}
         />
         
-        {/* Badge con contador de items */}
+        
         {cartItemCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center min-w-[20px]">
             {cartItemCount > 99 ? '99+' : cartItemCount}

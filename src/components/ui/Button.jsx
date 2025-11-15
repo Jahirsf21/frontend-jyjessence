@@ -33,7 +33,7 @@ export default function Button({
     className
   ].join(' ').trim();
 
-  // Sugerencia: los textos deben ser traducidos usando i18n en el componente padre.
+ 
   return (
     <As className={classes} {...props}>
       {children}

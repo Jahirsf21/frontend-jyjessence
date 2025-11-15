@@ -8,7 +8,7 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí iría la lógica para enviar el correo
+
     setEnviado(true);
   };
 

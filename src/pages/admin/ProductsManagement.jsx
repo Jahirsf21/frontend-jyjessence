@@ -21,7 +21,7 @@ export default function ProductsManagement() {
     precio: '',
     stock: '',
     imagenesUrl: [],
-    imagenesUrlInput: '' // For direct URL entry
+    imagenesUrlInput: '' 
   });
 
   useEffect(() => {
@@ -46,7 +46,6 @@ export default function ProductsManagement() {
     setFormulario(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle direct image URL input
   const handleImageUrlInputChange = (e) => {
     const value = e.target.value;
     setFormulario(prev => ({
@@ -56,14 +55,11 @@ export default function ProductsManagement() {
     }));
   };
 
-  // Merge URLs from textarea and uploaded images
   function mergeImageUrls(urlInput, uploadedUrls) {
-    // Always keep uploadedUrls, and add URLs from textarea if present
     const urlsFromInput = urlInput
       .split(/[\n,]+/)
       .map(u => u.trim())
       .filter(Boolean);
-    // Remove duplicates, uploaded first
     const allUrls = Array.from(new Set([...uploadedUrls, ...urlsFromInput]));
     return allUrls;
   }
@@ -72,7 +68,6 @@ export default function ProductsManagement() {
     const archivos = Array.from(e.target.files);
     if (archivos.length === 0) return;
 
-    // Validar imágenes
     for (const archivo of archivos) {
       const validacion = ecommerceFacade.images.validateImage(archivo);
       if (!validacion.isValid) {
@@ -87,7 +82,7 @@ export default function ProductsManagement() {
       const nuevasUrls = resultado.images.map(img => img.url || img.secure_url || img.url_secure).filter(Boolean);
       setFormulario(prev => ({
         ...prev,
-        imagenesUrl: [...prev.imagenesUrl, ...nuevasUrls], // Only add new uploads
+        imagenesUrl: [...prev.imagenesUrl, ...nuevasUrls], 
       }));
     } catch (err) {
       alert(err.message);
@@ -106,9 +101,7 @@ export default function ProductsManagement() {
       }
     }
     setFormulario(prev => {
-      // Remove from imagenesUrl
       const newUrls = prev.imagenesUrl.filter((_, i) => i !== index);
-      // Also update imagenesUrlInput to remove the URL if present
       const urlList = prev.imagenesUrlInput
         .split(/[,\n]+/)
         .map(u => u.trim())
@@ -126,7 +119,6 @@ export default function ProductsManagement() {
     e.preventDefault();
 
     try {
-      // Sanitizar URLs por si vienen con comillas pegadas
       const sanitizeUrl = (u) => typeof u === 'string' ? u.trim().replace(/^['\"]+|['\"]+$/g, '') : u;
       const datosProducto = {
         ...formulario,

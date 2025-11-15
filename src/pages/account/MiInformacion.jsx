@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useVoiceReader } from '../../hooks/useVoiceReader';
 import EcommerceFacade from '../../patterns/EcommerceFacade';
 
 const MiInformacion = () => {
   const { t } = useTranslation();
+  const voiceReader = useVoiceReader();
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');

@@ -55,7 +55,7 @@ const Cart = () => {
         data = guestCartService.getCart();
       }
       
-      // Enriquecer items con imagen si no la tiene
+
       const itemsConImagenYPrecio = await Promise.all((data.items || []).map(async (item) => {
         let imagen = item.imagen;
         let precioUnitario = item.precioUnitario;
@@ -69,7 +69,7 @@ const Cart = () => {
         return { ...item, imagen, precioUnitario };
       }));
       
-      // Calcular total
+
       const total = itemsConImagenYPrecio.reduce((sum, item) => sum + (item.precioUnitario * item.cantidad), 0);
       setCarrito({
         items: itemsConImagenYPrecio,
@@ -78,7 +78,7 @@ const Cart = () => {
       });
     } catch (error) {
       setError(error.response?.data?.error || t('cart.loadError'));
-      // Si es error 401, redirigir al login
+
       if (error.response?.status === 401) {
         Swal.fire({
           icon: 'warning',
@@ -118,10 +118,8 @@ const Cart = () => {
       if (estaAutenticado) {
         await Ecommerce.updateCartItem(productoId, nuevaCantidad);
       } else {
-        // Para usuarios invitados, actualizar directamente en localStorage
         guestCartService.updateQuantity(productoId, nuevaCantidad);
       }
-      // Recargar el carrito para actualizar la UI
       await cargarCarrito();
     } catch (error) {
       console.error('Error updating quantity:', error);
@@ -150,10 +148,8 @@ const Cart = () => {
         if (estaAutenticado) {
           await Ecommerce.removeFromCart(productoId);
         } else {
-          // Para usuarios invitados, eliminar directamente del localStorage
           guestCartService.removeItem(productoId);
         }
-        // Recargar el carrito para actualizar la UI
         await cargarCarrito();
         Swal.fire({
           icon: 'success',
@@ -173,11 +169,9 @@ const Cart = () => {
     }
   };
 
-  // Finalizar pedido sin pasarela
   const finalizarPedido = async () => {
     try {
       if (estaAutenticado) {
-        // Usuario autenticado - validar dirección
         if (!direccionSeleccionada) {
           return Swal.fire({
             icon: 'warning',
@@ -186,10 +180,8 @@ const Cart = () => {
           });
         }
         await Ecommerce.completePurchase(direccionSeleccionada);
-        // Limpiar carrito después del pedido exitoso
         await cartService.clearCart();
       } else {
-        // Usuario invitado - validar información completa
         const { email, nombre, telefono, direccion } = guestInfo;
         
         if (!email || !nombre || !telefono) {
@@ -200,7 +192,6 @@ const Cart = () => {
           });
         }
         
-        // Validar campos requeridos de dirección
         if (!direccion.provincia || !direccion.canton || !direccion.distrito || !direccion.senas) {
           return Swal.fire({
             icon: 'warning',
@@ -209,7 +200,6 @@ const Cart = () => {
           });
         }
         await Ecommerce.completePurchase(null, guestInfo);
-        // Limpiar carrito de invitado después del pedido
         guestCartService.clearCart();
         guestCartService.clearGuestInfo();
       }
@@ -285,13 +275,12 @@ const Cart = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-2">{t('cart.title')}</h1>
           <p className="text-gray-600">
             {carrito.cantidadItems > 0
-              ? `${carrito.cantidadItems} ${t('cart.itemsInCart')}`
+              ? `${carrito.cantidadItems} ${t('cart.itemsInCart')}` 
               : t('cart.emptyTitle')}
           </p>
         </div>
 
         {carrito.items.length === 0 ? (
-          // Carrito Vacío
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
             <svg className="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />

@@ -44,7 +44,7 @@ export default function SearchPanel({
     if (open) cargarDatos();
   }, [open]);
 
-  // Cierra el panel si la resolución es tablet o mayor
+
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= 768 && open) {
