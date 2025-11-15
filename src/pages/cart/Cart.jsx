@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
 import Ecommerce from '../../patterns/EcommerceFacade';
 import guestCartService from '../../services/guestCartService';
+import AddressForm from '../../components/AddressForm';
 
 const Cart = () => {
   const { t } = useTranslation();
@@ -19,7 +20,15 @@ const Cart = () => {
   const [guestInfo, setGuestInfo] = useState({
     email: '',
     nombre: '',
-    direccion: ''
+    direccion: {
+      provincia: '',
+      canton: '',
+      distrito: '',
+      barrio: '',
+      senas: '',
+      codigoPostal: '',
+      referencia: ''
+    }
   });
   const [showGuestForm, setShowGuestForm] = useState(false);
 
@@ -91,6 +100,13 @@ const Cart = () => {
       }
     } catch (e) {
     }
+  };
+
+  const handleGuestAddressChange = (nuevaDireccion) => {
+    setGuestInfo(prev => ({
+      ...prev,
+      direccion: nuevaDireccion
+    }));
   };
 
   const actualizarCantidad = async (productoId, nuevaCantidad) => {
@@ -169,12 +185,23 @@ const Cart = () => {
         }
         await Ecommerce.completePurchase(direccionSeleccionada);
       } else {
-        // Usuario invitado - validar información
-        if (!guestInfo.email || !guestInfo.nombre || !guestInfo.direccion) {
+        // Usuario invitado - validar información completa
+        const { email, nombre, direccion } = guestInfo;
+        
+        if (!email || !nombre) {
           return Swal.fire({
             icon: 'warning',
             title: t('error'),
             text: t('cart.guestInfoRequired')
+          });
+        }
+        
+        // Validar campos requeridos de dirección
+        if (!direccion.provincia || !direccion.canton || !direccion.distrito || !direccion.senas) {
+          return Swal.fire({
+            icon: 'warning',
+            title: t('error'),
+            text: t('cart.guestAddressRequired')
           });
         }
         await Ecommerce.completePurchase(null, guestInfo);
@@ -235,6 +262,16 @@ const Cart = () => {
       </div>
     );
   }
+
+  const isGuestFormValid = () => {
+    const { email, nombre, direccion } = guestInfo;
+    return email && 
+           nombre && 
+           direccion.provincia && 
+           direccion.canton && 
+           direccion.distrito && 
+           direccion.senas;
+  };
 
   return (
     <div className="min-h-screen bg-white py-8">
@@ -421,14 +458,11 @@ const Cart = () => {
                         
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            {t('cart.guestAddress')}
+                            {t('cart.guestAddress')} *
                           </label>
-                          <textarea
-                            value={guestInfo.direccion}
-                            onChange={(e) => setGuestInfo({...guestInfo, direccion: e.target.value})}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            rows="3"
-                            placeholder={t('cart.guestAddressPlaceholder')}
+                          <AddressForm 
+                            onAddressChange={handleGuestAddressChange}
+                            initialData={guestInfo.direccion}
                           />
                         </div>
                       </div>
@@ -449,9 +483,9 @@ const Cart = () => {
 
                 <button
                   onClick={finalizarPedido}
-                  disabled={estaAutenticado ? !direccionSeleccionada : (!guestInfo.email || !guestInfo.nombre || !guestInfo.direccion)}
+                  disabled={estaAutenticado ? !direccionSeleccionada : !isGuestFormValid()}
                   className={`w-full px-6 py-3 rounded-lg font-medium mb-3 transition-colors ${
-                    (estaAutenticado ? direccionSeleccionada : (guestInfo.email && guestInfo.nombre && guestInfo.direccion))
+                    (estaAutenticado ? direccionSeleccionada : isGuestFormValid())
                       ? 'bg-blue-600 text-white hover:bg-blue-700'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
