@@ -90,12 +90,12 @@ const MiInformacion = () => {
 
   const handleEliminarDireccion = async (idDireccion) => {
     const confirmacion = await Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'No podrás revertir esta acción',
+      title: t('profile.confirmDelete'),
+      text: t('profile.confirmDeleteText'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: t('profile.confirmDeleteButton'),
+      cancelButtonText: t('profile.deleteCancelButton')
     });
 
     if (confirmacion.isConfirmed) {
@@ -213,14 +213,14 @@ const MiInformacion = () => {
             {/* Sección de direcciones */}
             <div className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex items-center justify-between mb-6 border-b pb-3">
-                <h2 className="text-xl font-semibold text-gray-800">Direcciones</h2>
+                <h2 className="text-xl font-semibold text-gray-800">{t('profile.addresses')}</h2>
                 {!mostrarFormAgregar && (
                   <button 
                     onClick={() => setMostrarFormAgregar(true)} 
                     className={buttonPrimaryClass}
                     disabled={loading}
                   >
-                    + Agregar dirección
+                    {t('profile.addAddress')}
                   </button>
                 )}
               </div>
@@ -232,10 +232,10 @@ const MiInformacion = () => {
                     <div key={dir.idDireccion} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
                       {editandoDireccion?.idDireccion === dir.idDireccion ? (
                         <form onSubmit={handleEditarDireccion} className="space-y-4">
-                          <h3 className="font-semibold text-lg mb-3 text-gray-800">Editar dirección</h3>
+                          <h3 className="font-semibold text-lg mb-3 text-gray-800">{t('profile.editAddress')}</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                              <label className={labelClass}>Provincia *</label>
+                              <label className={labelClass}>{t('profile.province')} *</label>
                               <input 
                                 type="text" 
                                 value={editandoDireccion.provincia} 
@@ -246,7 +246,7 @@ const MiInformacion = () => {
                               />
                             </div>
                             <div>
-                              <label className={labelClass}>Cantón *</label>
+                              <label className={labelClass}>{t('profile.canton')} *</label>
                               <input 
                                 type="text" 
                                 value={editandoDireccion.canton} 
@@ -257,7 +257,7 @@ const MiInformacion = () => {
                               />
                             </div>
                             <div>
-                              <label className={labelClass}>Distrito *</label>
+                              <label className={labelClass}>{t('profile.district')} *</label>
                               <input 
                                 type="text" 
                                 value={editandoDireccion.distrito} 
@@ -268,7 +268,7 @@ const MiInformacion = () => {
                               />
                             </div>
                             <div>
-                              <label className={labelClass}>Barrio</label>
+                              <label className={labelClass}>{t('profile.neighborhood')}</label>
                               <input 
                                 type="text" 
                                 value={editandoDireccion.barrio || ''} 
@@ -278,7 +278,7 @@ const MiInformacion = () => {
                               />
                             </div>
                             <div className="md:col-span-2">
-                              <label className={labelClass}>Señas *</label>
+                              <label className={labelClass}>{t('profile.directions')} *</label>
                               <input 
                                 type="text" 
                                 value={editandoDireccion.senas} 
@@ -289,7 +289,7 @@ const MiInformacion = () => {
                               />
                             </div>
                             <div>
-                              <label className={labelClass}>Código Postal</label>
+                              <label className={labelClass}>{t('profile.postalCode')}</label>
                               <input 
                                 type="text" 
                                 value={editandoDireccion.codigoPostal || ''} 
@@ -299,7 +299,7 @@ const MiInformacion = () => {
                               />
                             </div>
                             <div>
-                              <label className={labelClass}>Referencia</label>
+                              <label className={labelClass}>{t('profile.reference')}</label>
                               <input 
                                 type="text" 
                                 value={editandoDireccion.referencia || ''} 
@@ -311,7 +311,7 @@ const MiInformacion = () => {
                           </div>
                           <div className="flex gap-3 pt-4">
                             <button type="submit" className={buttonPrimaryClass} disabled={loading}>
-                              Guardar cambios
+                              {t('profile.saveChanges')}
                             </button>
                             <button 
                               type="button" 
@@ -319,7 +319,7 @@ const MiInformacion = () => {
                               className={buttonSecondaryClass}
                               disabled={loading}
                             >
-                              Cancelar
+                              {t('profile.cancel')}
                             </button>
                           </div>
                         </form>
@@ -328,24 +328,24 @@ const MiInformacion = () => {
                           <p className="font-semibold text-lg mb-2 text-gray-800">
                             {dir.provincia}, {dir.canton}, {dir.distrito}
                           </p>
-                          {dir.barrio && <p className="text-gray-600 text-sm mb-1">Barrio: {dir.barrio}</p>}
+                          {dir.barrio && <p className="text-gray-600 text-sm mb-1">{t('profile.neighborhood')}: {dir.barrio}</p>}
                           <p className="text-gray-600 mb-2">{dir.senas}</p>
-                          {dir.codigoPostal && <p className="text-gray-500 text-sm">Código Postal: {dir.codigoPostal}</p>}
-                          {dir.referencia && <p className="text-gray-500 text-sm">Referencia: {dir.referencia}</p>}
+                          {dir.codigoPostal && <p className="text-gray-500 text-sm">{t('profile.postalCode')}: {dir.codigoPostal}</p>}
+                          {dir.referencia && <p className="text-gray-500 text-sm">{t('profile.reference')}: {dir.referencia}</p>}
                           <div className="flex gap-3 mt-4 pt-3 border-t border-gray-200">
                             <button 
                               onClick={() => setEditandoDireccion(dir)} 
                               className={buttonPrimaryClass}
                               disabled={loading}
                             >
-                              Editar
+                              {t('profile.edit')}
                             </button>
                             <button 
                               onClick={() => handleEliminarDireccion(dir.idDireccion)} 
                               className={buttonDangerClass}
                               disabled={loading}
                             >
-                              Eliminar
+                              {t('profile.delete')}
                             </button>
                           </div>
                         </div>
@@ -359,10 +359,10 @@ const MiInformacion = () => {
               {mostrarFormAgregar && (
                 <div className="border border-blue-200 rounded-lg p-6 bg-blue-50">
                   <form onSubmit={handleAddDireccion} className="space-y-4">
-                    <h3 className="font-semibold text-lg mb-3 text-gray-800">Agregar nueva dirección</h3>
+                    <h3 className="font-semibold text-lg mb-3 text-gray-800">{t('profile.addNewAddress')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className={labelClass}>Provincia *</label>
+                        <label className={labelClass}>{t('profile.province')} *</label>
                         <input 
                           type="text" 
                           value={nuevaDireccion.provincia} 
@@ -373,7 +373,7 @@ const MiInformacion = () => {
                         />
                       </div>
                       <div>
-                        <label className={labelClass}>Cantón *</label>
+                        <label className={labelClass}>{t('profile.canton')} *</label>
                         <input 
                           type="text" 
                           value={nuevaDireccion.canton} 
@@ -384,7 +384,7 @@ const MiInformacion = () => {
                         />
                       </div>
                       <div>
-                        <label className={labelClass}>Distrito *</label>
+                        <label className={labelClass}>{t('profile.district')} *</label>
                         <input 
                           type="text" 
                           value={nuevaDireccion.distrito} 
@@ -395,7 +395,7 @@ const MiInformacion = () => {
                         />
                       </div>
                       <div>
-                        <label className={labelClass}>Barrio</label>
+                        <label className={labelClass}>{t('profile.neighborhood')}</label>
                         <input 
                           type="text" 
                           value={nuevaDireccion.barrio} 
@@ -405,7 +405,7 @@ const MiInformacion = () => {
                         />
                       </div>
                       <div className="md:col-span-2">
-                        <label className={labelClass}>Señas *</label>
+                        <label className={labelClass}>{t('profile.directions')} *</label>
                         <input 
                           type="text" 
                           value={nuevaDireccion.senas} 
@@ -416,7 +416,7 @@ const MiInformacion = () => {
                         />
                       </div>
                       <div>
-                        <label className={labelClass}>Código Postal</label>
+                        <label className={labelClass}>{t('profile.postalCode')}</label>
                         <input 
                           type="text" 
                           value={nuevaDireccion.codigoPostal} 
@@ -426,7 +426,7 @@ const MiInformacion = () => {
                         />
                       </div>
                       <div>
-                        <label className={labelClass}>Referencia</label>
+                        <label className={labelClass}>{t('profile.reference')}</label>
                         <input 
                           type="text" 
                           value={nuevaDireccion.referencia} 
@@ -438,7 +438,7 @@ const MiInformacion = () => {
                     </div>
                     <div className="flex gap-3 pt-4">
                       <button type="submit" className={buttonPrimaryClass} disabled={loading}>
-                        Agregar dirección
+                        {t('profile.addAddress')}
                       </button>
                       <button 
                         type="button" 
@@ -449,7 +449,7 @@ const MiInformacion = () => {
                         className={buttonSecondaryClass}
                         disabled={loading}
                       >
-                        Cancelar
+                        {t('profile.cancel')}
                       </button>
                     </div>
                   </form>
@@ -462,8 +462,8 @@ const MiInformacion = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <p className="text-lg font-medium">No tienes direcciones guardadas</p>
-                  <p className="text-sm mt-2">Agrega una dirección para facilitar tus compras</p>
+                  <p className="text-lg font-medium">{t('profile.noAddresses')}</p>
+                  <p className="text-sm mt-2">{t('profile.noAddressesSubtitle')}</p>
                 </div>
               )}
             </div>
