@@ -59,9 +59,7 @@ class GuestCartService {
   // Actualizar cantidad de un producto
   updateQuantity(productoId, nuevaCantidad) {
     try {
-      console.log('Updating guest cart quantity:', { productoId, nuevaCantidad });
       const cart = this.getCart();
-      console.log('Current cart:', cart);
       
       const item = cart.items.find(item => item.productoId === productoId);
       
@@ -77,7 +75,6 @@ class GuestCartService {
       cart.total = cart.items.reduce((sum, item) => sum + (item.precioUnitario * item.cantidad), 0);
       cart.cantidadItems = cart.items.length;
 
-      console.log('Updated cart:', cart);
       this.saveCart(cart);
       return cart;
     } catch (error) {
@@ -89,9 +86,7 @@ class GuestCartService {
   // Eliminar producto del carrito
   removeItem(productoId) {
     try {
-      console.log('Removing item from guest cart:', { productoId });
       const cart = this.getCart();
-      console.log('Current cart:', cart);
       
       const index = cart.items.findIndex(item => item.productoId === productoId);
       
@@ -103,7 +98,6 @@ class GuestCartService {
       cart.total = cart.items.reduce((sum, item) => sum + (item.precioUnitario * item.cantidad), 0);
       cart.cantidadItems = cart.items.length;
 
-      console.log('Updated cart after removal:', cart);
       this.saveCart(cart);
       return cart;
     } catch (error) {
