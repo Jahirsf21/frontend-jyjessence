@@ -124,25 +124,24 @@ function FiltrosContent({
 
 function Home() {
   const { mouseReadingEnabled, readElement } = useVoiceReader();
-	const { t } = useTranslation();
-	const { openSearchPanel, closeSearch } = useSearchPanel();
-	const [productos, setProductos] = useState([]);
-	const [busqueda, setBusqueda] = useState("");
-	const [categorias, setCategorias] = useState([]);
-	const [generos, setGeneros] = useState([]);
-	const [categoriaFiltro, setCategoriaFiltro] = useState([]);
-	const [generoFiltro, setGeneroFiltro] = useState([]);
-	const [precioMin, setPrecioMin] = useState('');
-	const [precioMax, setPrecioMax] = useState('');
-	const [mililitrosMin, setMililitrosMin] = useState('');
-	const [mililitrosMax, setMililitrosMax] = useState('');
-	const [selectedProduct, setSelectedProduct] = useState(null);
-	const [currentImageIndex, setCurrentImageIndex] = useState({});
-	const [minPrecio, setMinPrecio] = useState(0);
-	const [maxPrecio, setMaxPrecio] = useState(0);
-	const [pagina, setPagina] = useState(1);
-	const [orden, setOrden] = useState('relevancia');
-		const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const { t } = useTranslation();
+  const { openSearchPanel, closeSearch } = useSearchPanel();
+  const [productos, setProductos] = useState([]);
+  const [busqueda, setBusqueda] = useState("");
+  const [categorias, setCategorias] = useState([]);
+  const [generos, setGeneros] = useState([]);
+  const [categoriaFiltro, setCategoriaFiltro] = useState([]);
+  const [generoFiltro, setGeneroFiltro] = useState([]);
+  const [precioMin, setPrecioMin] = useState('');
+  const [precioMax, setPrecioMax] = useState('');
+  const [mililitrosMin, setMililitrosMin] = useState('');
+  const [mililitrosMax, setMililitrosMax] = useState('');
+  const [currentImageIndex, setCurrentImageIndex] = useState({});
+  const [minPrecio, setMinPrecio] = useState(0);
+  const [maxPrecio, setMaxPrecio] = useState(0);
+  const [pagina, setPagina] = useState(1);
+  const [orden, setOrden] = useState('relevancia');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
 	useEffect(() => {
 		const cargarDatos = async () => {
@@ -186,42 +185,28 @@ function Home() {
 		return () => clearInterval(interval);
 	}, [productos]);
 
-	const productosAgrupados = productos.reduce((acc, producto) => {
-		const nombreBase = producto.nombre;
-		if (!acc[nombreBase]) {
-			acc[nombreBase] = [];
-		}
-		acc[nombreBase].push(producto);
-		return acc;
-	}, {});
+  // Filtrado directo sin agrupar por nombre
+  let productosFiltrados = productos.filter(producto => {
+    const coincideBusqueda = busqueda.trim() === "" || (producto.nombre?.toLowerCase().includes(busqueda.toLowerCase()) || producto.categoria?.toLowerCase().includes(busqueda.toLowerCase()));
+    const coincideCategoria = categoriaFiltro.length === 0 || categoriaFiltro.includes(producto.categoria);
+    const coincideGenero = generoFiltro.length === 0 || generoFiltro.includes(producto.genero);
+    const coincidePrecioMin = !precioMin || producto.precio >= parseFloat(precioMin);
+    const coincidePrecioMax = !precioMax || producto.precio <= parseFloat(precioMax);
+    const coincideMlMin = !mililitrosMin || producto.mililitros >= parseFloat(mililitrosMin);
+    const coincideMlMax = !mililitrosMax || producto.mililitros <= parseFloat(mililitrosMax);
+    return coincideBusqueda && coincideCategoria && coincideGenero && coincidePrecioMin && coincidePrecioMax && coincideMlMin && coincideMlMax;
+  });
 
-	const productosUnicos = Object.keys(productosAgrupados).map(nombre => {
-		const productosDelNombre = productosAgrupados[nombre];
-		return productosDelNombre.reduce((min, p) => p.precio < min.precio ? p : min, productosDelNombre[0]);
-	});
+  if (orden === 'precio-asc') {
+    productosFiltrados.sort((a, b) => a.precio - b.precio);
+  } else if (orden === 'precio-desc') {
+    productosFiltrados.sort((a, b) => b.precio - a.precio);
+  } else if (orden === 'categoria') {
+    productosFiltrados.sort((a, b) => a.categoria.localeCompare(b.categoria));
+  }
 
-	let productosFiltrados = productosUnicos.filter(producto => {
-		const coincideBusqueda = busqueda.trim() === "" || (producto.nombre?.toLowerCase().includes(busqueda.toLowerCase()) || producto.categoria?.toLowerCase().includes(busqueda.toLowerCase()));
-		const coincideCategoria = categoriaFiltro.length === 0 || categoriaFiltro.includes(producto.categoria);
-		const coincideGenero = generoFiltro.length === 0 || generoFiltro.includes(producto.genero);
-		const coincidePrecioMin = !precioMin || producto.precio >= parseFloat(precioMin);
-		const coincidePrecioMax = !precioMax || producto.precio <= parseFloat(precioMax);
-		const productosDelNombre = productosAgrupados[producto.nombre] || [];
-		const coincideMlMin = !mililitrosMin || productosDelNombre.some(p => p.mililitros >= parseFloat(mililitrosMin));
-		const coincideMlMax = !mililitrosMax || productosDelNombre.some(p => p.mililitros <= parseFloat(mililitrosMax));
-		return coincideBusqueda && coincideCategoria && coincideGenero && coincidePrecioMin && coincidePrecioMax && coincideMlMin && coincideMlMax;
-	});
-
-	if (orden === 'precio-asc') {
-		productosFiltrados.sort((a, b) => a.precio - b.precio);
-	} else if (orden === 'precio-desc') {
-		productosFiltrados.sort((a, b) => b.precio - a.precio);
-	} else if (orden === 'categoria') {
-		productosFiltrados.sort((a, b) => a.categoria.localeCompare(b.categoria));
-	}
-
-	const totalPaginas = Math.ceil(productosFiltrados.length / PRODUCTS_PER_PAGE);
-	const productosPagina = productosFiltrados.slice((pagina - 1) * PRODUCTS_PER_PAGE, pagina * PRODUCTS_PER_PAGE);
+  const totalPaginas = Math.ceil(productosFiltrados.length / PRODUCTS_PER_PAGE);
+  const productosPagina = productosFiltrados.slice((pagina - 1) * PRODUCTS_PER_PAGE, pagina * PRODUCTS_PER_PAGE);
 
 	const limpiarFiltros = () => {
 		setBusqueda('');
@@ -295,17 +280,15 @@ return (
               }}
             >
               {(() => {
-                const productoActual = selectedProduct || producto;
-                const imagenes = productoActual.imagenesUrl || [];
+                const imagenes = producto.imagenesUrl || [];
                 const imagenActual = imagenes.length > 0 
-                  ? imagenes[currentImageIndex[productoActual.idProducto] || 0] 
-                  : productoActual.primaryImage;
-                
+                  ? imagenes[currentImageIndex[producto.idProducto] || 0] 
+                  : producto.primaryImage;
                 return (
                   <>
                     <img
                       src={imagenActual}
-                      alt={productoActual.nombre}
+                      alt={producto.nombre}
                       className="w-full h-32 md:h-48 object-cover rounded mb-2 md:mb-4 transition-opacity duration-500"
                     />
                     {/* Indicadores de imágenes */}
@@ -315,7 +298,7 @@ return (
                           <div
                             key={index}
                             className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                              index === (currentImageIndex[productoActual.idProducto] || 0)
+                              index === (currentImageIndex[producto.idProducto] || 0)
                                 ? 'bg-white'
                                 : 'bg-white/50'
                             }`}
@@ -329,48 +312,22 @@ return (
               <div className="font-bold text-gray-900 text-sm md:text-base mb-2 line-clamp-2 text-left">
                 {producto.nombre}
               </div>
-              
               <div className="text-xs text-gray-600 mb-3 text-left">
-                {t(`category.${producto.categoria}`, { defaultValue: producto.categoria })} • {t(`gender.${producto.genero}`, { defaultValue: producto.genero })}
+                {t(`category.${producto.categoria}`, { defaultValue: producto.categoria })} • {t(`gender.${producto.genero}`, { defaultValue: producto.genero })} • {producto.mililitros} ml
               </div>
-              
-              {/* Botones de unidades - agrupar por nombre de producto */}
-              <div className="mb-3">
-                <div className="flex flex-wrap gap-1 justify-center">
-                  {productos
-                    .filter(p => p.nombre === producto.nombre)
-                    .map(p => (
-                      <button
-                        key={p.idProducto}
-                        onClick={() => {
-                          setSelectedProduct(p);
-                        }}
-                        className={`px-2 py-1 text-xs rounded transition-colors ${
-                          selectedProduct?.idProducto === p.idProducto
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        {p.mililitros} ml
-                      </button>
-                    ))}
-                </div>
-              </div>
-              
               <div className="font-bold text-blue-600 text-lg md:text-xl mb-3 text-left">
-                ₡{(selectedProduct || producto).precio.toLocaleString('es-CR')}
+                ₡{producto.precio.toLocaleString('es-CR')}
               </div>
               <button
                 className="mt-auto bg-blue-600 text-white py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-blue-700 transition-colors"
                 onClick={async e => {
                   e.stopPropagation();
                   try {
-                    const productoAAgregar = selectedProduct || producto;
-                    await Ecommerce.addToCart(productoAAgregar.idProducto, 1);
+                    await Ecommerce.addToCart(producto.idProducto, 1);
                     Swal.fire({
                       icon: 'success',
                       title: t('cart.added'),
-                      text: `${productoAAgregar.nombre} (${productoAAgregar.mililitros}ml)`,
+                      text: `${producto.nombre} (${producto.mililitros}ml)`,
                       timer: 1500,
                       showConfirmButton: false
                     });
