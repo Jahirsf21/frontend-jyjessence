@@ -1,4 +1,5 @@
 const translation = {
+  "admin.products.chooseImages": "选择照片",
   "nav.home": "首页",
   "home.button": "首页",
   "nav.catalog": "目录",

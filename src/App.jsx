@@ -15,6 +15,7 @@ import Orders from './pages/cart/Orders';
 import Accessibility from './pages/Accessibility';
 import Dashboard from './pages/admin/Dashboard';
 import ProductsManagement from './pages/admin/ProductsManagement';
+import ProductForm from './pages/admin/ProductForm';
 import ClientsManagement from './pages/admin/ClientsManagement';
 import OrdersManagement from './pages/admin/OrdersManagement';
 import ButtonNav from './components/ui/ButtonNav';
@@ -70,7 +71,11 @@ function AppLayout() {
           <Route path="/account/mi-informacion" element={<ProtectedRoute><MiInformacion /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><Dashboard /></ProtectedRoute>}>
             <Route index element={<Navigate to="/admin/products" replace />} />
-            <Route path="products" element={<ProductsManagement />} />
+            <Route path="products">
+              <Route index element={<ProductsManagement />} />
+              <Route path="new" element={<ProductForm />} />
+              <Route path="edit/:id" element={<ProductForm />} />
+            </Route>
             <Route path="clients" element={<ClientsManagement />} />
             <Route path="orders" element={<OrdersManagement />} />
           </Route>

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
 import ecommerceFacade from '../../patterns/EcommerceFacade';
 import Button from '../../components/ui/Button.jsx';
 
 export default function ProductsManagement() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -115,47 +117,9 @@ export default function ProductsManagement() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const sanitizeUrl = (u) => typeof u === 'string' ? u.trim().replace(/^['\"]+|['\"]+$/g, '') : u;
-      const datosProducto = {
-        ...formulario,
-        mililitros: parseInt(formulario.mililitros),
-        precio: parseFloat(formulario.precio),
-        stock: parseInt(formulario.stock),
-        imagenesUrl: Array.isArray(formulario.imagenesUrl) ? formulario.imagenesUrl.map(sanitizeUrl).filter(Boolean) : []
-      };
-
-      if (productoEditando) {
-        await ecommerceFacade.updateProduct(productoEditando.idProducto, datosProducto);
-      } else {
-        await ecommerceFacade.createProduct(datosProducto);
-      }
-
-      await cargarProductos();
-      cerrarFormulario();
-      alert(productoEditando ? t('admin.products.updated') : t('admin.products.created'));
-    } catch (err) {
-      alert(err.message);
-    }
-  };
 
   const handleEdit = (producto) => {
-    setProductoEditando(producto);
-    setFormulario({
-      nombre: producto.nombre,
-      descripcion: producto.descripcion,
-      categoria: producto.categoria,
-      genero: producto.genero,
-      mililitros: producto.mililitros.toString(),
-      precio: producto.precio.toString(),
-      stock: producto.stock.toString(),
-      imagenesUrl: Array.isArray(producto.imagenesUrl) ? producto.imagenesUrl.filter(Boolean) : [],
-      imagenesUrlInput: Array.isArray(producto.imagenesUrl) ? producto.imagenesUrl.filter(Boolean).join('\n') : ''
-    });
-    setMostrarFormulario(true);
+    navigate(`/admin/products/edit/${producto.idProducto}`);
   };
 
   const handleDelete = async (idProducto) => {
@@ -199,21 +163,6 @@ export default function ProductsManagement() {
     }
   };
 
-  const cerrarFormulario = () => {
-    setMostrarFormulario(false);
-    setProductoEditando(null);
-    setFormulario({
-      nombre: '',
-      descripcion: '',
-      categoria: 'Parfum',
-      genero: 'Unisex',
-      mililitros: '',
-      precio: '',
-      stock: '',
-      imagenesUrl: [],
-      imagenesUrlInput: ''
-    });
-  };
 
   if (cargando) {
     return <div className="text-center py-8">{t('admin.loadingProducts')}</div>;
@@ -227,174 +176,11 @@ export default function ProductsManagement() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">{t('admin.products.title')}</h2>
-        <Button onClick={() => setMostrarFormulario(true)} variant="primary">+ {t('admin.products.newProduct')}</Button>
+        <Link to="/admin/products/new">
+          <Button variant="primary">+ {t('admin.products.newProduct')}</Button>
+        </Link>
       </div>
 
-      {/* Formulario Modal */}
-      {mostrarFormulario && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-32">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
-            <h3 className="text-xl font-bold mb-4">
-              {productoEditando ? t('admin.products.editProduct') : t('admin.products.newProduct')}
-            </h3>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('product.name')}
-                </label>
-                <input
-                  type="text"
-                  name="nombre"
-                  value={formulario.nombre}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('product.description')}
-                </label>
-                <textarea
-                  name="descripcion"
-                  value={formulario.descripcion}
-                  onChange={handleInputChange}
-                  required
-                  rows="3"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {t('product.category')}
-                  </label>
-                  <select
-                    name="categoria"
-                    value={formulario.categoria}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                  >
-                    <option value="Parfum">Parfum</option>
-                    <option value="Elixir">Elixir</option>
-                    <option value="Eau de Parfum">Eau de Parfum</option>
-                    <option value="Eau de Toilette">Eau de Toilette</option>
-                    <option value="Eau Fraiche">Eau Fraiche</option>
-                    <option value="Extrait de Parfum">Extrait de Parfum</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {t('product.gender')}
-                  </label>
-                  <select
-                    name="genero"
-                    value={formulario.genero}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                  >
-                    <option value="Hombre">Hombre</option>
-                    <option value="Mujer">Mujer</option>
-                    <option value="Unisex">Unisex</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {t('product.mililiters')}
-                  </label>
-                  <input
-                    type="number"
-                    name="mililitros"
-                    value={formulario.mililitros}
-                    onChange={handleInputChange}
-                    required
-                    min="1"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {t('product.price')}
-                  </label>
-                  <input
-                    type="number"
-                    name="precio"
-                    value={formulario.precio}
-                    onChange={handleInputChange}
-                    required
-                    min="0"
-                    step="0.01"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {t('product.stock')}
-                  </label>
-                  <input
-                    type="number"
-                    name="stock"
-                    value={formulario.stock}
-                    onChange={handleInputChange}
-                    required
-                    min="0"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('product.images')}
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                  disabled={subiendoImagenes}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                />
-                {subiendoImagenes && (
-                  <p className="text-sm text-gray-500 mt-1">{t('admin.products.uploadingImages')}</p>
-                )}
-
-                <label className="block text-sm font-medium text-gray-700 mt-4 mb-1">
-                  {t('admin.products.imageUrlsLabel')}
-                </label>
-                <textarea
-                  name="imagenesUrlInput"
-                  value={formulario.imagenesUrlInput}
-                  onChange={handleImageUrlInputChange}
-                  rows="3"
-                  placeholder={t('admin.products.imageUrlsPlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                />
-
-                {formulario.imagenesUrl.length > 0 && (
-                  <p className="text-sm text-gray-500 mt-2">
-                    {formulario.imagenesUrl.length} {formulario.imagenesUrl.length === 1 ? 'imagen cargada' : 'imágenes cargadas'}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <Button type="submit" className="flex-1" variant="primary">{productoEditando ? t('common.update') : t('common.create')} {t('product.product')}</Button>
-                <Button type="button" onClick={cerrarFormulario} className="flex-1" variant="secondary">{t('common.cancel')}</Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {/* Lista de Productos */}
       <div className="overflow-x-auto">
