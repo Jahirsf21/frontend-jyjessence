@@ -1,4 +1,5 @@
 const translation = {
+  "admin.products.preview": "Aperçu",
   "admin.products.chooseImages": "Choisir des photos",
   "nav.home": "Accueil",
   "home.button": "Accueil",

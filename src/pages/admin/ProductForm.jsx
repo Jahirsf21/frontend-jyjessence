@@ -32,7 +32,7 @@ export default function ProductForm() {
 
   const cargarProducto = async () => {
     try {
-      const producto = await ecommerceFacade.getProductById(id);
+      const producto = await ecommerceFacade.getProductDetails(id);
       setFormulario({
         nombre: producto.nombre,
         descripcion: producto.descripcion,
