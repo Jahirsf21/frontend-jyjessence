@@ -57,8 +57,8 @@ export default function SearchPanel({
 
   return (
     <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[1002] transition-all duration-300 ${open ? 'translate-x-0' : 'translate-x-full'} flex flex-col`}>
-      <div className="flex items-center justify-between p-4 border-b bg-gray-50">
-        <h2 className="text-lg font-bold">{t('filters.title')}</h2>
+      <div className="flex items-center p-4 border-b bg-gray-50">
+        <h2 className="text-lg font-bold flex-1">{t('filters.title')}</h2>
         <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-200" aria-label={t('search.close')}>
           <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
@@ -75,9 +75,9 @@ export default function SearchPanel({
           <button
             type="button"
             className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
-            onClick={limpiarFiltros}
+            onClick={onClose}
           >
-            {t('filters.clearFilters')}
+            {t('common.search')}
           </button>
         </div>
         <div className="mb-4">
@@ -192,6 +192,16 @@ export default function SearchPanel({
               placeholder={t('common.max')}
             />
           </div>
+        </div>
+
+        <div className="mt-6">
+          <button
+            type="button"
+            onClick={limpiarFiltros}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+          >
+            {t('filters.clearFilters')}
+          </button>
         </div>
       </div>
     </div>
