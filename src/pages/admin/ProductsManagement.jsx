@@ -203,8 +203,8 @@ export default function ProductsManagement() {
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('admin.products.title')}</h2>
-      <div className="flex flex-wrap gap-4 mb-4 items-end justify-between">
-        <div className="flex flex-wrap gap-4">
+      <div className="bg-white border rounded-lg shadow-sm p-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-nombre">{t('products.filter.name')}</label>
             <input
@@ -214,7 +214,7 @@ export default function ProductsManagement() {
               value={filtros.nombre}
               onChange={handleFiltroChange}
               placeholder={t('products.filter.namePlaceholder')}
-              className="border rounded px-3 py-2 w-40"
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div>
@@ -226,7 +226,7 @@ export default function ProductsManagement() {
               value={filtros.categoria}
               onChange={handleFiltroChange}
               placeholder={t('products.filter.categoryPlaceholder')}
-              className="border rounded px-3 py-2 w-40"
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div>
@@ -238,13 +238,15 @@ export default function ProductsManagement() {
               value={filtros.precio}
               onChange={handleFiltroChange}
               placeholder={t('products.filter.pricePlaceholder')}
-              className="border rounded px-3 py-2 w-40"
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
+          <div className="flex items-end">
+            <Link to="/admin/products/new" className="w-full">
+              <Button variant="primary" className="w-full">+ {t('admin.products.newProduct')}</Button>
+            </Link>
+          </div>
         </div>
-        <Link to="/admin/products/new">
-          <Button variant="primary">+ {t('admin.products.newProduct')}</Button>
-        </Link>
       </div>
 
       {/* Lista de Productos */}
@@ -288,10 +290,10 @@ export default function ProductsManagement() {
                   </button>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <div className="flex flex-wrap justify-end gap-2">
-                    <Button size="sm" variant="info" onClick={() => handleEdit(producto)}>{t('admin.products.edit')}</Button>
-                    <Button size="sm" variant="secondary" onClick={() => handleClone(producto.idProducto)}>{t('admin.products.clone')}</Button>
-                    <Button size="sm" variant="light" onClick={() => handleDelete(producto.idProducto)}>{t('admin.products.delete')}</Button>
+                  <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
+                    <Button size="sm" variant="info" className="w-full sm:w-auto" onClick={() => handleEdit(producto)}>{t('admin.products.edit')}</Button>
+                    <Button size="sm" variant="secondary" className="w-full sm:w-auto" onClick={() => handleClone(producto.idProducto)}>{t('admin.products.clone')}</Button>
+                    <Button size="sm" variant="light" className="w-full sm:w-auto" onClick={() => handleDelete(producto.idProducto)}>{t('admin.products.delete')}</Button>
                   </div>
                 </td>
               </tr>

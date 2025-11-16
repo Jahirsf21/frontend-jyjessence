@@ -6,10 +6,13 @@ import Button from '../../components/ui/Button.jsx';
 export default function OrdersManagement() {
   const { t } = useTranslation();
   const [pedidos, setPedidos] = useState([]);
+  const [filtros, setFiltros] = useState({ id: '', cliente: '', fecha: '', estado: '', total: '', items: '' });
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
   const [mostrarDetalles, setMostrarDetalles] = useState(false);
+  const [paginaActual, setPaginaActual] = useState(1);
+  const pedidosPorPagina = 10;
 
   const estados = [t('admin.orders.status.pending'), t('admin.orders.status.processing'), t('admin.orders.status.shipped'), t('admin.orders.status.delivered'), t('admin.orders.status.cancelled')];
 
@@ -22,11 +25,40 @@ export default function OrdersManagement() {
       setCargando(true);
       const data = await ecommerceFacade.getAllOrders();
       setPedidos(data);
+      setPaginaActual(1);
       setError(null);
     } catch (err) {
       setError(err.message);
     } finally {
       setCargando(false);
+    }
+  };
+
+  const handleFiltroChange = (e) => {
+    const { name, value } = e.target;
+    setFiltros(prev => ({ ...prev, [name]: value }));
+    setPaginaActual(1);
+  };
+
+  const pedidosFiltrados = pedidos.filter((pedido) => {
+    const idMatch = String(pedido.idPedido || '').toLowerCase().includes(filtros.id.trim().toLowerCase());
+    const clienteCadena = `${pedido.cliente?.nombre || ''} ${pedido.cliente?.apellido || ''} ${pedido.cliente?.email || ''}`.toLowerCase();
+    const clienteMatch = clienteCadena.includes(filtros.cliente.trim().toLowerCase());
+    const fechaMatch = (pedido.fechaFormateada || '').toLowerCase().includes(filtros.fecha.trim().toLowerCase());
+    const estadoMatch = (pedido.estado || '').toLowerCase().includes(filtros.estado.trim().toLowerCase());
+    const totalMatch = (pedido.totalFormateado || '').toLowerCase().includes(filtros.total.trim().toLowerCase());
+    const itemsMatch = String(pedido.itemCount ?? '').toLowerCase().includes(filtros.items.trim().toLowerCase());
+
+    return idMatch && clienteMatch && fechaMatch && estadoMatch && totalMatch && itemsMatch;
+  });
+
+  const totalPaginas = Math.max(1, Math.ceil(pedidosFiltrados.length / pedidosPorPagina));
+  const indiceInicial = (paginaActual - 1) * pedidosPorPagina;
+  const pedidosPagina = pedidosFiltrados.slice(indiceInicial, indiceInicial + pedidosPorPagina);
+
+  const handlePaginaChange = (nuevaPagina) => {
+    if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+      setPaginaActual(nuevaPagina);
     }
   };
 
@@ -83,6 +115,95 @@ export default function OrdersManagement() {
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900">{t('admin.orders.title')}</h2>
         <p className="text-sm text-gray-600 mt-1">{t('admin.orders.total')}: {pedidos.length}</p>
+      </div>
+
+      <div className="bg-white border rounded-lg shadow-sm p-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-pedido-id">
+              {t('admin.orders.filter.id')}
+            </label>
+            <input
+              id="filtro-pedido-id"
+              name="id"
+              type="text"
+              value={filtros.id}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.orders.filter.idPlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-pedido-cliente">
+              {t('admin.orders.filter.client')}
+            </label>
+            <input
+              id="filtro-pedido-cliente"
+              name="cliente"
+              type="text"
+              value={filtros.cliente}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.orders.filter.clientPlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-pedido-fecha">
+              {t('admin.orders.filter.date')}
+            </label>
+            <input
+              id="filtro-pedido-fecha"
+              name="fecha"
+              type="text"
+              value={filtros.fecha}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.orders.filter.datePlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-pedido-estado">
+              {t('admin.orders.filter.status')}
+            </label>
+            <input
+              id="filtro-pedido-estado"
+              name="estado"
+              type="text"
+              value={filtros.estado}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.orders.filter.statusPlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-pedido-total">
+              {t('admin.orders.filter.total')}
+            </label>
+            <input
+              id="filtro-pedido-total"
+              name="total"
+              type="text"
+              value={filtros.total}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.orders.filter.totalPlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-pedido-items">
+              {t('admin.orders.filter.items')}
+            </label>
+            <input
+              id="filtro-pedido-items"
+              name="items"
+              type="text"
+              value={filtros.items}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.orders.filter.itemsPlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Modal de Detalles */}
@@ -203,7 +324,7 @@ export default function OrdersManagement() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {pedidos.map((pedido) => (
+            {pedidosPagina.map((pedido) => (
               <tr key={pedido.idPedido} className="hover:bg-gray-50">
                 <td className="px-4 py-3 text-sm font-medium text-gray-900">
                   #{pedido.idPedido}
@@ -247,12 +368,40 @@ export default function OrdersManagement() {
           </tbody>
         </table>
 
-        {pedidos.length === 0 && (
+        {pedidosFiltrados.length === 0 && (
           <div className="text-center py-12 text-gray-500">
             {t('admin.orders.noOrders')}
           </div>
         )}
       </div>
+
+      {pedidosFiltrados.length > pedidosPorPagina && (
+        <div className="flex justify-center items-center gap-2 mt-6">
+          <button
+            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            onClick={() => handlePaginaChange(paginaActual - 1)}
+            disabled={paginaActual === 1}
+          >
+            {t('pagination.prev', 'Anterior')}
+          </button>
+          {[...Array(totalPaginas)].map((_, idx) => (
+            <button
+              key={idx}
+              className={`px-3 py-1 rounded ${paginaActual === idx + 1 ? 'bg-indigo-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+              onClick={() => handlePaginaChange(idx + 1)}
+            >
+              {idx + 1}
+            </button>
+          ))}
+          <button
+            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            onClick={() => handlePaginaChange(paginaActual + 1)}
+            disabled={paginaActual === totalPaginas}
+          >
+            {t('pagination.next', 'Siguiente')}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

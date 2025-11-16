@@ -6,12 +6,15 @@ import Button from '../../components/ui/Button.jsx';
 export default function ClientsManagement() {
   const { t } = useTranslation();
   const [clientes, setClientes] = useState([]);
+  const [filtros, setFiltros] = useState({ nombre: '', email: '', cedula: '', rol: '' });
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [mostrarDetalles, setMostrarDetalles] = useState(false);
   const [editando, setEditando] = useState(false);
   const [form, setForm] = useState({ email: '', role: 'USER' });
+  const [paginaActual, setPaginaActual] = useState(1);
+  const clientesPorPagina = 10;
 
   useEffect(() => {
     cargarClientes();
@@ -27,6 +30,36 @@ export default function ClientsManagement() {
       setError(err.message);
     } finally {
       setCargando(false);
+    }
+  };
+
+  const handleFiltroChange = (e) => {
+    const { name, value } = e.target;
+    setFiltros(prev => ({ ...prev, [name]: value }));
+    setPaginaActual(1);
+  };
+
+  const clientesFiltrados = clientes.filter((cliente) => {
+    const nombreCompleto = `${cliente.nombre || ''} ${cliente.apellido || ''}`.toLowerCase();
+    const correo = (cliente.email || '').toLowerCase();
+    const cedula = (cliente.cedula || '').toString();
+    const rol = (cliente.role || cliente.rol || '').toLowerCase();
+
+    const nombreMatch = nombreCompleto.includes(filtros.nombre.trim().toLowerCase());
+    const emailMatch = correo.includes(filtros.email.trim().toLowerCase());
+    const cedulaMatch = cedula.includes(filtros.cedula.trim());
+    const rolMatch = rol.includes(filtros.rol.trim().toLowerCase());
+
+    return nombreMatch && emailMatch && cedulaMatch && rolMatch;
+  });
+
+  const totalPaginas = Math.max(1, Math.ceil(clientesFiltrados.length / clientesPorPagina));
+  const indiceInicial = (paginaActual - 1) * clientesPorPagina;
+  const clientesPagina = clientesFiltrados.slice(indiceInicial, indiceInicial + clientesPorPagina);
+
+  const handlePaginaChange = (nuevaPagina) => {
+    if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+      setPaginaActual(nuevaPagina);
     }
   };
 
@@ -103,6 +136,67 @@ export default function ClientsManagement() {
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900">{t('admin.clients.title')}</h2>
         <p className="text-sm text-gray-600 mt-1">{t('admin.clients.total')}: {clientes.length}</p>
+      </div>
+
+      <div className="bg-white border rounded-lg shadow-sm p-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-cliente-nombre">
+              {t('admin.clients.filter.name')}
+            </label>
+            <input
+              id="filtro-cliente-nombre"
+              name="nombre"
+              type="text"
+              value={filtros.nombre}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.clients.filter.namePlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-cliente-email">
+              {t('admin.clients.filter.email')}
+            </label>
+            <input
+              id="filtro-cliente-email"
+              name="email"
+              type="text"
+              value={filtros.email}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.clients.filter.emailPlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-cliente-cedula">
+              {t('admin.clients.filter.idCard')}
+            </label>
+            <input
+              id="filtro-cliente-cedula"
+              name="cedula"
+              type="text"
+              value={filtros.cedula}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.clients.filter.idCardPlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-cliente-rol">
+              {t('admin.clients.filter.role')}
+            </label>
+            <input
+              id="filtro-cliente-rol"
+              name="rol"
+              type="text"
+              value={filtros.rol}
+              onChange={handleFiltroChange}
+              placeholder={t('admin.clients.filter.rolePlaceholder')}
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Modal de Detalles */}
@@ -227,7 +321,7 @@ export default function ClientsManagement() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {clientes.map((cliente) => (
+            {clientesPagina.map((cliente) => (
               <tr key={cliente.idCliente} className="hover:bg-gray-50">
                 <td className="px-4 py-3">
                   <div className="font-medium text-gray-900">
@@ -259,12 +353,40 @@ export default function ClientsManagement() {
           </tbody>
         </table>
 
-        {clientes.length === 0 && (
+        {clientesFiltrados.length === 0 && (
           <div className="text-center py-12 text-gray-500">
             {t('admin.clients.noClients')}
           </div>
         )}
       </div>
+
+      {clientesFiltrados.length > clientesPorPagina && (
+        <div className="flex justify-center items-center gap-2 mt-6">
+          <button
+            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            onClick={() => handlePaginaChange(paginaActual - 1)}
+            disabled={paginaActual === 1}
+          >
+            {t('pagination.prev', 'Anterior')}
+          </button>
+          {[...Array(totalPaginas)].map((_, idx) => (
+            <button
+              key={idx}
+              className={`px-3 py-1 rounded ${paginaActual === idx + 1 ? 'bg-indigo-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+              onClick={() => handlePaginaChange(idx + 1)}
+            >
+              {idx + 1}
+            </button>
+          ))}
+          <button
+            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            onClick={() => handlePaginaChange(paginaActual + 1)}
+            disabled={paginaActual === totalPaginas}
+          >
+            {t('pagination.next', 'Siguiente')}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

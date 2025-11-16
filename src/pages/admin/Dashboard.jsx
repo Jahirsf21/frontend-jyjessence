@@ -64,7 +64,7 @@ export default function Dashboard() {
               </ul>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 hidden md:block">
               <Button as={Link} to="/" variant="light" block size="md">{t('admin.dashboard.backToStore')}</Button>
             </div>
           </aside>
