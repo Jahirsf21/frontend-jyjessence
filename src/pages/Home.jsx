@@ -270,7 +270,7 @@ return (
           {productosPagina.map(producto => (
             <div
               key={producto.idProducto}
-              className="bg-white rounded-xl shadow-md p-3 md:p-4 flex flex-col relative"
+              className="bg-white rounded-xl shadow-md p-3 md:p-4 flex flex-col relative h-full"
               tabIndex={0}
               onMouseEnter={e => {
                 if (mouseReadingEnabled) {
@@ -309,11 +309,13 @@ return (
                   </>
                 );
               })()}
-              <div className="font-bold text-gray-900 text-sm md:text-base mb-2 line-clamp-2 text-left">
-                {producto.nombre}
-              </div>
-              <div className="text-xs text-gray-600 mb-3 text-left">
-                {t(`category.${producto.categoria}`, { defaultValue: producto.categoria })} • {t(`gender.${producto.genero}`, { defaultValue: producto.genero })} • {producto.mililitros} ml
+              <div className="flex-1 flex flex-col">
+                <div className="font-bold text-gray-900 text-sm md:text-base mb-1 min-h-[2.5rem] md:min-h-[3rem] line-clamp-2 text-left">
+                  {producto.nombre}
+                </div>
+                <div className="text-xs text-gray-600 mb-2 text-left">
+                  {t(`category.${producto.categoria}`, { defaultValue: producto.categoria })} • {t(`gender.${producto.genero}`, { defaultValue: producto.genero })} • {producto.mililitros} ml
+                </div>
               </div>
               <div className="font-bold text-blue-600 text-lg md:text-xl mb-3 text-left">
                 ₡{producto.precio.toLocaleString('es-CR')}
