@@ -242,7 +242,7 @@ export default function ProductsManagement() {
             />
           </div>
           <div className="flex items-end">
-            <Link to="/admin/products/new" className="w-full">
+            <Link to="/admin/products/new" className="w-full block">
               <Button variant="primary" className="w-full">+ {t('admin.products.newProduct')}</Button>
             </Link>
           </div>

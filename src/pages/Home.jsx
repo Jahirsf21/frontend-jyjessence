@@ -123,7 +123,7 @@ function FiltrosContent({
 }
 
 function Home() {
-  const { mouseReadingEnabled, readElement } = useVoiceReader();
+  const { mouseReadingEnabled, speak } = useVoiceReader();
   const { t } = useTranslation();
   const { openSearchPanel, closeSearch } = useSearchPanel();
   const [productos, setProductos] = useState([]);
@@ -272,10 +272,10 @@ return (
               key={producto.idProducto}
               className="bg-white rounded-xl shadow-md p-3 md:p-4 flex flex-col relative h-full"
               tabIndex={0}
-              onMouseEnter={e => {
+              onMouseEnter={() => {
                 if (mouseReadingEnabled) {
                   const texto = `${producto.nombre}, ${t(`category.${producto.categoria}`, { defaultValue: producto.categoria })}, ${t(`gender.${producto.genero}`, { defaultValue: producto.genero })}, ₡${producto.precio.toLocaleString('es-CR')}`;
-                  readElement(texto);
+                  speak(texto);
                 }
               }}
             >

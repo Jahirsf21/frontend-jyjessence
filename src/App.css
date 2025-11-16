@@ -48,3 +48,26 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;  /* Safari and Chrome */
 }
+
+.scrollbar-elegant::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-elegant::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 9999px;
+}
+
+.scrollbar-elegant::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c7d2fe, #a5b4fc);
+  border-radius: 9999px;
+}
+
+.scrollbar-elegant::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a5b4fc, #818cf8);
+}
+
+.scrollbar-elegant {
+  scrollbar-width: thin;
+  scrollbar-color: #a5b4fc #f1f5f9;
+}

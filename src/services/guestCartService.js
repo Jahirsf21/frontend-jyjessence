@@ -110,6 +110,7 @@ class GuestCartService {
   clearCart() {
     try {
       localStorage.removeItem(this.CART_KEY);
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
       return { items: [], total: 0, cantidadItems: 0 };
     } catch (error) {
       console.error('Error clearing guest cart:', error);

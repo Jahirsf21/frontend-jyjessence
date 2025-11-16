@@ -417,6 +417,8 @@ class EcommerceFacade {
 
         const pedido = await this.cart.finalize(direccionId);
 
+        window.dispatchEvent(new CustomEvent('cartUpdated'));
+
         return {
           success: true,
           message: 'Pedido realizado exitosamente',
@@ -433,6 +435,8 @@ class EcommerceFacade {
 
         // Crear pedido de invitado
         const pedido = await this.cart.finalizeGuestOrder(guestInfo, resumenCarrito.items);
+
+        window.dispatchEvent(new CustomEvent('cartUpdated'));
 
         return {
           success: true,
@@ -473,16 +477,25 @@ class EcommerceFacade {
 
   async getOrderDetails(idPedido) {
     try {
-      const pedido = await this.orders.getById(idPedido);
+      const data = await this.orders.getById(idPedido);
+
+      const pedidoBase = data?.pedido || data || {};
+      const cliente = data?.cliente || pedidoBase?.cliente || {};
+      const articulos = data?.items || pedidoBase?.articulos || [];
+
+      const fecha = pedidoBase.fecha ? new Date(pedidoBase.fecha) : null;
+      const montoTotal = pedidoBase.montoTotal ?? 0;
 
       return {
-        ...pedido,
-        fechaFormateada: new Date(pedido.fecha).toLocaleDateString('es-CR'),
-        totalFormateado: `₡${(pedido.montoTotal ?? 0).toFixed(2)}`,
-        articulos: (pedido.articulos || []).map(art => ({
+        ...pedidoBase,
+        idPedido: pedidoBase.idPedido || pedidoBase.id,
+        cliente,
+        articulos: articulos.map(art => ({
           ...art,
-          subtotalFormateado: `₡${(art.precioUnitario * art.cantidad).toFixed(2)}`
-        }))
+          subtotalFormateado: `₡${((art.precioUnitario ?? 0) * (art.cantidad ?? 0)).toFixed(2)}`
+        })),
+        fechaFormateada: fecha ? fecha.toLocaleDateString('es-CR') : '',
+        totalFormateado: `₡${montoTotal.toFixed(2)}`
       };
     } catch (error) {
       throw new Error('Pedido no encontrado');
@@ -528,8 +541,8 @@ class EcommerceFacade {
   // ==========================================
   async getAddresses() {
     try {
-      const direcciones = await addressService.getAddresses();
-      return direcciones || [];
+      const perfil = await this.auth.getProfile();
+      return perfil?.direcciones || [];
     } catch (error) {
       throw new Error(error.response?.data?.error || 'Error al cargar direcciones');
     }
