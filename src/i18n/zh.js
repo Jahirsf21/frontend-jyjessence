@@ -145,7 +145,15 @@ const translation = {
   "products.catalogSubtitle": "探索我们的独家香水系列",
   "products.foundCount": "找到 {{count}} 个产品",
   "products.noResults": "未找到符合所选筛选条件的产品",
-  "products.stock": "库存: {{stock}}",
+    "products.stock": "库存: {{stock}}",
+    "products.filter": {
+      "name": "名称",
+      "namePlaceholder": "按名称搜索...",
+      "category": "类别",
+      "categoryPlaceholder": "按类别搜索...",
+      "price": "价格",
+      "pricePlaceholder": "按价格搜索..."
+    },
   "filters.clearFilters": "清除筛选",
   "category.ExtraitDeParfum": "香水精",
   "category.Parfum": "香水",

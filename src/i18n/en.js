@@ -156,7 +156,15 @@ const translation = {
   "products.catalogSubtitle": "Explore our selection of exclusive fragrances",
   "products.foundCount": "{{count}} {{count, plural, one {product found} other {products found}}}",
   "products.noResults": "No products found with selected filters",
-  "products.stock": "Stock: {{stock}}",
+    "products.stock": "Stock: {{stock}}",
+    "products.filter": {
+      "name": "Name",
+      "namePlaceholder": "Search by name...",
+      "category": "Category",
+      "categoryPlaceholder": "Search by category...",
+      "price": "Price",
+      "pricePlaceholder": "Search by price..."
+    },
   "filters.title": "Filters",
   "filters.clearFilters": "Clear Filters",
   "search.title": "Search",

@@ -2,7 +2,17 @@ const translation = {
   "admin.products.preview": "Preview",
   "admin.products.chooseImages": "Këkë fotos",
   "nav.home": "Sókölpa",
-  "home.button": "Sókölpa",
+    "products.catalogTitle": "Tkámu kátöka",
+    products: {
+      filter: {
+        name: 'Së',
+        namePlaceholder: 'Së tsö tsö...',
+        category: 'Kategória',
+        categoryPlaceholder: 'Kategória tsö...',
+        price: 'Prezio',
+        pricePlaceholder: 'Prezio tsö...'
+      }
+    },
   "nav.catalog": "Kátöka",
   "nav.cart": "Súla",
   "orders": "Díkamo",

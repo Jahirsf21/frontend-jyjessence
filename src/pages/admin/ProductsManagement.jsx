@@ -8,6 +8,9 @@ export default function ProductsManagement() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
+  const [paginaActual, setPaginaActual] = useState(1);
+  const productosPorPagina = 10;
+  const [filtros, setFiltros] = useState({ nombre: '', categoria: '', precio: '' });
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -27,21 +30,46 @@ export default function ProductsManagement() {
   });
 
   useEffect(() => {
-    cargarProductos();
+      cargarProductos();
   }, []);
 
-  const cargarProductos = async () => {
-    try {
-      setCargando(true);
-      const data = await ecommerceFacade.getCatalog();
-      setProductos(data);
-      setError(null);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setCargando(false);
-    }
-  };
+    const cargarProductos = async () => {
+      try {
+        setCargando(true);
+        const data = await ecommerceFacade.getCatalog();
+        setProductos(data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    // Filtrar productos según los filtros
+    const productosFiltrados = productos.filter(producto => {
+      const nombreMatch = producto.nombre.toLowerCase().includes(filtros.nombre.toLowerCase());
+      const categoriaMatch = filtros.categoria === '' || producto.categoria.toLowerCase().includes(filtros.categoria.toLowerCase());
+      const precioMatch = filtros.precio === '' || (producto.precio && producto.precio.toString().includes(filtros.precio));
+      return nombreMatch && categoriaMatch && precioMatch;
+    });
+
+    // Paginación
+    const totalPaginas = Math.ceil(productosFiltrados.length / productosPorPagina);
+    const indiceInicial = (paginaActual - 1) * productosPorPagina;
+    const productosPagina = productosFiltrados.slice(indiceInicial, indiceInicial + productosPorPagina);
+
+    const handleFiltroChange = (e) => {
+      const { name, value } = e.target;
+      setFiltros(prev => ({ ...prev, [name]: value }));
+      setPaginaActual(1); // Resetear a la primera página al filtrar
+    };
+
+    const handlePaginaChange = (nuevaPagina) => {
+      if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+        setPaginaActual(nuevaPagina);
+      }
+    };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -174,13 +202,50 @@ export default function ProductsManagement() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">{t('admin.products.title')}</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('admin.products.title')}</h2>
+      <div className="flex flex-wrap gap-4 mb-4 items-end justify-between">
+        <div className="flex flex-wrap gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-nombre">{t('products.filter.name')}</label>
+            <input
+              id="filtro-nombre"
+              name="nombre"
+              type="text"
+              value={filtros.nombre}
+              onChange={handleFiltroChange}
+              placeholder={t('products.filter.namePlaceholder')}
+              className="border rounded px-3 py-2 w-40"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-categoria">{t('products.filter.category')}</label>
+            <input
+              id="filtro-categoria"
+              name="categoria"
+              type="text"
+              value={filtros.categoria}
+              onChange={handleFiltroChange}
+              placeholder={t('products.filter.categoryPlaceholder')}
+              className="border rounded px-3 py-2 w-40"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-precio">{t('products.filter.price')}</label>
+            <input
+              id="filtro-precio"
+              name="precio"
+              type="text"
+              value={filtros.precio}
+              onChange={handleFiltroChange}
+              placeholder={t('products.filter.pricePlaceholder')}
+              className="border rounded px-3 py-2 w-40"
+            />
+          </div>
+        </div>
         <Link to="/admin/products/new">
           <Button variant="primary">+ {t('admin.products.newProduct')}</Button>
         </Link>
       </div>
-
 
       {/* Lista de Productos */}
       <div className="overflow-x-auto">
@@ -195,7 +260,7 @@ export default function ProductsManagement() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {productos.map((producto) => (
+            {productosPagina.map((producto) => (
               <tr key={producto.idProducto} className="hover:bg-gray-50">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
@@ -234,12 +299,41 @@ export default function ProductsManagement() {
           </tbody>
         </table>
 
-        {productos.length === 0 && (
+        {productosFiltrados.length === 0 && (
           <div className="text-center py-12 text-gray-500">
             {t('products.empty')}
           </div>
         )}
       </div>
+
+      {/* Paginación */}
+      {totalPaginas > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-6">
+          <button
+            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            onClick={() => handlePaginaChange(paginaActual - 1)}
+            disabled={paginaActual === 1}
+          >
+            {t('pagination.prev', 'Anterior')}
+          </button>
+          {[...Array(totalPaginas)].map((_, idx) => (
+            <button
+              key={idx}
+              className={`px-3 py-1 rounded ${paginaActual === idx + 1 ? 'bg-indigo-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+              onClick={() => handlePaginaChange(idx + 1)}
+            >
+              {idx + 1}
+            </button>
+          ))}
+          <button
+            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            onClick={() => handlePaginaChange(paginaActual + 1)}
+            disabled={paginaActual === totalPaginas}
+          >
+            {t('pagination.next', 'Siguiente')}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

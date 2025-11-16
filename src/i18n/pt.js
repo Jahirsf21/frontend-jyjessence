@@ -145,7 +145,15 @@ const translation = {
   "products.catalogSubtitle": "Explore nossa seleção de fragrâncias exclusivas",
   "products.foundCount": "{{count}} {{count, plural, one {produto encontrado} other {produtos encontrados}}}",
   "products.noResults": "Nenhum produto encontrado com os filtros selecionados",
-  "products.stock": "Estoque: {{stock}}",
+    "products.stock": "Estoque: {{stock}}",
+    "products.filter": {
+      "name": "Nome",
+      "namePlaceholder": "Buscar por nome...",
+      "category": "Categoria",
+      "categoryPlaceholder": "Buscar por categoria...",
+      "price": "Preço",
+      "pricePlaceholder": "Buscar por preço..."
+    },
   "filters.clearFilters": "Limpar Filtros",
   "category.ExtraitDeParfum": "Extrait de Parfum",
   "category.Parfum": "Parfum",
