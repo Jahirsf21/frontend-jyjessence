@@ -232,7 +232,7 @@ export default function ProductsManagement() {
 
       {/* Formulario Modal */}
       {mostrarFormulario && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-32">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
             <h3 className="text-xl font-bold mb-4">
               {productoEditando ? t('admin.products.editProduct') : t('admin.products.newProduct')}
@@ -381,24 +381,9 @@ export default function ProductsManagement() {
                 />
 
                 {formulario.imagenesUrl.length > 0 && (
-                  <div className="mt-3 grid grid-cols-4 gap-2">
-                    {formulario.imagenesUrl.map((url, index) => (
-                      <div key={index} className="relative group">
-                        <img
-                          src={url}
-                          alt={`Imagen ${index + 1}`}
-                          className="w-full h-24 object-cover rounded border"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveImage(url, index)}
-                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="text-sm text-gray-500 mt-2">
+                    {formulario.imagenesUrl.length} {formulario.imagenesUrl.length === 1 ? 'imagen cargada' : 'imágenes cargadas'}
+                  </p>
                 )}
               </div>
 
@@ -454,8 +439,8 @@ export default function ProductsManagement() {
                 <td className="px-4 py-3 text-right">
                   <div className="flex flex-wrap justify-end gap-2">
                     <Button size="sm" variant="info" onClick={() => handleEdit(producto)}>{t('admin.products.edit')}</Button>
-                    <Button size="sm" variant="success" onClick={() => handleClone(producto.idProducto)}>{t('admin.products.clone')}</Button>
-                    <Button size="sm" variant="danger" onClick={() => handleDelete(producto.idProducto)}>{t('admin.products.delete')}</Button>
+                    <Button size="sm" variant="secondary" onClick={() => handleClone(producto.idProducto)}>{t('admin.products.clone')}</Button>
+                    <Button size="sm" variant="light" onClick={() => handleDelete(producto.idProducto)}>{t('admin.products.delete')}</Button>
                   </div>
                 </td>
               </tr>
