@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useVoiceReader } from '../hooks/useVoiceReader';
 import ButtonNav from '../components/ui/ButtonNav';
 import Swal from 'sweetalert2';
@@ -50,16 +50,23 @@ function FiltrosContent({
 
 			<div className="mb-6">
 				<h3 className="font-semibold mb-2">{t('search.title')}</h3>
-				<input
-					type="text"
-					placeholder={t('search.placeholder')}
-					className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-					value={busqueda}
-					onChange={e => {
-						setBusqueda(e.target.value);
-						setPagina(1);
-					}}
-				/>
+				<div className="flex gap-2">
+					<input
+						type="text"
+						placeholder={t('search.placeholder')}
+						className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						value={busqueda}
+						onChange={e => {
+							setBusqueda(e.target.value);
+							setPagina(1);
+						}}
+					/>
+
+					{/* Voice search button */}
+					{typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition) ? (
+						<VoiceButton setBusqueda={setBusqueda} setPagina={setPagina} compact />
+					) : null}
+				</div>
 			</div>
 
 			<div className="mb-6">
@@ -118,6 +125,131 @@ function FiltrosContent({
 				</div>
 			</div>
 		</>
+	);
+}
+
+function VoiceButton({ setBusqueda, setPagina, compact = false }) {
+	const recognitionRef = useRef(null);
+	const [listening, setListening] = useState(false);
+
+	const { t, i18n } = useTranslation();
+
+	const getSpeechLang = (lang) => {
+		if (!lang) return 'es-CR';
+		const code = lang.split('-')[0];
+		switch (code) {
+			case 'es': return 'es-CR';
+			case 'en': return 'en-US';
+			case 'fr': return 'fr-FR';
+			case 'pt': return 'pt-PT';
+			case 'zh': return 'zh-CN';
+			default: return lang;
+		}
+	};
+
+	const supportsRecognition = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
+
+	const startListening = () => {
+		if (!supportsRecognition) return;
+		const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+		try {
+			if (recognitionRef.current) {
+				try { recognitionRef.current.stop(); } catch (err) { }
+				recognitionRef.current = null;
+			}
+			recognitionRef.current = new SpeechRecognition();
+			recognitionRef.current.lang = getSpeechLang(i18n.language);
+			recognitionRef.current.interimResults = true;
+			recognitionRef.current.maxAlternatives = 1;
+
+			recognitionRef.current.onstart = () => setListening(true);
+
+			recognitionRef.current.onresult = (event) => {
+				let transcript = '';
+				for (let i = event.resultIndex; i < event.results.length; i++) {
+					transcript += event.results[i][0].transcript;
+				}
+				transcript = transcript.trim().replace(/[\.\?,!¡¿]+$/u, '');
+				setBusqueda(transcript);
+			};
+
+			recognitionRef.current.onend = () => {
+				setListening(false);
+				setPagina(1);
+			};
+
+			recognitionRef.current.onnomatch = () => { };
+
+			recognitionRef.current.onerror = (e) => {
+				setListening(false);
+				const errCode = e && e.error ? e.error : 'unknown';
+				if (errCode === 'network') {
+					// network errors in Home's compact voice button are silent (no red text)
+					// keep behavior non-intrusive here
+				} else {
+					try { Swal.fire({ icon: 'error', title: t('swal.error'), text: (e && e.message) || t('voice.recognitionFailed') }); } catch (swalErr) { }
+				}
+			};
+
+			recognitionRef.current.start();
+			setListening(true);
+		} catch (err) {
+			// ignore
+		}
+	};
+
+	const stopListening = () => {
+		if (recognitionRef.current) {
+			try {
+				recognitionRef.current.stop();
+			} catch (err) {
+				// ignore stop errors
+			}
+		}
+		setListening(false);
+	};
+
+	const toggleListening = () => {
+		if (!supportsRecognition) return;
+		if (listening) stopListening(); else startListening();
+	};
+
+	useEffect(() => {
+		if (!supportsRecognition) return;
+		if (listening) {
+			try {
+				if (recognitionRef.current) {
+					try { recognitionRef.current.stop(); } catch (err) { }
+					recognitionRef.current = null;
+				}
+				startListening();
+			} catch (err) { }
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [i18n.language]);
+
+	if (!supportsRecognition) return null;
+
+	const btnClass = compact
+		? `w-8 h-8 p-1 rounded-md border flex items-center justify-center ${listening ? 'bg-red-100 border-red-400' : 'bg-white border-gray-200'} hover:bg-gray-50`
+		: `w-12 h-12 rounded-lg flex items-center justify-center border ${listening ? 'bg-red-100 border-red-400' : 'bg-white border-gray-200'} hover:bg-gray-50`;
+
+	const imgClass = compact ? `w-4 h-4 object-contain ${listening ? 'opacity-100' : 'opacity-90'}` : `w-5 h-5 object-contain ${listening ? 'opacity-100' : 'opacity-90'}`;
+
+	return (
+		<div className={compact ? 'flex items-center' : 'flex flex-col items-center'}>
+			<button
+				type="button"
+				onClick={toggleListening}
+				aria-pressed={listening}
+				className={btnClass}
+				title={listening ? 'Stop voice search' : 'Voice search'}
+			>
+				<img src="https://res.cloudinary.com/drec8g03e/image/upload/v1763353745/microfono_jnyork.png" alt="mic" className={imgClass} />
+			</button>
+			{listening && !compact && <div className="mt-1 text-xs text-gray-500">Escuchando...</div>}
+			{/* no inline network error shown in Home VoiceButton (keeps UI non-intrusive) */}
+		</div>
 	);
 }
 

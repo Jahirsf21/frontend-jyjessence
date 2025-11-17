@@ -63,9 +63,7 @@ const translation = {
   "accessibility.goBack": "Retour",
   "accessibility.enabled": "Activé",
   "accessibility.disabled": "Désactivé",
-  "accessibility.highContrast.title": "Contraste Élevé",
-  "accessibility.highContrast.description": "Augmente le contraste des couleurs pour améliorer la lisibilité du contenu.",
-  "accessibility.highContrast.toggle": "Activer le contraste élevé",
+  
   "accessibility.voiceReader.title": "Lecteur Vocal",
   "accessibility.voiceReader.description": "Activez le lecteur vocal pour écouter le contenu de la page à voix haute.",
   "accessibility.voiceReader.toggle": "Activer le lecteur vocal",
@@ -77,7 +75,6 @@ const translation = {
   "accessibility.voice.stop": "Arrêter la lecture",
   "accessibility.keyboard.title": "Navigation au Clavier",
   "accessibility.instructions.title": "Comment utiliser les fonctions d'accessibilité",
-  "accessibility.instructions.contrast": "Activez-le pour améliorer le contraste entre le texte et l'arrière-plan.",
   "accessibility.instructions.voice": "Activez-le et utilisez les boutons pour écouter le contenu.",
   "accessibility.instructions.keyboard": "Utilisez Tab pour naviguer et Entrée pour sélectionner les options.",
   "nav.search": "Rechercher",
@@ -259,6 +256,9 @@ const translation = {
   "swal.addressUpdateError": "Impossible de mettre à jour l'adresse",
   "swal.addressDeleted": "Adresse supprimée",
   "swal.addressDeleteError": "Impossible de supprimer l'adresse",
+
+  "voice.recognitionFailed": "Impossible de reconnaître la voix",
+  "voice.networkUnavailable": "Service de reconnaissance vocale indisponible",
   "swal.emailUpdated": "Email mis à jour",
   "swal.emailUpdateError": "Impossible de mettre à jour l'email",
   "swal.phoneUpdated": "Téléphone mis à jour",

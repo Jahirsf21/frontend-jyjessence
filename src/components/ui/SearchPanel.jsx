@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { fetchEnums } from '../../services/api';
 import Ecommerce from '../../patterns/EcommerceFacade';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSearchPanel } from '../../context/SearchPanelContext';
+import Swal from 'sweetalert2';
 
 export default function SearchPanel() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -46,8 +47,8 @@ export default function SearchPanel() {
         setCategorias(enums?.CategoriaPerfume || []);
         setGeneros(enums?.Genero || []);
       } catch (err) {
-        console.error('Error al obtener datos:', err);
-      }
+          // failed to load enums/catalog - ignore silently
+        }
     };
     if (openSearchPanel) cargarDatos();
   }, [openSearchPanel]);
@@ -70,6 +71,107 @@ export default function SearchPanel() {
     closeSearch();
   };
 
+  // Speech recognition for voice search (Web Speech API)
+  const recognitionRef = useRef(null);
+  const [listening, setListening] = useState(false);
+  const [recognitionError, setRecognitionError] = useState('');
+
+  const supportsRecognition = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
+
+  const getSpeechLang = (lang) => {
+    if (!lang) return 'es-CR';
+    const code = lang.split('-')[0];
+    switch (code) {
+      case 'es': return 'es-CR';
+      case 'en': return 'en-US';
+      case 'fr': return 'fr-FR';
+      case 'pt': return 'pt-PT';
+      case 'zh': return 'zh-CN';
+      default: return lang;
+    }
+  };
+
+  const startListening = () => {
+    if (!supportsRecognition) return;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    // always (re)create recognition to ensure language is current
+    try {
+      if (recognitionRef.current) {
+        try { recognitionRef.current.stop(); } catch (err) { }
+        recognitionRef.current = null;
+      }
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.lang = getSpeechLang(i18n.language);
+      recognitionRef.current.interimResults = true;
+      recognitionRef.current.maxAlternatives = 1;
+
+      recognitionRef.current.onstart = () => setListening(true);
+
+      recognitionRef.current.onresult = (event) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        transcript = transcript.trim().replace(/[\.\?,!¡¿]+$/u, '');
+        setBusqueda(transcript);
+      };
+
+      recognitionRef.current.onend = () => {
+        setListening(false);
+      };
+
+      recognitionRef.current.onnomatch = () => { };
+
+      recognitionRef.current.onerror = (e) => {
+        setListening(false);
+        const errCode = e && e.error ? e.error : 'unknown';
+        if (errCode === 'network') {
+          setRecognitionError(t('voice.networkUnavailable'));
+          setTimeout(() => setRecognitionError(''), 4000);
+        } else {
+          try { Swal.fire({ icon: 'error', title: t('swal.error'), text: (e && e.message) || t('voice.recognitionFailed') }); } catch (swalErr) { }
+        }
+      };
+
+      recognitionRef.current.start();
+      setListening(true);
+    } catch (err) {
+      // ignore start errors
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch (err) {
+        // ignore stop errors
+      }
+    }
+    setListening(false);
+  };
+
+  const toggleListening = () => {
+    if (!supportsRecognition) return;
+    if (listening) stopListening(); else startListening();
+  };
+
+  useEffect(() => {
+    if (!supportsRecognition) return;
+    if (listening) {
+      try {
+        if (recognitionRef.current) {
+          try { recognitionRef.current.stop(); } catch (err) { }
+          recognitionRef.current = null;
+        }
+        startListening();
+      } catch (err) {
+        // ignore
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language]);
+
   return (
     <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[1002] transition-all duration-300 ${openSearchPanel ? 'translate-x-0' : 'translate-x-full'} flex flex-col`}>
       <div className="flex items-center p-4 border-b bg-gray-50">
@@ -87,13 +189,35 @@ export default function SearchPanel() {
             value={busqueda}
             onChange={e => setBusqueda(e.target.value)}
           />
-          <button
-            type="button"
-            className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
-            onClick={handleSearch}
-          >
-            {t('common.search')}
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              className="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
+              onClick={handleSearch}
+            >
+              {t('common.search')}
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleListening}
+              aria-pressed={listening}
+              title={supportsRecognition ? (listening ? 'Stop voice search' : 'Voice search') : 'Voice search not supported'}
+              className={`w-12 h-12 rounded-lg flex items-center justify-center border ${listening ? 'bg-red-100 border-red-400' : 'bg-white border-gray-200'} hover:bg-gray-50`}
+            >
+              <img
+                src="https://res.cloudinary.com/drec8g03e/image/upload/v1763353745/microfono_jnyork.png"
+                alt="mic"
+                className={`w-6 h-6 object-contain ${listening ? 'opacity-100' : 'opacity-90'}`}
+              />
+            </button>
+          </div>
+          {listening && (
+            <div className="mt-2 text-sm text-gray-500">Escuchando...</div>
+          )}
+          {recognitionError && (
+            <div className="mt-2 text-sm text-red-600">{recognitionError}</div>
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-3 text-gray-700">
@@ -222,3 +346,6 @@ export default function SearchPanel() {
     </div>
   );
 }
+
+// restart recognition if language changes while listening
+// (placed after component to keep top-level hooks clear)

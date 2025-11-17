@@ -8,7 +8,7 @@ const Accessibility = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const voiceReader = useVoiceReader();
-  const [highContrast, setHighContrast] = useState(false);
+  
 
   useEffect(() => {
     if (voiceReader.isEnabled) {
@@ -16,32 +16,7 @@ const Accessibility = () => {
     }
   }, [i18n.language, voiceReader.isEnabled]);
 
-  useEffect(() => {
-    const savedSettings = localStorage.getItem('accessibilitySettings');
-    if (savedSettings) {
-      const settings = JSON.parse(savedSettings);
-      setHighContrast(settings.highContrast || false);
-      
-      if (settings.highContrast) {
-        document.body.classList.add('high-contrast');
-      }
-    }
-  }, []);
-
-  const toggleHighContrast = () => {
-    const newContrast = !highContrast;
-    setHighContrast(newContrast);
-    
-    if (newContrast) {
-      document.body.classList.add('high-contrast');
-    } else {
-      document.body.classList.remove('high-contrast');
-    }
-    
-    const currentSettings = JSON.parse(localStorage.getItem('accessibilitySettings') || '{}');
-    const updatedSettings = { ...currentSettings, highContrast: newContrast };
-    localStorage.setItem('accessibilitySettings', JSON.stringify(updatedSettings));
-  };
+  
   const toggleVoiceReader = () => {
     voiceReader.toggle();
   };
@@ -49,12 +24,9 @@ const Accessibility = () => {
   const readPageContent = () => {
     const title = t('accessibility.title', { defaultValue: 'Accesibilidad' });
     const description = t('accessibility.description', { defaultValue: 'Configura las opciones de accesibilidad para mejorar tu experiencia en el sitio.' });
-    const highContrastTitle = t('accessibility.highContrast.title', { defaultValue: 'Alto Contraste' });
-    const highContrastDesc = t('accessibility.highContrast.description', { defaultValue: 'Aumenta el contraste de los colores para mejorar la legibilidad del contenido.' });
     const voiceReaderTitle = t('accessibility.voiceReader.title', { defaultValue: 'Lector de Voz' });
     const voiceReaderDesc = t('accessibility.voiceReader.description', { defaultValue: 'Activa el lector de voz para escuchar el contenido de la página en voz alta.' });
-    
-    const fullText = `${title}. ${description}. ${highContrastTitle}. ${highContrastDesc}. ${voiceReaderTitle}. ${voiceReaderDesc}.`;
+    const fullText = `${title}. ${description}. ${voiceReaderTitle}. ${voiceReaderDesc}.`;
     voiceReader.speak(fullText);
   };
 
@@ -88,48 +60,7 @@ const Accessibility = () => {
             {t('accessibility.options', { defaultValue: 'Opciones de Accesibilidad' })}
           </h2>
 
-          {/* Alto Contraste */}
-          <div className="border-b pb-6 mb-6">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <h3 className="text-lg font-medium text-gray-800 mb-2">
-                  {t('accessibility.highContrast.title', { defaultValue: 'Alto Contraste' })}
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  {t('accessibility.highContrast.description', { defaultValue: 'Aumenta el contraste de los colores para mejorar la legibilidad del contenido.' })}
-                </p>
-                {voiceReader.isEnabled && (
-                  <button
-                    onClick={() => voiceReader.speak(t('accessibility.highContrast.title', { defaultValue: 'Alto Contraste' }) + '. ' + t('accessibility.highContrast.description', { defaultValue: 'Aumenta el contraste de los colores para mejorar la legibilidad del contenido.' }))}
-                    className="text-blue-600 hover:text-blue-800 text-sm underline mr-4"
-                  >
-                    {t('accessibility.voice.read', { defaultValue: 'Leer en voz alta' })}
-                  </button>
-                )}
-              </div>
-              <div className="flex items-center">
-                <button
-                  onClick={toggleHighContrast}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    highContrast ? 'bg-blue-600' : 'bg-gray-200'
-                  }`}
-                  aria-label={t('accessibility.highContrast.toggle', { defaultValue: 'Activar alto contraste' })}
-                >
-                  <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      highContrast ? 'translate-x-6' : 'translate-x-1'
-                    }`}
-                  />
-                </button>
-                <span className="ml-3 text-sm font-medium text-gray-700">
-                  {highContrast 
-                    ? t('accessibility.enabled', { defaultValue: 'Activado' })
-                    : t('accessibility.disabled', { defaultValue: 'Desactivado' })
-                  }
-                </span>
-              </div>
-            </div>
-          </div>
+          {/* Alto Contraste eliminado */}
 
           {/* Lector de Voz */}
           <div className="pb-6">
@@ -294,11 +225,7 @@ const Accessibility = () => {
           <h2 className="text-lg font-semibold text-blue-800 mb-3">
             {t('accessibility.instructions.title', { defaultValue: 'Cómo usar las funciones de accesibilidad' })}
           </h2>
-          <ul className="space-y-2 text-blue-700">
-            <li>
-              <strong>{t('accessibility.highContrast.title', { defaultValue: 'Alto Contraste' })}:</strong> 
-              {t('accessibility.instructions.contrast', { defaultValue: ' Actívalo para mejorar el contraste entre texto y fondo.' })}
-            </li>
+            <ul className="space-y-2 text-blue-700">
             <li>
               <strong>{t('accessibility.voiceReader.title', { defaultValue: 'Lector de Voz' })}:</strong> 
               {t('accessibility.instructions.voice', { defaultValue: ' Actívalo y usa los botones para escuchar el contenido.' })}
