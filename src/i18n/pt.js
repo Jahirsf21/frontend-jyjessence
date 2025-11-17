@@ -9,6 +9,7 @@ const translation = {
   "orders.title": "Meus Pedidos",
   "orders.none": "Você não tem pedidos ainda",
   "orders.count": "Você tem {{count}} {{count, plural, one {pedido} other {pedidos}}}",
+  "orders.countSimple": "Você tem {{count}} pedidos",
   "orders.order": "Pedido #{{id}}",
   "orders.shippingAddress": "Endereço de Entrega",
   "orders.amountTotal": "Valor Total",

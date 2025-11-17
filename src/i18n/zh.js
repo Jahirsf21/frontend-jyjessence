@@ -9,6 +9,7 @@ const translation = {
   "orders.title": "我的订单",
   "orders.none": "您还没有任何订单",
   "orders.count": "您有 {{count}} 个订单",
+  "orders.countSimple": "您有 {{count}} 个订单",
   "orders.order": "订单 #{{id}}",
   "orders.shippingAddress": "收货地址",
   "orders.amountTotal": "总金额",

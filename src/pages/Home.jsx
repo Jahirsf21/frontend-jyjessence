@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import { fetchEnums } from '../services/api';
 import Ecommerce from '../patterns/EcommerceFacade';
-import SearchPanel from '../components/ui/SearchPanel';
 import { useSearchPanel } from '../context/SearchPanelContext';
 
 const PRODUCTS_PER_PAGE = 20;
@@ -123,25 +122,29 @@ function FiltrosContent({
 }
 
 function Home() {
-  const { mouseReadingEnabled, speak } = useVoiceReader();
-  const { t } = useTranslation();
-  const { openSearchPanel, closeSearch } = useSearchPanel();
-  const [productos, setProductos] = useState([]);
-  const [busqueda, setBusqueda] = useState("");
-  const [categorias, setCategorias] = useState([]);
-  const [generos, setGeneros] = useState([]);
-  const [categoriaFiltro, setCategoriaFiltro] = useState([]);
-  const [generoFiltro, setGeneroFiltro] = useState([]);
-  const [precioMin, setPrecioMin] = useState('');
-  const [precioMax, setPrecioMax] = useState('');
-  const [mililitrosMin, setMililitrosMin] = useState('');
-  const [mililitrosMax, setMililitrosMax] = useState('');
-  const [currentImageIndex, setCurrentImageIndex] = useState({});
-  const [minPrecio, setMinPrecio] = useState(0);
-  const [maxPrecio, setMaxPrecio] = useState(0);
-  const [pagina, setPagina] = useState(1);
-  const [orden, setOrden] = useState('relevancia');
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+	const { mouseReadingEnabled, speak } = useVoiceReader();
+	const { t } = useTranslation();
+	const {
+		filters,
+		setBusqueda,
+		setCategoriaFiltro,
+		setGeneroFiltro,
+		setPrecioMin,
+		setPrecioMax,
+		setMililitrosMin,
+		setMililitrosMax,
+		limpiarFiltros: resetFiltros
+	} = useSearchPanel();
+	const { busqueda, categoriaFiltro, generoFiltro, precioMin, precioMax, mililitrosMin, mililitrosMax } = filters;
+	const [productos, setProductos] = useState([]);
+	const [categorias, setCategorias] = useState([]);
+	const [generos, setGeneros] = useState([]);
+	const [currentImageIndex, setCurrentImageIndex] = useState({});
+	const [minPrecio, setMinPrecio] = useState(0);
+	const [maxPrecio, setMaxPrecio] = useState(0);
+	const [pagina, setPagina] = useState(1);
+	const [orden, setOrden] = useState('relevancia');
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
 	useEffect(() => {
 		const cargarDatos = async () => {
@@ -209,222 +212,203 @@ function Home() {
   const productosPagina = productosFiltrados.slice((pagina - 1) * PRODUCTS_PER_PAGE, pagina * PRODUCTS_PER_PAGE);
 
 	const limpiarFiltros = () => {
-		setBusqueda('');
-		setCategoriaFiltro([]);
-		setGeneroFiltro([]);
-		setPrecioMin('');
-		setPrecioMax('');
-		setMililitrosMin('');
-		setMililitrosMax('');
+		resetFiltros();
 		setPagina(1);
 	};
+
+	useEffect(() => {
+		setPagina(1);
+	}, [busqueda, categoriaFiltro, generoFiltro, precioMin, precioMax, mililitrosMin, mililitrosMax]);
 
 	const filtroProps = { t, limpiarFiltros, busqueda, setBusqueda, setPagina, categorias, categoriaFiltro, setCategoriaFiltro, generos, generoFiltro, setGeneroFiltro, precioMin, setPrecioMin, precioMax, setPrecioMax, mililitrosMin, setMililitrosMin, mililitrosMax, setMililitrosMax, minPrecio, maxPrecio };
 
 return (
-  <div className="min-h-screen bg-white flex flex-col">
-    
-    {/* CONTENIDO PRINCIPAL */}
-    <div className="flex flex-1 max-w-7xl mx-auto w-full pt-4 md:pt-8 gap-4 md:gap-8 px-4 md:px-0">
-      {/* Sidebar de filtros (solo escritorio) */}
-      <aside className="w-72 bg-white rounded-xl shadow-md p-6 sticky top-0 h-fit self-start hidden md:block">
-        <FiltrosContent {...filtroProps} />
-      </aside>
+	<div className="min-h-screen bg-white flex flex-col">
+		<div className="w-full flex-1 bg-white">
+			<div className="max-w-7xl mx-auto w-full px-4 md:px-0 pt-4 md:pt-8 pb-8 md:pb-10 flex flex-col gap-4 md:gap-6 h-full">
+				<div className="flex flex-1 flex-col md:flex-row gap-4 md:gap-8 md:min-h-[calc(100vh-180px)]">
+					{/* Sidebar de filtros (solo escritorio) */}
+					<aside className="hidden md:block w-72 bg-white rounded-xl shadow-md p-6 sticky top-24 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide">
+						<FiltrosContent {...filtroProps} />
+					</aside>
 
-      {/* Listado de productos */}
-      <section className="flex-1 flex flex-col">
-        <div className="bg-white rounded-xl shadow-md px-4 md:px-8 py-4 md:py-6 sticky top-0 z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl md:text-2xl font-bold text-gray-900">
-              {t('products.catalogTitle')}
-            </h1>
-            <span className="text-gray-500 text-xs md:text-sm">
-              ({productosFiltrados.length}{' '}
-              {t('products.productCount')})
-            </span>
-          </div>
+					{/* Listado de productos */}
+					<section className="flex-1 flex flex-col bg-white rounded-2xl shadow-md overflow-hidden min-h-[60vh] md:max-h-[calc(100vh-160px)]">
+						<div className="px-4 md:px-8 py-4 md:py-6 border-b flex flex-col md:flex-row md:items-center justify-between gap-4">
+							<div>
+								<h1 className="text-xl md:text-2xl font-bold text-gray-900">
+									{t('products.catalogTitle')}
+								</h1>
+								<span className="text-gray-500 text-xs md:text-sm">
+									({productosFiltrados.length}{' '}
+									{t('products.productCount')})
+								</span>
+							</div>
 
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-gray-600 font-medium whitespace-nowrap">
-              {t('products.sortBy')}
-            </label>
-            <select
-              className="border rounded-lg px-3 py-2 text-sm flex-1 md:flex-initial"
-              value={orden}
-              onChange={e => {
-                setOrden(e.target.value);
-                setPagina(1);
-              }}
-            >
-              {SORT_OPTIONS.map(opt => (
-                <option key={opt.value} value={opt.value}>
-                  {t(opt.label)}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+							<div className="flex flex-wrap items-center gap-2">
+								<label className="text-sm text-gray-600 font-medium whitespace-nowrap">
+									{t('products.sortBy')}
+								</label>
+								<select
+									className="border rounded-lg px-3 py-2 text-sm flex-1 md:flex-initial"
+									value={orden}
+									onChange={e => {
+										setOrden(e.target.value);
+										setPagina(1);
+									}}
+								>
+									{SORT_OPTIONS.map(opt => (
+										<option key={opt.value} value={opt.value}>
+											{t(opt.label)}
+										</option>
+									))}
+								</select>
+							</div>
+						</div>
 
-        {/* GRID de productos */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8 py-4 md:py-8">
-          {productosPagina.map(producto => (
-            <div
-              key={producto.idProducto}
-              className="bg-white rounded-xl shadow-md p-3 md:p-4 flex flex-col relative h-full"
-              tabIndex={0}
-              onMouseEnter={() => {
-                if (mouseReadingEnabled) {
-                  const texto = `${producto.nombre}, ${t(`category.${producto.categoria}`, { defaultValue: producto.categoria })}, ${t(`gender.${producto.genero}`, { defaultValue: producto.genero })}, ₡${producto.precio.toLocaleString('es-CR')}`;
-                  speak(texto);
-                }
-              }}
-            >
-              {(() => {
-                const imagenes = producto.imagenesUrl || [];
-                const imagenActual = imagenes.length > 0 
-                  ? imagenes[currentImageIndex[producto.idProducto] || 0] 
-                  : producto.primaryImage;
-                return (
-                  <>
-                    <img
-                      src={imagenActual}
-                      alt={producto.nombre}
-                      className="w-full h-32 md:h-48 object-cover rounded mb-2 md:mb-4 transition-opacity duration-500"
-                    />
-                    {/* Indicadores de imágenes */}
-                    {imagenes.length > 1 && (
-                      <div className="absolute top-3 right-3 flex gap-1">
-                        {imagenes.map((_, index) => (
-                          <div
-                            key={index}
-                            className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                              index === (currentImageIndex[producto.idProducto] || 0)
-                                ? 'bg-white'
-                                : 'bg-white/50'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </>
-                );
-              })()}
-              <div className="flex-1 flex flex-col">
-                <div className="font-bold text-gray-900 text-sm md:text-base mb-1 min-h-[2.5rem] md:min-h-[3rem] line-clamp-2 text-left">
-                  {producto.nombre}
-                </div>
-                <div className="text-xs text-gray-600 mb-2 text-left">
-                  {t(`category.${producto.categoria}`, { defaultValue: producto.categoria })} • {t(`gender.${producto.genero}`, { defaultValue: producto.genero })} • {producto.mililitros} ml
-                </div>
-              </div>
-              <div className="font-bold text-blue-600 text-lg md:text-xl mb-3 text-left">
-                ₡{producto.precio.toLocaleString('es-CR')}
-              </div>
-              <button
-                className="mt-auto bg-blue-600 text-white py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-blue-700 transition-colors"
-                onClick={async e => {
-                  e.stopPropagation();
-                  try {
-                    await Ecommerce.addToCart(producto.idProducto, 1);
-                    Swal.fire({
-                      icon: 'success',
-                      title: t('cart.added'),
-                      text: `${producto.nombre} (${producto.mililitros}ml)`,
-                      timer: 1500,
-                      showConfirmButton: false
-                    });
-                  } catch (error) {
-                    Swal.fire({
-                      icon: 'error',
-                      title: t('cart.addError'),
-                      text: error.message || t('error.unknown')
-                    });
-                  }
-                }}
-              >
-                {t('product.addToCart')}
-              </button>
-            </div>
-          ))}
-        </div>
+						<div className="flex-1 overflow-y-auto px-1 md:px-8 py-4 md:py-6 scrollbar-elegant">
+							{/* GRID de productos */}
+							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
+								{productosPagina.map(producto => (
+									<div
+										key={producto.idProducto}
+										className="bg-white rounded-xl shadow-md p-3 md:p-4 flex flex-col relative h-full"
+										tabIndex={0}
+										onMouseEnter={() => {
+											if (mouseReadingEnabled) {
+												const texto = `${producto.nombre}, ${t(`category.${producto.categoria}`, { defaultValue: producto.categoria })}, ${t(`gender.${producto.genero}`, { defaultValue: producto.genero })}, ₡${producto.precio.toLocaleString('es-CR')}`;
+												speak(texto);
+											}
+										}}
+									>
+										{(() => {
+											const imagenes = producto.imagenesUrl || [];
+											const imagenActual = imagenes.length > 0 
+												? imagenes[currentImageIndex[producto.idProducto] || 0] 
+												: producto.primaryImage;
+											return (
+												<>
+													<img
+														src={imagenActual}
+														alt={producto.nombre}
+														className="w-full h-32 md:h-48 object-cover rounded mb-2 md:mb-4 transition-opacity duration-500"
+													/>
+													{/* Indicadores de imágenes */}
+													{imagenes.length > 1 && (
+														<div className="absolute top-3 right-3 flex gap-1">
+															{imagenes.map((_, index) => (
+																<div
+																	key={index}
+																	className={`w-1.5 h-1.5 rounded-full transition-colors ${
+																		index === (currentImageIndex[producto.idProducto] || 0)
+																			? 'bg-white'
+																			: 'bg-white/50'
+																	}`}
+																/>
+															))}
+														</div>
+													)}
+												</>
+											);
+										})()}
+										<div className="flex-1 flex flex-col">
+											<div className="font-bold text-gray-900 text-sm md:text-base mb-1 min-h-[2.5rem] md:min-h-[3rem] line-clamp-2 text-left">
+												{producto.nombre}
+											</div>
+											<div className="text-xs text-gray-600 mb-2 text-left">
+												{t(`category.${producto.categoria}`, { defaultValue: producto.categoria })} • {t(`gender.${producto.genero}`, { defaultValue: producto.genero })} • {producto.mililitros} ml
+											</div>
+										</div>
+										<div className="font-bold text-blue-600 text-lg md:text-xl mb-3 text-left">
+											₡{producto.precio.toLocaleString('es-CR')}
+										</div>
+										<button
+											className="mt-auto bg-blue-600 text-white py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-blue-700 transition-colors"
+											onClick={async e => {
+												e.stopPropagation();
+												try {
+													await Ecommerce.addToCart(producto.idProducto, 1);
+													Swal.fire({
+														icon: 'success',
+														title: t('cart.added'),
+														text: `${producto.nombre} (${producto.mililitros}ml)`,
+														timer: 1500,
+														showConfirmButton: false
+													});
+												} catch (error) {
+													Swal.fire({
+														icon: 'error',
+														title: t('cart.addError'),
+														text: error.message || t('error.unknown')
+													});
+												}
+											}}
+										>
+											{t('product.addToCart')}
+										</button>
+									</div>
+								))}
+							</div>
 
-        {/* Paginación */}
-        {totalPaginas > 1 && (
-          <div className="flex justify-center items-center gap-1 md:gap-2 pb-4 md:pb-8 flex-wrap px-2">
-            <button
-              className="px-3 md:px-4 py-2 rounded-lg border bg-gray-100 text-gray-700 text-sm font-semibold disabled:opacity-50"
-              onClick={() => setPagina(pagina - 1)}
-              disabled={pagina === 1}
-            >
-              {t('pagination.prev')}
-            </button>
+							{/* Paginación */}
+							{totalPaginas > 1 && (
+								<div className="flex justify-center items-center gap-1 md:gap-2 py-6 flex-wrap px-2">
+									<button
+										className="px-3 md:px-4 py-2 rounded-lg border bg-gray-100 text-gray-700 text-sm font-semibold disabled:opacity-50"
+										onClick={() => setPagina(pagina - 1)}
+										disabled={pagina === 1}
+									>
+										{t('pagination.prev')}
+									</button>
 
-            {[...Array(totalPaginas)].map((_, i) => {
-              const pageNum = i + 1;
-              const isCurrent = pagina === pageNum;
-              const isAdjacent = Math.abs(pagina - pageNum) <= 1;
-              const isFirstOrLast = pageNum === 1 || pageNum === totalPaginas;
-              const isEllipsis = Math.abs(pagina - pageNum) === 2;
+									{[...Array(totalPaginas)].map((_, i) => {
+										const pageNum = i + 1;
+										const isCurrent = pagina === pageNum;
+										const isAdjacent = Math.abs(pagina - pageNum) <= 1;
+										const isFirstOrLast = pageNum === 1 || pageNum === totalPaginas;
+										const isEllipsis = Math.abs(pagina - pageNum) === 2;
 
-              if (isMobile && !isCurrent && !isAdjacent && !isFirstOrLast) {
-                if (isEllipsis)
-                  return (
-                    <span key={`dots-${i}`} className="px-2 py-2 text-gray-500">
-                      ...
-                    </span>
-                  );
-                return null;
-              }
+										if (isMobile && !isCurrent && !isAdjacent && !isFirstOrLast) {
+											if (isEllipsis)
+												return (
+													<span key={`dots-${i}`} className="px-2 py-2 text-gray-500">
+														...
+													</span>
+												);
+											return null;
+										}
 
-              return (
-                <button
-                  key={i}
-                  className={`px-3 py-2 rounded-lg border text-sm font-semibold ${
-                    isCurrent
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                  onClick={() => setPagina(pageNum)}
-                >
-                  {pageNum}
-                </button>
-              );
-            })}
+										return (
+											<button
+												key={i}
+												className={`px-3 py-2 rounded-lg border text-sm font-semibold ${
+													isCurrent
+														? 'bg-blue-600 text-white'
+														: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+												}`}
+												onClick={() => setPagina(pageNum)}
+											>
+												{pageNum}
+											</button>
+										);
+									})}
 
-            <button
-              className="px-3 md:px-4 py-2 rounded-lg border bg-gray-100 text-gray-700 text-sm font-semibold disabled:opacity-50"
-              onClick={() => setPagina(pagina + 1)}
-              disabled={pagina === totalPaginas}
-            >
-              {t('pagination.next')}
-            </button>
-          </div>
-        )}
-      </section>
-    </div>
+									<button
+										className="px-3 md:px-4 py-2 rounded-lg border bg-gray-100 text-gray-700 text-sm font-semibold disabled:opacity-50"
+										onClick={() => setPagina(pagina + 1)}
+										disabled={pagina === totalPaginas}
+									>
+										{t('pagination.next')}
+									</button>
+								</div>
+							)}
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
 
-    {/* 🔍 Panel lateral de búsqueda */}
-    <SearchPanel
-      open={openSearchPanel}
-      onClose={closeSearch}
-      busqueda={busqueda}
-      setBusqueda={setBusqueda}
-      categoriaFiltro={categoriaFiltro}
-      setCategoriaFiltro={setCategoriaFiltro}
-      generoFiltro={generoFiltro}
-      setGeneroFiltro={setGeneroFiltro}
-      precioMin={precioMin}
-      setPrecioMin={setPrecioMin}
-      precioMax={precioMax}
-      setPrecioMax={setPrecioMax}
-      mililitrosMin={mililitrosMin}
-      setMililitrosMin={setMililitrosMin}
-      mililitrosMax={mililitrosMax}
-      setMililitrosMax={setMililitrosMax}
-      limpiarFiltros={limpiarFiltros}
-    />
-
-      </div>
+	</div>
 );
 }
 export default Home;

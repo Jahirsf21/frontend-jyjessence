@@ -9,6 +9,7 @@ const translation = {
   "orders.title": "Nákdíkamo",
   "orders.none": "Döi kó díkamo",
   "orders.count": "Ká {{count}} díkamo",
+  "orders.countSimple": "Ká {{count}} díkamo",
   "orders.order": "Díkamo #{{id}}",
   "orders.shippingAddress": "Döi tsáka",
   "orders.amountTotal": "Tsula",

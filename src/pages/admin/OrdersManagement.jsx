@@ -15,18 +15,28 @@ export default function OrdersManagement() {
   const [vistaDetalle, setVistaDetalle] = useState(false);
 
   const estados = useMemo(() => ([
-    { value: 'pending', label: t('admin.orders.status.pending', 'Pendiente') },
-    { value: 'processing', label: t('admin.orders.status.processing', 'Procesando') },
-    { value: 'shipped', label: t('admin.orders.status.shipped', 'Enviado') },
-    { value: 'delivered', label: t('admin.orders.status.delivered', 'Entregado') },
-    { value: 'cancelled', label: t('admin.orders.status.cancelled', 'Cancelado') }
+    { value: 'pendiente', label: t('admin.orders.status.pending', 'Pendiente') },
+    { value: 'procesando', label: t('admin.orders.status.processing', 'Procesando') },
+    { value: 'enviado', label: t('admin.orders.status.shipped', 'Enviado') },
+    { value: 'entregado', label: t('admin.orders.status.delivered', 'Entregado') },
+    { value: 'cancelado', label: t('admin.orders.status.cancelled', 'Cancelado') }
   ]), [t]);
 
   const normalizeEstadoValue = (estado) => {
-    if (!estado) return estados[0]?.value ?? 'pending';
+    if (!estado) return estados[0]?.value ?? 'pendiente';
 
     const raw = typeof estado === 'string' ? estado : '';
     const lower = raw.toLowerCase();
+
+    // map common English variants to backend Spanish values
+    const englishMap = {
+      pending: 'pendiente',
+      processing: 'procesando',
+      shipped: 'enviado',
+      delivered: 'entregado',
+      cancelled: 'cancelado'
+    };
+    if (englishMap[lower]) return englishMap[lower];
 
     const byValue = estados.find(opt => opt.value === raw || opt.value === lower);
     if (byValue) return byValue.value;
@@ -40,6 +50,36 @@ export default function OrdersManagement() {
     return raw;
   };
 
+  // Formatea el estado al formato exacto que espera el backend (capitalizado en español)
+  const formatEstadoForBackend = (estado) => {
+    if (!estado) return 'Pendiente';
+    const raw = typeof estado === 'string' ? estado : '';
+    const lower = raw.toLowerCase();
+
+    const map = {
+      pendiente: 'Pendiente',
+      procesando: 'Procesando',
+      enviado: 'Enviado',
+      entregado: 'Entregado',
+      cancelado: 'Cancelado',
+      // english variants
+      pending: 'Pendiente',
+      processing: 'Procesando',
+      shipped: 'Enviado',
+      delivered: 'Entregado',
+      cancelled: 'Cancelado'
+    };
+
+    if (map[lower]) return map[lower];
+
+    // If already capitalized and matches, return as-is
+    const capitalized = raw.charAt(0).toUpperCase() + raw.slice(1);
+    if (['Pendiente','Procesando','Enviado','Entregado','Cancelado'].includes(capitalized)) return capitalized;
+
+    // Fallback: capitalize first letter
+    return capitalized;
+  };
+
   const getEstadoLabel = (estado) => {
     const normalized = normalizeEstadoValue(estado);
     const option = estados.find(opt => opt.value === normalized);
@@ -50,11 +90,11 @@ export default function OrdersManagement() {
   const getEstadoColor = (estado) => {
     const value = normalizeEstadoValue(estado);
     const colores = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      processing: 'bg-blue-100 text-blue-800',
-      shipped: 'bg-indigo-100 text-indigo-800',
-      delivered: 'bg-green-100 text-green-800',
-      cancelled: 'bg-red-100 text-red-800'
+      pendiente: 'bg-yellow-100 text-yellow-800',
+      procesando: 'bg-blue-100 text-blue-800',
+      enviado: 'bg-indigo-100 text-indigo-800',
+      entregado: 'bg-green-100 text-green-800',
+      cancelado: 'bg-red-100 text-red-800'
     };
     return colores[value] || 'bg-gray-100 text-gray-800';
   };
@@ -118,8 +158,8 @@ export default function OrdersManagement() {
 
   const handleUpdateStatus = async (idPedido, nuevoEstado) => {
     try {
-      const estadoNormalizado = normalizeEstadoValue(nuevoEstado);
-      await ecommerceFacade.updateOrderStatus(idPedido, estadoNormalizado);
+      const estadoParaBackend = formatEstadoForBackend(nuevoEstado);
+      await ecommerceFacade.updateOrderStatus(idPedido, estadoParaBackend);
       await cargarPedidos();
       if (pedidoSeleccionado?.idPedido === idPedido) {
         const detallesActualizados = await ecommerceFacade.getOrderDetails(idPedido);

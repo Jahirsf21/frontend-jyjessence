@@ -19,6 +19,7 @@ import ProductForm from './pages/admin/ProductForm';
 import ClientsManagement from './pages/admin/ClientsManagement';
 import OrdersManagement from './pages/admin/OrdersManagement';
 import ButtonNav from './components/ui/ButtonNav';
+import SearchPanel from './components/ui/SearchPanel';
 import { SearchPanelProvider } from './context/SearchPanelContext';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -85,6 +86,7 @@ function AppLayout() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+      <SearchPanel />
       <ButtonNav />
       {/* Footer - Se muestra siempre */}
       <Footer />

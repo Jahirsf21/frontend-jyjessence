@@ -2,27 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { fetchEnums } from '../../services/api';
 import Ecommerce from '../../patterns/EcommerceFacade';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useSearchPanel } from '../../context/SearchPanelContext';
 
-export default function SearchPanel({
-  open,
-  onClose,
-  busqueda,
-  setBusqueda,
-  categoriaFiltro,
-  setCategoriaFiltro,
-  generoFiltro,
-  setGeneroFiltro,
-  precioMin,
-  setPrecioMin,
-  precioMax,
-  setPrecioMax,
-  mililitrosMin,
-  setMililitrosMin,
-  mililitrosMax,
-  setMililitrosMax,
-  limpiarFiltros
-}) {
+export default function SearchPanel() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const {
+    openSearchPanel,
+    closeSearch,
+    filters,
+    setBusqueda,
+    setCategoriaFiltro,
+    setGeneroFiltro,
+    setPrecioMin,
+    setPrecioMax,
+    setMililitrosMin,
+    setMililitrosMax,
+    limpiarFiltros
+  } = useSearchPanel();
+  const {
+    busqueda,
+    categoriaFiltro,
+    generoFiltro,
+    precioMin,
+    precioMax,
+    mililitrosMin,
+    mililitrosMax
+  } = filters;
   const [categorias, setCategorias] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [minPrecio, setMinPrecioLocal] = useState(0);
@@ -41,25 +49,32 @@ export default function SearchPanel({
         console.error('Error al obtener datos:', err);
       }
     };
-    if (open) cargarDatos();
-  }, [open]);
+    if (openSearchPanel) cargarDatos();
+  }, [openSearchPanel]);
 
 
   useEffect(() => {
     function handleResize() {
-      if (window.innerWidth >= 768 && open) {
-        onClose();
+      if (window.innerWidth >= 768 && openSearchPanel) {
+        closeSearch();
       }
     }
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [open, onClose]);
+  }, [openSearchPanel, closeSearch]);
+
+  const handleSearch = () => {
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
+    closeSearch();
+  };
 
   return (
-    <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[1002] transition-all duration-300 ${open ? 'translate-x-0' : 'translate-x-full'} flex flex-col`}>
+    <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[1002] transition-all duration-300 ${openSearchPanel ? 'translate-x-0' : 'translate-x-full'} flex flex-col`}>
       <div className="flex items-center p-4 border-b bg-gray-50">
         <h2 className="text-lg font-bold flex-1">{t('filters.title')}</h2>
-        <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-200" aria-label={t('search.close')}>
+        <button onClick={closeSearch} className="p-2 rounded-full hover:bg-gray-200" aria-label={t('search.close')}>
           <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -75,7 +90,7 @@ export default function SearchPanel({
           <button
             type="button"
             className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
-            onClick={onClose}
+            onClick={handleSearch}
           >
             {t('common.search')}
           </button>
