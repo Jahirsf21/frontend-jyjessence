@@ -329,6 +329,48 @@ class EcommerceFacade {
     }
   }
 
+  async undoCart() {
+    try {
+      const isAuthenticated = this.auth.isAuthenticated();
+      if (isAuthenticated) {
+        const resultado = await this.cart.undo();
+        const carritoActualizado = await this.cart.getCart();
+        window.dispatchEvent(new CustomEvent('cartUpdated'));
+        return {
+          success: true,
+          cart: carritoActualizado
+        };
+      } else {
+        const cart = await guestCartService.undo();
+        window.dispatchEvent(new CustomEvent('cartUpdated'));
+        return { success: true, cart };
+      }
+    } catch (error) {
+      throw new Error(error.response?.data?.error || error.message || 'Error al deshacer');
+    }
+  }
+
+  async redoCart() {
+    try {
+      const isAuthenticated = this.auth.isAuthenticated();
+      if (isAuthenticated) {
+        const resultado = await this.cart.redo();
+        const carritoActualizado = await this.cart.getCart();
+        window.dispatchEvent(new CustomEvent('cartUpdated'));
+        return {
+          success: true,
+          cart: carritoActualizado
+        };
+      } else {
+        const cart = await guestCartService.redo();
+        window.dispatchEvent(new CustomEvent('cartUpdated'));
+        return { success: true, cart };
+      }
+    } catch (error) {
+      throw new Error(error.response?.data?.error || error.message || 'Error al rehacer');
+    }
+  }
+
   /**
    * Obtener resumen del carrito (soporta invitados)
    */

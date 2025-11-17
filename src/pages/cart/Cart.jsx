@@ -516,6 +516,37 @@ const Cart = () => {
                     </>
                   )}
                 </div>
+                <div className="flex gap-2 mb-3">
+                  <button
+                    onClick={async () => {
+                      try {
+                        await Ecommerce.undoCart();
+                        await cargarCarrito();
+                        Swal.fire({ icon: 'success', title: t('cart.undo') });
+                      } catch (err) {
+                        Swal.fire({ icon: 'error', title: t('error'), text: err.response?.data?.error || err.message || t('error') });
+                      }
+                    }}
+                    className="px-3 py-2 rounded-lg border bg-gray-50 text-sm hover:bg-gray-100"
+                  >
+                    {t('cart.undo')}
+                  </button>
+
+                  <button
+                    onClick={async () => {
+                      try {
+                        await Ecommerce.redoCart();
+                        await cargarCarrito();
+                        Swal.fire({ icon: 'success', title: t('cart.redo') });
+                      } catch (err) {
+                        Swal.fire({ icon: 'error', title: t('error'), text: err.response?.data?.error || err.message || t('error') });
+                      }
+                    }}
+                    className="px-3 py-2 rounded-lg border bg-gray-50 text-sm hover:bg-gray-100"
+                  >
+                    {t('cart.redo')}
+                  </button>
+                </div>
 
                 <button
                   onClick={finalizarPedido}
