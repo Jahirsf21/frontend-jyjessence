@@ -322,11 +322,11 @@ const translation = {
     "delivered": "Entregado",
     "cancelled": "Cancelado"
   },
+  "admin.orders.statusLabel": "Estado",
   "admin.orders.title": "Gestión de Pedidos",
   "admin.orders.total": "Total de pedidos",
   "admin.orders.details": "Detalles del Pedido",
   "admin.orders.date": "Fecha",
-  "admin.orders.status": "Estado",
   "admin.orders.client": "Cliente",
   "admin.orders.filter": {
     "id": "ID Pedido",
@@ -349,6 +349,7 @@ const translation = {
   "admin.orders.items": "Artículos",
   "admin.orders.total": "Total",
   "admin.orders.statusUpdated": "Estado actualizado exitosamente",
+  "admin.orders.status.unknown": "Desconocido",
   "admin.orders.noOrders": "No hay pedidos registrados.",
   "admin.orders.tableHeaders": {
     "id": "ID",

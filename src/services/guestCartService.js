@@ -7,7 +7,6 @@ class GuestCartService {
     this.HISTORY_LIMIT = 10;
   }
 
-  // Obtener carrito de invitado del localStorage
   getCart() {
     try {
       const cart = localStorage.getItem(this.CART_KEY);
@@ -18,18 +17,16 @@ class GuestCartService {
     }
   }
 
-  // Guardar carrito de invitado en localStorage
   saveCart(cart) {
     try {
       localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
-      // Emitir evento para actualizar el contador en el header
       window.dispatchEvent(new CustomEvent('cartUpdated'));
     } catch (error) {
       console.error('Error saving guest cart:', error);
     }
   }
 
-  // Agregar producto al carrito de invitado
+
   addItem(productoId, cantidad, producto) {
     try {
       this._pushSnapshot();
@@ -47,8 +44,6 @@ class GuestCartService {
           imagen: producto.primaryImage || producto.imagen
         });
       }
-
-      // Recalcular total
       cart.total = cart.items.reduce((sum, item) => sum + (item.precioUnitario * item.cantidad), 0);
       cart.cantidadItems = cart.items.length;
 
@@ -60,7 +55,6 @@ class GuestCartService {
     }
   }
 
-  // Actualizar cantidad de un producto
   updateQuantity(productoId, nuevaCantidad) {
     try {
       this._pushSnapshot();
@@ -88,7 +82,6 @@ class GuestCartService {
     }
   }
 
-  // Eliminar producto del carrito
   removeItem(productoId) {
     try {
       this._pushSnapshot();
@@ -112,7 +105,6 @@ class GuestCartService {
     }
   }
 
-  // Limpiar carrito de invitado
   clearCart() {
     try {
       this._pushSnapshot();
@@ -125,9 +117,6 @@ class GuestCartService {
     }
   }
 
-  // -------------------------
-  // Historial / Mementos
-  // -------------------------
   _clone(obj) {
     try {
       return structuredClone ? structuredClone(obj) : JSON.parse(JSON.stringify(obj));
@@ -165,7 +154,6 @@ class GuestCartService {
       const snapshot = { timestamp: new Date().toISOString(), cart: this._clone(cart) };
       const history = this._getHistory();
       let pos = this._getHistoryPos();
-      // discard forward history
       const newHist = history.slice(0, pos + 1);
       newHist.push(snapshot);
       if (newHist.length > this.HISTORY_LIMIT) {
@@ -225,7 +213,6 @@ class GuestCartService {
     }
   }
 
-  // Guardar información del invitado
   saveGuestInfo(guestInfo) {
     try {
       localStorage.setItem(this.GUEST_INFO_KEY, JSON.stringify(guestInfo));
@@ -235,7 +222,6 @@ class GuestCartService {
     }
   }
 
-  // Obtener información del invitado
   getGuestInfo() {
     try {
       const info = localStorage.getItem(this.GUEST_INFO_KEY);
@@ -246,7 +232,6 @@ class GuestCartService {
     }
   }
 
-  // Limpiar información del invitado
   clearGuestInfo() {
     try {
       localStorage.removeItem(this.GUEST_INFO_KEY);
@@ -255,7 +240,6 @@ class GuestCartService {
     }
   }
 
-  // Transferir carrito de invitado a usuario autenticado
   transferToUserCart() {
     try {
       const guestCart = this.getCart();

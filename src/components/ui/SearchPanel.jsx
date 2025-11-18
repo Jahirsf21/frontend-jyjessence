@@ -46,8 +46,8 @@ export default function SearchPanel() {
         ]);
         setCategorias(enums?.CategoriaPerfume || []);
         setGeneros(enums?.Genero || []);
-      } catch (err) {
-          // failed to load enums/catalog - ignore silently
+      } catch (error) {
+       
         }
     };
     if (openSearchPanel) cargarDatos();
@@ -71,7 +71,6 @@ export default function SearchPanel() {
     closeSearch();
   };
 
-  // Speech recognition for voice search (Web Speech API)
   const recognitionRef = useRef(null);
   const [listening, setListening] = useState(false);
   const [recognitionError, setRecognitionError] = useState('');
@@ -94,7 +93,6 @@ export default function SearchPanel() {
   const startListening = () => {
     if (!supportsRecognition) return;
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    // always (re)create recognition to ensure language is current
     try {
       if (recognitionRef.current) {
         try { recognitionRef.current.stop(); } catch (err) { }
@@ -136,7 +134,6 @@ export default function SearchPanel() {
       recognitionRef.current.start();
       setListening(true);
     } catch (err) {
-      // ignore start errors
     }
   };
 
@@ -145,7 +142,6 @@ export default function SearchPanel() {
       try {
         recognitionRef.current.stop();
       } catch (err) {
-        // ignore stop errors
       }
     }
     setListening(false);
@@ -166,10 +162,8 @@ export default function SearchPanel() {
         }
         startListening();
       } catch (err) {
-        // ignore
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language]);
 
   return (
@@ -346,6 +340,3 @@ export default function SearchPanel() {
     </div>
   );
 }
-
-// restart recognition if language changes while listening
-// (placed after component to keep top-level hooks clear)

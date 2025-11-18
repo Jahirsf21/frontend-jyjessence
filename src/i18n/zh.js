@@ -309,6 +309,7 @@ const translation = {
     "delivered": "已送达",
     "cancelled": "已取消"
   },
+  "admin.orders.statusLabel": "状态",
   "orders": "订单",
   "orders.title": "我的订单",
   "orders.none": "暂无订单",
@@ -339,6 +340,7 @@ const translation = {
   "admin.orders.items": "项目",
   "admin.orders.total": "总计",
   "admin.orders.statusUpdated": "状态更新成功",
+  "admin.orders.status.unknown": "未知",
   "admin.orders.noOrders": "没有注册订单。",
   "admin.orders.tableHeaders": {
     "id": "ID",

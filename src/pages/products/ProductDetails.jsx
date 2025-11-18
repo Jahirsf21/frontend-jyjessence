@@ -38,7 +38,6 @@ function ProductDetails() {
           <div className="text-sm text-gray-500">{t(`gender.${producto.genero}`, { defaultValue: producto.genero })}</div>
           <div className="font-bold text-blue-600 text-2xl">₡{producto.precio.toLocaleString('es-CR')}</div>
           <div className="text-gray-700 text-base mb-2">{producto.descripcion}</div>
-          {/* Aquí puedes agregar más detalles, imágenes, variantes, etc. */}
         </div>
       </div>
     </div>

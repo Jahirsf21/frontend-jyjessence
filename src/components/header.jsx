@@ -71,7 +71,6 @@ const Header = () => {
   return (
     <>
       <header className="sticky top-0 left-0 w-full z-[1000] border-b border-gray-200 bg-white/90 backdrop-blur font-['Lato',sans-serif]">
-        {/* Removed debug info for current language */}
         {/* Contenedor principal del header */}
         <div className="mx-auto flex w-full items-center gap-2 px-3 py-2 md:gap-4 md:px-6 md:py-3 max-w-[1280px]">
           {/* Logo */}
@@ -144,7 +143,6 @@ const Header = () => {
         />
       )}
 
-      {/* Botones flotantes de lector de voz eliminados. Los controles permanecen solo en el menú de accesibilidad. */}
     </>
   );
 };

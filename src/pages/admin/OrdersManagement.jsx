@@ -15,11 +15,11 @@ export default function OrdersManagement() {
   const [vistaDetalle, setVistaDetalle] = useState(false);
 
   const estados = useMemo(() => ([
-    { value: 'pendiente', label: t('admin.orders.status.pending', 'Pendiente') },
-    { value: 'procesando', label: t('admin.orders.status.processing', 'Procesando') },
-    { value: 'enviado', label: t('admin.orders.status.shipped', 'Enviado') },
-    { value: 'entregado', label: t('admin.orders.status.delivered', 'Entregado') },
-    { value: 'cancelado', label: t('admin.orders.status.cancelled', 'Cancelado') }
+    { value: 'pendiente', label: t('admin.orders.status.pending') },
+    { value: 'procesando', label: t('admin.orders.status.processing') },
+    { value: 'enviado', label: t('admin.orders.status.shipped') },
+    { value: 'entregado', label: t('admin.orders.status.delivered') },
+    { value: 'cancelado', label: t('admin.orders.status.cancelled') }
   ]), [t]);
 
   const normalizeEstadoValue = (estado) => {
@@ -28,7 +28,6 @@ export default function OrdersManagement() {
     const raw = typeof estado === 'string' ? estado : '';
     const lower = raw.toLowerCase();
 
-    // map common English variants to backend Spanish values
     const englishMap = {
       pending: 'pendiente',
       processing: 'procesando',
@@ -50,7 +49,6 @@ export default function OrdersManagement() {
     return raw;
   };
 
-  // Formatea el estado al formato exacto que espera el backend (capitalizado en español)
   const formatEstadoForBackend = (estado) => {
     if (!estado) return 'Pendiente';
     const raw = typeof estado === 'string' ? estado : '';
@@ -62,7 +60,6 @@ export default function OrdersManagement() {
       enviado: 'Enviado',
       entregado: 'Entregado',
       cancelado: 'Cancelado',
-      // english variants
       pending: 'Pendiente',
       processing: 'Procesando',
       shipped: 'Enviado',
@@ -84,7 +81,7 @@ export default function OrdersManagement() {
     const normalized = normalizeEstadoValue(estado);
     const option = estados.find(opt => opt.value === normalized);
     if (option) return option.label;
-    return estado || t('admin.orders.status.unknown', 'Desconocido');
+    return estado || t('admin.orders.status.unknown');
   };
 
   const getEstadoColor = (estado) => {
@@ -283,7 +280,7 @@ export default function OrdersManagement() {
             onClick={() => handlePaginaChange(paginaActual - 1)}
             disabled={paginaActual === 1}
           >
-            {t('pagination.prev', 'Anterior')}
+            {t('pagination.prev')}
           </button>
           {[...Array(totalPaginas)].map((_, idx) => (
             <button
@@ -299,7 +296,7 @@ export default function OrdersManagement() {
             onClick={() => handlePaginaChange(paginaActual + 1)}
             disabled={paginaActual === totalPaginas}
           >
-            {t('pagination.next', 'Siguiente')}
+            {t('pagination.next')}
           </button>
         </div>
       )}
@@ -333,7 +330,7 @@ export default function OrdersManagement() {
               <p className="font-semibold text-gray-900 text-lg">{pedidoSeleccionado?.fechaFormateada || ''}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">{t('admin.orders.status')}</p>
+              <p className="text-sm text-gray-600">{t('admin.orders.statusLabel')}</p>
               <div className="flex flex-wrap items-center gap-3 mt-2">
                 <span className={`px-2 py-1 text-xs rounded ${getEstadoColor(pedidoSeleccionado?.estado)}`}>
                   {getEstadoLabel(pedidoSeleccionado?.estado)}

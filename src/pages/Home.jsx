@@ -62,7 +62,6 @@ function FiltrosContent({
 						}}
 					/>
 
-					{/* Voice search button */}
 					{typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition) ? (
 						<VoiceButton setBusqueda={setBusqueda} setPagina={setPagina} compact />
 					) : null}
@@ -184,8 +183,6 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 				setListening(false);
 				const errCode = e && e.error ? e.error : 'unknown';
 				if (errCode === 'network') {
-					// network errors in Home's compact voice button are silent (no red text)
-					// keep behavior non-intrusive here
 				} else {
 					try { Swal.fire({ icon: 'error', title: t('swal.error'), text: (e && e.message) || t('voice.recognitionFailed') }); } catch (swalErr) { }
 				}
@@ -194,7 +191,7 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 			recognitionRef.current.start();
 			setListening(true);
 		} catch (err) {
-			// ignore
+
 		}
 	};
 
@@ -203,7 +200,6 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 			try {
 				recognitionRef.current.stop();
 			} catch (err) {
-				// ignore stop errors
 			}
 		}
 		setListening(false);
@@ -225,7 +221,6 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 				startListening();
 			} catch (err) { }
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [i18n.language]);
 
 	if (!supportsRecognition) return null;
@@ -248,7 +243,6 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 				<img src="https://res.cloudinary.com/drec8g03e/image/upload/v1763353745/microfono_jnyork.png" alt="mic" className={imgClass} />
 			</button>
 			{listening && !compact && <div className="mt-1 text-xs text-gray-500">Escuchando...</div>}
-			{/* no inline network error shown in Home VoiceButton (keeps UI non-intrusive) */}
 		</div>
 	);
 }
@@ -320,7 +314,6 @@ function Home() {
 		return () => clearInterval(interval);
 	}, [productos]);
 
-  // Filtrado directo sin agrupar por nombre
   let productosFiltrados = productos.filter(producto => {
     const coincideBusqueda = busqueda.trim() === "" || (producto.nombre?.toLowerCase().includes(busqueda.toLowerCase()) || producto.categoria?.toLowerCase().includes(busqueda.toLowerCase()));
     const coincideCategoria = categoriaFiltro.length === 0 || categoriaFiltro.includes(producto.categoria);
@@ -359,12 +352,11 @@ return (
 		<div className="w-full flex-1 bg-white">
 			<div className="max-w-7xl mx-auto w-full px-4 md:px-0 pt-4 md:pt-8 pb-8 md:pb-10 flex flex-col gap-4 md:gap-6 h-full">
 				<div className="flex flex-1 flex-col md:flex-row gap-4 md:gap-8 md:min-h-[calc(100vh-180px)]">
-					{/* Sidebar de filtros (solo escritorio) */}
+
 					<aside className="hidden md:block w-72 bg-white rounded-xl shadow-md p-6 sticky top-24 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide">
 						<FiltrosContent {...filtroProps} />
 					</aside>
 
-					{/* Listado de productos */}
 					<section className="flex-1 flex flex-col bg-white rounded-2xl shadow-md overflow-hidden min-h-[60vh] md:max-h-[calc(100vh-160px)]">
 						<div className="px-4 md:px-8 py-4 md:py-6 border-b flex flex-col md:flex-row md:items-center justify-between gap-4">
 							<div>
@@ -399,7 +391,7 @@ return (
 						</div>
 
 						<div className="flex-1 overflow-y-auto px-1 md:px-8 py-4 md:py-6 scrollbar-elegant">
-							{/* GRID de productos */}
+	
 							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
 								{productosPagina.map(producto => (
 									<div
@@ -425,7 +417,7 @@ return (
 														alt={producto.nombre}
 														className="w-full h-32 md:h-48 object-cover rounded mb-2 md:mb-4 transition-opacity duration-500"
 													/>
-													{/* Indicadores de imágenes */}
+										
 													{imagenes.length > 1 && (
 														<div className="absolute top-3 right-3 flex gap-1">
 															{imagenes.map((_, index) => (

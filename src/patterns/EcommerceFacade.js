@@ -1,19 +1,3 @@
-/**
- * PATRÓN FACHADA (FACADE)
- * 
- * Proporciona una interfaz unificada y simplificada para un conjunto de interfaces
- * más complejas en el subsistema de e-commerce.
- * 
- * La fachada coordina múltiples servicios (auth, products, cart, orders) para
- * ejecutar operaciones de negocio complejas de forma simple.
- * 
- * Ventajas:
- * - Simplifica operaciones complejas
- * - Reduce acoplamiento entre componentes y servicios
- * - Centraliza lógica de negocio
- * - Facilita testing
- */
-
 import { authService } from '../services/authService';
 import { productService } from '../services/productService';
 import { cartService } from '../services/cartService';
@@ -33,13 +17,6 @@ class EcommerceFacade {
     this.clients = clientService;
   }
 
-  // ==========================================
-  // == OPERACIONES DE AUTENTICACIÓN
-  // ==========================================
-
-  /**
-   * Consultar datos de cédula costarricense usando API real del backend
-   */
   async consultarCedula(cedula) {
     try {
       const limpia = cedula.replace(/\D/g, '');
@@ -83,7 +60,6 @@ class EcommerceFacade {
         user: usuario
       };
     } catch (error) {
-      // Preservar la respuesta completa del error para que Register.jsx pueda acceder al código
       const nuevoError = new Error(error.response?.data?.error || error.message || 'Error al registrarse');
       nuevoError.response = error.response;
       throw nuevoError;
@@ -106,26 +82,16 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Logout con limpieza de caché
-   */
+
   async logoutUser() {
     this.auth.logout();
-    // Limpiar cualquier caché local si es necesario
     return { success: true };
   }
 
-  // ==========================================
-  // == OPERACIONES DE CATÁLOGO
-  // ==========================================
-
-  /**
-   * Obtener catálogo con filtros aplicados
-   */
   async getCatalog(filtros = {}) {
     try {
       const productos = await this.products.getAll(filtros);
-      // Normalizar y sanitizar posibles URLs con comillas/espacios y formatos variados
+
       const sanitizeUrl = (u) => typeof u === 'string' ? u.trim().replace(/^['"]+|['"]+$/g, '') : u;
       const normalizeImagenes = (raw) => {
         try {
@@ -135,12 +101,10 @@ class EcommerceFacade {
           if (typeof raw === 'string') {
             const s = raw.trim();
             if (!s) return [];
-            // Si viene como JSON en string
             if (s.startsWith('[') && s.endsWith(']')) {
               const arr = JSON.parse(s);
               return Array.isArray(arr) ? arr.map(sanitizeUrl).filter(Boolean) : [];
             }
-            // Caso: una sola URL en string
             return [sanitizeUrl(s)].filter(Boolean);
           }
           return [];
@@ -219,13 +183,7 @@ class EcommerceFacade {
     }
   }
 
-  // ==========================================
-  // == OPERACIONES DE CARRITO
-  // ==========================================
 
-  /**
-   * Agregar producto al carrito con validaciones (soporta invitados)
-   */
   async addToCart(idProducto, cantidad = 1) {
     try {
       const producto = await this.products.getById(idProducto);
@@ -234,11 +192,10 @@ class EcommerceFacade {
         throw new Error(`Solo hay ${producto.stock} unidades disponibles`);
       }
 
-      // Verificar si el usuario está autenticado
       const isAuthenticated = this.auth.isAuthenticated();
       
       if (isAuthenticated) {
-        // Usuario autenticado - usar carrito normal
+
         const resultado = await this.cart.addItem(idProducto, cantidad);
         const carritoActualizado = await this.cart.getCart();
         
@@ -248,7 +205,7 @@ class EcommerceFacade {
           cart: carritoActualizado
         };
       } else {
-        // Usuario invitado - usar localStorage
+
         const carritoActualizado = guestCartService.addItem(idProducto, cantidad, producto);
         
         return {
@@ -260,7 +217,7 @@ class EcommerceFacade {
     } catch (error) {
       throw new Error(error.response?.data?.error || error.message);
     } finally {
-      // Emitir evento para actualizar el contador del carrito en el header
+
       window.dispatchEvent(new CustomEvent('cartUpdated'));
     }
   }
@@ -272,11 +229,11 @@ class EcommerceFacade {
         throw new Error(`Solo hay ${producto.stock} unidades disponibles`);
       }
       
-      // Verificar si el usuario está autenticado
+
       const isAuthenticated = this.auth.isAuthenticated();
       
       if (isAuthenticated) {
-        // Usuario autenticado - usar carrito normal
+
         const resultado = await this.cart.updateQuantity(idProducto, cantidad);
         const carritoActualizado = await this.cart.getCart();
         return {
@@ -284,7 +241,7 @@ class EcommerceFacade {
           cart: carritoActualizado
         };
       } else {
-        // Usuario invitado - usar localStorage
+
         const carritoActualizado = guestCartService.updateQuantity(idProducto, cantidad);
         return {
           success: true,
@@ -300,11 +257,11 @@ class EcommerceFacade {
 
   async removeFromCart(idProducto) {
     try {
-      // Verificar si el usuario está autenticado
+
       const isAuthenticated = this.auth.isAuthenticated();
       
       if (isAuthenticated) {
-        // Usuario autenticado - usar carrito normal
+
         await this.cart.removeItem(idProducto);
         const carritoActualizado = await this.cart.getCart();
         
@@ -314,7 +271,7 @@ class EcommerceFacade {
           cart: carritoActualizado
         };
       } else {
-        // Usuario invitado - usar localStorage
+
         const carritoActualizado = guestCartService.removeItem(idProducto);
         return {
           success: true,
@@ -371,20 +328,17 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Obtener resumen del carrito (soporta invitados)
-   */
+
   async getCartSummary() {
     try {
-      // Verificar si el usuario está autenticado
+
       const isAuthenticated = this.auth.isAuthenticated();
       
       let carrito;
       if (isAuthenticated) {
-        // Usuario autenticado - usar carrito normal
+
         carrito = await this.cart.getCart();
       } else {
-        // Usuario invitado - usar localStorage
         carrito = guestCartService.getCart();
       }
       
@@ -424,13 +378,6 @@ class EcommerceFacade {
     }
   }
 
-  // ==========================================
-  // == OPERACIONES DE COMPRA
-  // ==========================================
-
-  /**
-   * Finalizar compra validando stock y perfil (soporta invitados)
-   */
   async completePurchase(direccionId, guestInfo = null) {
     try {
       const resumenCarrito = await this.getCartSummary();
@@ -447,12 +394,9 @@ class EcommerceFacade {
           );
         }
       }
-
-      // Verificar si el usuario está autenticado
       const isAuthenticated = this.auth.isAuthenticated();
       
       if (isAuthenticated) {
-        // Usuario autenticado - usar flujo normal
         if (!direccionId) {
           throw new Error('Debes seleccionar una dirección de envío');
         }
@@ -470,12 +414,9 @@ class EcommerceFacade {
           }
         };
       } else {
-        // Usuario invitado - requiere información de invitado
         if (!guestInfo || !guestInfo.email || !guestInfo.nombre || !guestInfo.direccion) {
           throw new Error('Para continuar como invitado, debes proporcionar tu email, nombre y dirección');
         }
-
-        // Crear pedido de invitado
         const pedido = await this.cart.finalizeGuestOrder(guestInfo, resumenCarrito.items);
 
         window.dispatchEvent(new CustomEvent('cartUpdated'));
@@ -494,18 +435,10 @@ class EcommerceFacade {
     }
   }
 
-  // ==========================================
-  // == OPERACIONES DE PEDIDOS
-  // ==========================================
-
-  /**
-   * Obtener historial de pedidos con detalles formateados
-   */
   async getOrderHistory() {
     try {
       const pedidos = await this.orders.getMyOrders();
 
-      // Backend devuelve campos: idPedido, fecha, estado, montoTotal, articulos[]
       return pedidos.map(pedido => ({
         ...pedido,
         fechaFormateada: new Date(pedido.fecha).toLocaleDateString('es-CR'),
@@ -544,13 +477,6 @@ class EcommerceFacade {
     }
   }
 
-  // ==========================================
-  // == OPERACIONES DE DIRECCIONES
-  // ==========================================
-
-  /**
-   * Agregar una dirección al perfil del usuario
-   */
   async agregarDireccion(datosDireccion) {
     try {
       const response = await this.auth.addAddress(datosDireccion);
@@ -578,9 +504,6 @@ class EcommerceFacade {
     }
   }
 
-  // ==========================================
-  // == OPERACIONES DE DIRECCIONES (LISTADO)
-  // ==========================================
   async getAddresses() {
     try {
       const perfil = await this.auth.getProfile();
@@ -607,13 +530,6 @@ class EcommerceFacade {
     }
   }
 
-  // ==========================================
-  // == OPERACIONES DE ADMINISTRACIÓN - PRODUCTOS
-  // ==========================================
-
-  /**
-   * Crear un nuevo producto (admin only)
-   */
   async createProduct(datosProducto) {
     try {
       const producto = await this.products.create(datosProducto);
@@ -627,9 +543,6 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Actualizar un producto existente (admin only)
-   */
   async updateProduct(idProducto, datosProducto) {
     try {
       const producto = await this.products.update(idProducto, datosProducto);
@@ -643,9 +556,6 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Eliminar un producto (admin only)
-   */
   async deleteProduct(idProducto) {
     try {
       await this.products.delete(idProducto);
@@ -658,9 +568,6 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Clonar un producto (admin only)
-   */
   async cloneProduct(idProducto, modificaciones = {}) {
     try {
       const producto = await this.products.clone(idProducto, modificaciones);
@@ -673,10 +580,7 @@ class EcommerceFacade {
       throw new Error(error.response?.data?.error || 'Error al clonar producto');
     }
   }
-
-  /**
-   * Actualizar solo el stock de un producto (admin only)
-   */
+  
   async updateProductStock(idProducto, stock) {
     try {
       const producto = await this.products.updateStock(idProducto, stock);
@@ -690,9 +594,6 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Subir imágenes para productos (admin only)
-   */
   async uploadProductImages(archivos) {
     try {
       const resultado = await this.images.uploadImage(archivos);
@@ -705,9 +606,6 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Eliminar imágenes de productos (admin only)
-   */
   async deleteProductImages(publicIds) {
     try {
       await this.images.deleteImage(publicIds);
@@ -720,13 +618,6 @@ class EcommerceFacade {
     }
   }
 
-  // ==========================================
-  // == OPERACIONES DE ADMINISTRACIÓN - CLIENTES
-  // ==========================================
-
-  /**
-   * Obtener todos los clientes (admin only)
-   */
   async getAllClients() {
     try {
       const clientes = await this.clients.getAll();
@@ -738,9 +629,6 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Obtener detalles de un cliente (admin only)
-   */
   async getClientDetails(idCliente) {
     try {
       const cliente = await this.clients.getById(idCliente);
@@ -750,10 +638,6 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Eliminar un cliente (admin only)
-   * Nota: puede no estar implementado en backend
-   */
   async deleteClient(idCliente) {
     try {
       await this.clients.delete(idCliente);
@@ -766,9 +650,6 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Actualizar datos de un cliente (admin only): email y role
-   */
   async updateClient(idCliente, datos) {
     try {
       const actualizado = await this.clients.updateAdmin(idCliente, datos);
@@ -785,13 +666,6 @@ class EcommerceFacade {
     }
   }
 
-  // ==========================================
-  // == OPERACIONES DE ADMINISTRACIÓN - PEDIDOS
-  // ==========================================
-
-  /**
-   * Obtener todos los pedidos (admin only)
-   */
   async getAllOrders() {
     try {
       const pedidos = await this.orders.getAllOrders();
@@ -806,9 +680,6 @@ class EcommerceFacade {
     }
   }
 
-  /**
-   * Actualizar estado de un pedido (admin only)
-   */
   async updateOrderStatus(idPedido, nuevoEstado) {
     try {
       const pedido = await this.orders.updateStatus(idPedido, nuevoEstado);
@@ -823,5 +694,4 @@ class EcommerceFacade {
   }
 }
 
-// Exportar instancia única (Singleton)
 export default new EcommerceFacade();

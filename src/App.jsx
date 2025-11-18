@@ -24,24 +24,21 @@ import { SearchPanelProvider } from './context/SearchPanelContext';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
-// Crear QueryClient
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
-      staleTime: 5 * 60 * 1000, // 5 minutos
+      staleTime: 5 * 60 * 1000, 
     },
   },
 });
 
-// Componente interno para manejar el layout
 function AppLayout() {
   const location = useLocation();
   const rutasAutenticacion = ['/auth/login', '/auth/register'];
   const ocultarHeader = rutasAutenticacion.includes(location.pathname);
 
-  // Desactivar restauración automática del scroll del navegador para controlarlo manualmente
   React.useEffect(() => {
     if ('scrollRestoration' in window.history) {
       const prev = window.history.scrollRestoration;
@@ -52,9 +49,7 @@ function AppLayout() {
     }
   }, []);
 
-  // Scroll al inicio en cada cambio de ruta o carga inicial
   React.useEffect(() => {
-    // Uso setTimeout para garantizar que el layout esté montado antes de forzar el scroll
     setTimeout(() => {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }, 0);
@@ -62,7 +57,6 @@ function AppLayout() {
 
   return (
     <>
-      {/* Header - Solo se muestra si NO estamos en rutas de autenticación */}
       {!ocultarHeader && <Header />}
       <main className={!ocultarHeader ? "w-full px-4 py-8" : ""}>
         <Routes>
@@ -88,7 +82,6 @@ function AppLayout() {
       </main>
       <SearchPanel />
       <ButtonNav />
-      {/* Footer - Se muestra siempre */}
       <Footer />
     </>
   );

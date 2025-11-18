@@ -39,7 +39,7 @@ export default function Dashboard() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Sidebar Navigation */}
+
           <aside className="w-full lg:w-64 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="flex lg:hidden justify-between items-center px-4 py-3 border-b">
@@ -69,7 +69,6 @@ export default function Dashboard() {
             </div>
           </aside>
 
-          {/* Main Content */}
           <main className="flex-1 min-w-0">
             <div className="bg-white rounded-lg shadow-md p-4 lg:p-6">
               <Outlet />

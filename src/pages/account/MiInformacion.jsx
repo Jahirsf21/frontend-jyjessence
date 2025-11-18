@@ -116,7 +116,6 @@ const MiInformacion = () => {
     }
   };
 
-  // Estilos consistentes
   const inputClass = "border border-gray-300 rounded-lg px-4 py-2.5 w-full text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed";
   const labelClass = "block font-semibold mb-2 text-gray-700";
   const buttonPrimaryClass = "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed font-medium";

@@ -155,7 +155,6 @@ const AddressForm = ({ onAddressChange, initialData = {}, disabled = false }) =>
         />
       </div>
       
-      {/* Validación visual */}
       {!disabled && (
         <div className="text-xs text-gray-500">
           {isFormValid() ? (

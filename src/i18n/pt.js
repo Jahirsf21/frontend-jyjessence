@@ -309,6 +309,7 @@ const translation = {
     "delivered": "Entregue",
     "cancelled": "Cancelado"
   },
+  "admin.orders.statusLabel": "Status",
   "orders": "Pedidos",
   "orders.title": "Meus Pedidos",
   "orders.none": "Nenhum pedido encontrado",
@@ -339,6 +340,7 @@ const translation = {
   "admin.orders.items": "Itens",
   "admin.orders.total": "Total",
   "admin.orders.statusUpdated": "Status atualizado com sucesso",
+  "admin.orders.status.unknown": "Desconhecido",
   "admin.orders.noOrders": "Nenhum pedido registrado.",
   "admin.orders.tableHeaders": {
     "id": "ID",

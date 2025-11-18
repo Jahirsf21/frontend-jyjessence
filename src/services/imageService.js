@@ -1,8 +1,5 @@
 import api from './api';
 
-/**
- * Servicio para manejo de imágenes con Cloudinary
- */
 export const imageService = {
   /**
    * Sube una o múltiples imágenes a Cloudinary
@@ -18,7 +15,6 @@ export const imageService = {
         datosFormulario.append('images', archivo);
       });
 
-      // En producción el backend expone /api/imagenes/upload. axios baseURL ya incluye /api
       const endpoint = '/imagenes/upload';
 
       const respuesta = await api.post(endpoint, datosFormulario, {

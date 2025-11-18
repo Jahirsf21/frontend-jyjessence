@@ -1,15 +1,12 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-
-// Estrategia híbrida: permite usar proxy local o producción según flags
 const useLocalProxy = import.meta.env.VITE_USE_LOCAL_PROXY === 'true' && window.location.hostname === 'localhost';
 const rawBase = import.meta.env.VITE_API_URL;
 const normalizedBase = (() => {
   if (useLocalProxy) {
-    // Usa rutas relativas para que Vite proxy redirija a microservicios locales
     return '/api';
   }
-  if (!rawBase) return '/api'; // fallback seguro
+  if (!rawBase) return '/api'; 
   const trimmed = rawBase.replace(/\/$/, '');
   return /\/api$/.test(trimmed) ? trimmed : `${trimmed}/api`;
 })();
@@ -21,8 +18,6 @@ const api = axios.create({
   }
 });
 
-//
-
 api.interceptors.request.use(
   (configuracion) => {
     const token = localStorage.getItem('token');
@@ -30,12 +25,9 @@ api.interceptors.request.use(
       try {
         const decodificado = jwtDecode(token);
         const ahora = Date.now() / 1000;
-        
-        // Verificar si el token está expirado
         if (decodificado.exp < ahora) {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
-          // Solo redirigir si estamos en una ruta protegida
           const rutaActual = window.location.pathname;
           if (!rutaActual.includes('/auth/login') && 
               !rutaActual.includes('/auth/register') && 
@@ -62,10 +54,6 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (respuesta) => respuesta,
   (error) => {
-    // Solo redirigir al login si:
-    // 1. El error es 401 (no autorizado)
-    // 2. No estamos ya en las rutas de autenticación
-    // 3. El backend respondió (no es un error de red)
     if (error.response?.status === 401) {
       const rutaActual = window.location.pathname;
       
@@ -75,8 +63,6 @@ api.interceptors.response.use(
         window.location.href = '/auth/login';
       }
     }
-    // Si es un error de red (sin response), no redirigir
-    // El componente manejará el error
     return Promise.reject(error);
   }
 );

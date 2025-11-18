@@ -309,7 +309,6 @@ export default function ProductForm() {
                 placeholder={t('admin.products.imageUrlsPlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
               />
-              {/* Si la clave no existe, muestra ayuda por defecto */}
             </div>
 
             {formulario.imagenesUrl.length > 0 && (

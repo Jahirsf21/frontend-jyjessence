@@ -40,13 +40,12 @@
   color: #888;
 }
 
-/* Hide scrollbar while keeping scroll functionality */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
 }
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
+  display: none; 
 }
 
 .scrollbar-elegant::-webkit-scrollbar {

@@ -20,7 +20,6 @@ export const authService = {
       return { token, user: usuario };
     } catch (error) {
       console.error('Error en authService.login:', error);
-      // Re-lanzar el error para que AuthContext lo maneje
       throw error;
     }
   },

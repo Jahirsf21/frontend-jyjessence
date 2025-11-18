@@ -38,10 +38,9 @@ const Products = () => {
     try {
       const data = await Ecommerce.getCatalog();
       setProductos(data);
-      // Debug: inspeccionar cómo llegan las imágenes
+
       try {
-        // Muestra una vista compacta en consola
-        // eslint-disable-next-line no-console
+
         console.table(
           (Array.isArray(data) ? data : []).map(p => ({
             id: p.idProducto,
