@@ -153,15 +153,15 @@ const translation = {
   "products.catalogSubtitle": "Explora nuestra selección de fragancias exclusivas",
   "products.foundCount": "{{count}} {{count, plural, one {producto encontrado} other {productos encontrados}}}",
   "products.noResults": "No se encontraron productos con los filtros seleccionados",
-    "products.stock": "Stock: {{stock}}",
-    "products.filter": {
-      "name": "Nombre",
-      "namePlaceholder": "Buscar por nombre...",
-      "category": "Categoría",
-      "categoryPlaceholder": "Buscar por categoría...",
-      "price": "Precio",
-      "pricePlaceholder": "Buscar por precio..."
-    },
+  "products.stock": "Stock: {{stock}}",
+  "products.filter": {
+    "name": "Nombre",
+    "namePlaceholder": "Buscar por nombre...",
+    "category": "Categoría",
+    "categoryPlaceholder": "Buscar por categoría...",
+    "price": "Precio",
+    "pricePlaceholder": "Buscar por precio..."
+  },
   "product.priceMin": "Precio Mínimo",
   "product.priceMax": "Precio Máximo",
   "search.close": "Cerrar Búsqueda",
@@ -228,6 +228,7 @@ const translation = {
   "cart.guestEmailPlaceholder": "tu@email.com",
   "cart.guestNamePlaceholder": "Tu nombre completo",
   "cart.guestPhonePlaceholder": "8888-8888",
+  "cart.guestAddress": "Dirección",
   "cart.guestAddressPlaceholder": "Provincia, Cantón, Distrito, Barrio, detalles específicos...",
   "cart.guestLoginPrompt": "También puedes",
   "cart.guestLoginLink": "iniciar sesión",

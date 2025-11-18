@@ -63,7 +63,7 @@ const translation = {
   "accessibility.goBack": "Retour",
   "accessibility.enabled": "Activé",
   "accessibility.disabled": "Désactivé",
-  
+
   "accessibility.voiceReader.title": "Lecteur Vocal",
   "accessibility.voiceReader.description": "Activez le lecteur vocal pour écouter le contenu de la page à voix haute.",
   "accessibility.voiceReader.toggle": "Activer le lecteur vocal",
@@ -222,9 +222,10 @@ const translation = {
   "cart.guestInstructions": "Pour continuer, fournissez vos coordonnées et votre adresse de livraison.",
   "cart.guestEmail": "Email *",
   "cart.guestName": "Nom complet *",
-  "cart.guestAddress": "Adresse de livraison *",
+  "cart.guestAddress": "Adresse de livraison",
   "cart.guestEmailPlaceholder": "votre@email.com",
   "cart.guestNamePlaceholder": "Votre nom complet",
+  "cart.guestPhonePlaceholder": "8888-8888",
   "cart.guestAddressPlaceholder": "Province, Canton, District, Quartier, détails spécifiques...",
   "cart.guestLoginPrompt": "Vous pouvez aussi",
   "cart.guestLoginLink": "vous connecter",

@@ -153,15 +153,15 @@ const translation = {
   "products.catalogSubtitle": "Explore our selection of exclusive fragrances",
   "products.foundCount": "{{count}} {{count, plural, one {product found} other {products found}}}",
   "products.noResults": "No products found with selected filters",
-    "products.stock": "Stock: {{stock}}",
-    "products.filter": {
-      "name": "Name",
-      "namePlaceholder": "Search by name...",
-      "category": "Category",
-      "categoryPlaceholder": "Search by category...",
-      "price": "Price",
-      "pricePlaceholder": "Search by price..."
-    },
+  "products.stock": "Stock: {{stock}}",
+  "products.filter": {
+    "name": "Name",
+    "namePlaceholder": "Search by name...",
+    "category": "Category",
+    "categoryPlaceholder": "Search by category...",
+    "price": "Price",
+    "pricePlaceholder": "Search by price..."
+  },
   "filters.title": "Filters",
   "filters.clearFilters": "Clear Filters",
   "search.title": "Search",
@@ -238,6 +238,7 @@ const translation = {
   "cart.guestEmailPlaceholder": "your@email.com",
   "cart.guestNamePlaceholder": "Your full name",
   "cart.guestPhonePlaceholder": "8888-8888",
+  "cart.guestAddress": "Address",
   "cart.guestAddressPlaceholder": "Province, Canton, District, Neighborhood, specific details...",
   "cart.guestLoginPrompt": "You can also",
   "cart.guestLoginLink": "login",
@@ -500,8 +501,8 @@ const translation = {
   "swal.addressDeleted": "Address deleted",
   "swal.addressDeleteError": "Could not delete address",
 
-    "voice.recognitionFailed": "Could not recognize the voice",
-    "voice.networkUnavailable": "Voice recognition service is unavailable",
+  "voice.recognitionFailed": "Could not recognize the voice",
+  "voice.networkUnavailable": "Voice recognition service is unavailable",
   "swal.emailUpdated": "Email updated",
   "swal.emailUpdateError": "Could not update email",
   "swal.phoneUpdated": "Phone updated",
