@@ -4,8 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
 import Ecommerce from '../../patterns/EcommerceFacade';
-import { cartService } from '../../services/cartService';
-import guestCartService from '../../services/guestCartService';
 import AddressForm from '../../components/AddressForm';
 
 const Cart = () => {
@@ -50,11 +48,7 @@ const Cart = () => {
             setLoading(true);
 
             let data;
-            if (estaAutenticado) {
-                data = await Ecommerce.getCartSummary();
-            } else {
-                data = guestCartService.getCart();
-            }
+            data = await Ecommerce.getCartSummary();
 
 
             const itemsConImagenYPrecio = await Promise.all((data.items || []).map(async (item) => {
@@ -141,11 +135,7 @@ const Cart = () => {
         if (nuevaCantidad < 1) return;
 
         try {
-            if (estaAutenticado) {
-                await Ecommerce.updateCartItem(productoId, nuevaCantidad);
-            } else {
-                guestCartService.updateQuantity(productoId, nuevaCantidad);
-            }
+            await Ecommerce.updateCartItem(productoId, nuevaCantidad);
             await cargarCarrito();
         } catch (error) {
             console.error('Error updating quantity:', error);
@@ -172,11 +162,7 @@ const Cart = () => {
 
         if (result.isConfirmed) {
             try {
-                if (estaAutenticado) {
-                    await Ecommerce.removeFromCart(productoId);
-                } else {
-                    guestCartService.removeItem(productoId);
-                }
+                await Ecommerce.removeFromCart(productoId);
                 await cargarCarrito();
                 Swal.fire({
                     icon: 'success',
@@ -212,7 +198,7 @@ const Cart = () => {
                     ? Number(direccionSeleccionada)
                     : direccionSeleccionada;
                 await Ecommerce.completePurchase(direccionIdPayload);
-                await cartService.clearCart();
+                await Ecommerce.clearCart();
             } else {
                 const { email, nombre, telefono, direccion } = guestInfo;
 
@@ -234,8 +220,8 @@ const Cart = () => {
                     });
                 }
                 await Ecommerce.completePurchase(null, guestInfo);
-                guestCartService.clearCart();
-                guestCartService.clearGuestInfo();
+                await Ecommerce.clearCart();
+                await Ecommerce.clearGuestData();
             }
 
             Swal.fire({

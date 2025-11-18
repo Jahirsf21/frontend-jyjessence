@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Ecommerce from '../../patterns/EcommerceFacade';
-import { fetchEnums } from '../../services/api';
+
 
 const Products = () => {
   const { t } = useTranslation();
@@ -25,7 +25,7 @@ const Products = () => {
     const cargarDatos = async () => {
       const [data, enums] = await Promise.all([
         Ecommerce.getCatalog(),
-        fetchEnums()
+        Ecommerce.getEnums()
       ]);
       setProductos(data);
       setCategorias(enums.CategoriaPerfume || []);
@@ -50,7 +50,7 @@ const Products = () => {
             primaryImage: p.primaryImage || null
           }))
         );
-      } catch {}
+      } catch { }
     } catch (error) {
       console.error(t('error.loadingProducts'), error);
       Swal.fire({
@@ -117,8 +117,8 @@ const Products = () => {
     const coincideMlMin = !mililitrosMin || ml >= parseFloat(mililitrosMin);
     const coincideMlMax = !mililitrosMax || ml <= parseFloat(mililitrosMax);
 
-    return coincideBusqueda && coincideCategoria && coincideGenero && 
-           coincidePrecioMin && coincidePrecioMax && coincideMlMin && coincideMlMax;
+    return coincideBusqueda && coincideCategoria && coincideGenero &&
+      coincidePrecioMin && coincidePrecioMax && coincideMlMin && coincideMlMax;
   });
 
   const limpiarFiltros = () => {
@@ -271,23 +271,24 @@ const Products = () => {
                       ? producto.imagenesUrl[0]
                       : (producto.primaryImage || null);
                     return firstImage ? (
-                    <img
-                      src={firstImage}
-                      alt={producto.nombre}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <svg className="w-24 h-24 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                  );})()}
+                      <img
+                        src={firstImage}
+                        alt={producto.nombre}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <svg className="w-24 h-24 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                      </svg>
+                    );
+                  })()}
                 </div>
 
                 {/* Información */}
                 <div className="p-4">
                   <h3 className="text-lg font-bold text-gray-900 mb-2 truncate">{producto.nombre}</h3>
                   <p className="text-sm text-gray-600 mb-2 line-clamp-2">{producto.descripcion}</p>
-                  
+
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm text-gray-500">{producto.mililitros} ml</span>
                     <span className="text-sm text-gray-500">{producto.genero === 'Female' ? t('gender.FEMENINO') : producto.genero === 'Male' ? t('gender.MASCULINO') : t('gender.UNISEX')}</span>

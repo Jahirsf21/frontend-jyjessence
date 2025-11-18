@@ -5,6 +5,7 @@ import { orderService } from '../services/orderService';
 import { addressService } from '../services/addressService';
 import { imageService } from '../services/imageService';
 import { clientService } from '../services/clientService';
+import { fetchEnums } from '../services/api';
 import guestCartService from '../services/guestCartService';
 
 class EcommerceFacade {
@@ -23,13 +24,13 @@ class EcommerceFacade {
       if (limpia.length !== 9) {
         throw new Error('La cédula debe tener exactamente 9 dígitos');
       }
-      
+
       const datos = await this.auth.consultarCedula(limpia);
-      
+
       if (!datos) {
         throw new Error('Cédula no encontrada');
       }
-      
+
       return {
         cedula: datos.cedula || cedula,
         nombre: datos.nombre || '',
@@ -69,9 +70,9 @@ class EcommerceFacade {
   async loginUser(email, password) {
     try {
       const resultado = await this.auth.login(email, password);
-      
+
       const carrito = await this.cart.getCart();
-      
+
       return {
         success: true,
         user: resultado.user,
@@ -187,18 +188,18 @@ class EcommerceFacade {
   async addToCart(idProducto, cantidad = 1) {
     try {
       const producto = await this.products.getById(idProducto);
-      
+
       if (producto.stock < cantidad) {
         throw new Error(`Solo hay ${producto.stock} unidades disponibles`);
       }
 
       const isAuthenticated = this.auth.isAuthenticated();
-      
+
       if (isAuthenticated) {
 
         const resultado = await this.cart.addItem(idProducto, cantidad);
         const carritoActualizado = await this.cart.getCart();
-        
+
         return {
           success: true,
           message: `${producto.nombre} agregado al carrito`,
@@ -207,7 +208,7 @@ class EcommerceFacade {
       } else {
 
         const carritoActualizado = guestCartService.addItem(idProducto, cantidad, producto);
-        
+
         return {
           success: true,
           message: `${producto.nombre} agregado al carrito`,
@@ -228,10 +229,10 @@ class EcommerceFacade {
       if (producto.stock < cantidad) {
         throw new Error(`Solo hay ${producto.stock} unidades disponibles`);
       }
-      
+
 
       const isAuthenticated = this.auth.isAuthenticated();
-      
+
       if (isAuthenticated) {
 
         const resultado = await this.cart.updateQuantity(idProducto, cantidad);
@@ -259,12 +260,12 @@ class EcommerceFacade {
     try {
 
       const isAuthenticated = this.auth.isAuthenticated();
-      
+
       if (isAuthenticated) {
 
         await this.cart.removeItem(idProducto);
         const carritoActualizado = await this.cart.getCart();
-        
+
         return {
           success: true,
           message: 'Producto eliminado del carrito',
@@ -333,7 +334,7 @@ class EcommerceFacade {
     try {
 
       const isAuthenticated = this.auth.isAuthenticated();
-      
+
       let carrito;
       if (isAuthenticated) {
 
@@ -341,7 +342,7 @@ class EcommerceFacade {
       } else {
         carrito = guestCartService.getCart();
       }
-      
+
       if (!carrito.items || carrito.items.length === 0) {
         return {
           items: [],
@@ -381,7 +382,7 @@ class EcommerceFacade {
   async completePurchase(direccionId, guestInfo = null) {
     try {
       const resumenCarrito = await this.getCartSummary();
-      
+
       if (resumenCarrito.isEmpty) {
         throw new Error('El carrito está vacío');
       }
@@ -395,7 +396,7 @@ class EcommerceFacade {
         }
       }
       const isAuthenticated = this.auth.isAuthenticated();
-      
+
       if (isAuthenticated) {
         if (!direccionId) {
           throw new Error('Debes seleccionar una dirección de envío');
@@ -580,7 +581,7 @@ class EcommerceFacade {
       throw new Error(error.response?.data?.error || 'Error al clonar producto');
     }
   }
-  
+
   async updateProductStock(idProducto, stock) {
     try {
       const producto = await this.products.updateStock(idProducto, stock);
@@ -692,6 +693,39 @@ class EcommerceFacade {
       throw new Error(error.response?.data?.error || 'Error al actualizar estado del pedido');
     }
   }
+  async getEnums() {
+    try {
+      return await fetchEnums();
+    } catch (error) {
+      console.error('Error fetching enums:', error);
+      return {};
+    }
+  }
+
+  async clearCart() {
+    try {
+      const isAuthenticated = this.auth.isAuthenticated();
+      if (isAuthenticated) {
+        await this.cart.clearCart();
+      } else {
+        guestCartService.clearCart();
+      }
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
+      return { success: true };
+    } catch (error) {
+      throw new Error('Error al limpiar el carrito');
+    }
+  }
+
+  async clearGuestData() {
+    try {
+      guestCartService.clearGuestInfo();
+      return { success: true };
+    } catch (error) {
+      console.error('Error clearing guest info:', error);
+    }
+  }
 }
+
 
 export default new EcommerceFacade();
