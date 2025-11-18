@@ -13,9 +13,7 @@ export default function ProductsManagement() {
   const [filtros, setFiltros] = useState({ nombre: '', categoria: '', precio: '' });
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [productoEditando, setProductoEditando] = useState(null);
-  const [subiendoImagenes, setSubiendoImagenes] = useState(false);
+  const setSubiendoImagenes = useState(false);
 
   const [formulario, setFormulario] = useState({
     nombre: '',
@@ -26,50 +24,50 @@ export default function ProductsManagement() {
     precio: '',
     stock: '',
     imagenesUrl: [],
-    imagenesUrlInput: '' 
+    imagenesUrlInput: ''
   });
 
   useEffect(() => {
-      cargarProductos();
+    cargarProductos();
   }, []);
 
-    const cargarProductos = async () => {
-      try {
-        setCargando(true);
-        const data = await ecommerceFacade.getCatalog();
-        setProductos(data);
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setCargando(false);
-      }
-    };
+  const cargarProductos = async () => {
+    try {
+      setCargando(true);
+      const data = await ecommerceFacade.getCatalog();
+      setProductos(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setCargando(false);
+    }
+  };
 
-    // Filtrar productos según los filtros
-    const productosFiltrados = productos.filter(producto => {
-      const nombreMatch = producto.nombre.toLowerCase().includes(filtros.nombre.toLowerCase());
-      const categoriaMatch = filtros.categoria === '' || producto.categoria.toLowerCase().includes(filtros.categoria.toLowerCase());
-      const precioMatch = filtros.precio === '' || (producto.precio && producto.precio.toString().includes(filtros.precio));
-      return nombreMatch && categoriaMatch && precioMatch;
-    });
+  // Filtrar productos según los filtros
+  const productosFiltrados = productos.filter(producto => {
+    const nombreMatch = producto.nombre.toLowerCase().includes(filtros.nombre.toLowerCase());
+    const categoriaMatch = filtros.categoria === '' || producto.categoria.toLowerCase().includes(filtros.categoria.toLowerCase());
+    const precioMatch = filtros.precio === '' || (producto.precio && producto.precio.toString().includes(filtros.precio));
+    return nombreMatch && categoriaMatch && precioMatch;
+  });
 
-    // Paginación
-    const totalPaginas = Math.ceil(productosFiltrados.length / productosPorPagina);
-    const indiceInicial = (paginaActual - 1) * productosPorPagina;
-    const productosPagina = productosFiltrados.slice(indiceInicial, indiceInicial + productosPorPagina);
+  // Paginación
+  const totalPaginas = Math.ceil(productosFiltrados.length / productosPorPagina);
+  const indiceInicial = (paginaActual - 1) * productosPorPagina;
+  const productosPagina = productosFiltrados.slice(indiceInicial, indiceInicial + productosPorPagina);
 
-    const handleFiltroChange = (e) => {
-      const { name, value } = e.target;
-      setFiltros(prev => ({ ...prev, [name]: value }));
-      setPaginaActual(1); // Resetear a la primera página al filtrar
-    };
+  const handleFiltroChange = (e) => {
+    const { name, value } = e.target;
+    setFiltros(prev => ({ ...prev, [name]: value }));
+    setPaginaActual(1); // Resetear a la primera página al filtrar
+  };
 
-    const handlePaginaChange = (nuevaPagina) => {
-      if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
-        setPaginaActual(nuevaPagina);
-      }
-    };
+  const handlePaginaChange = (nuevaPagina) => {
+    if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+      setPaginaActual(nuevaPagina);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -112,7 +110,7 @@ export default function ProductsManagement() {
       const nuevasUrls = resultado.images.map(img => img.url || img.secure_url || img.url_secure).filter(Boolean);
       setFormulario(prev => ({
         ...prev,
-        imagenesUrl: [...prev.imagenesUrl, ...nuevasUrls], 
+        imagenesUrl: [...prev.imagenesUrl, ...nuevasUrls],
       }));
     } catch (err) {
       alert(err.message);

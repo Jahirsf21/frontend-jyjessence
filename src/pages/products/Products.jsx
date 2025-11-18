@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Ecommerce from '../../patterns/EcommerceFacade';
+import ecommerceFacade from '../../patterns/EcommerceFacade';
 
 
 const Products = () => {
@@ -24,8 +24,8 @@ const Products = () => {
   useEffect(() => {
     const cargarDatos = async () => {
       const [data, enums] = await Promise.all([
-        Ecommerce.getCatalog(),
-        Ecommerce.getEnums()
+        ecommerceFacade.getCatalog(),
+        ecommerceFacade.getEnums()
       ]);
       setProductos(data);
       setCategorias(enums.CategoriaPerfume || []);
@@ -36,7 +36,7 @@ const Products = () => {
 
   const cargarProductos = async () => {
     try {
-      const data = await Ecommerce.getCatalog();
+      const data = await ecommerceFacade.getCatalog();
       setProductos(data);
 
       try {
@@ -65,7 +65,7 @@ const Products = () => {
 
   const agregarAlCarrito = async (productoId, nombreProducto) => {
     try {
-      await Ecommerce.addToCart(productoId, 1);
+      await ecommerceFacade.addToCart(productoId, 1);
       Swal.fire({
         icon: 'success',
         title: t('message.success'),

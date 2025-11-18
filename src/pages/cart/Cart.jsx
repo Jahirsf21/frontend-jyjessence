@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
-import Ecommerce from '../../patterns/EcommerceFacade';
+import ecommerceFacade from '../../patterns/EcommerceFacade';
 import AddressForm from '../../components/AddressForm';
 
 const Cart = () => {
@@ -48,7 +48,7 @@ const Cart = () => {
             setLoading(true);
 
             let data;
-            data = await Ecommerce.getCartSummary();
+            data = await ecommerceFacade.getCartSummary();
 
 
             const itemsConImagenYPrecio = await Promise.all((data.items || []).map(async (item) => {
@@ -56,7 +56,7 @@ const Cart = () => {
                 let precioUnitario = item.precioUnitario;
                 if (!imagen || !precioUnitario) {
                     try {
-                        const producto = await Ecommerce.getProductDetails(item.productoId);
+                        const producto = await ecommerceFacade.getProductDetails(item.productoId);
                         if (!imagen) imagen = producto.primaryImage;
                         if (!precioUnitario) precioUnitario = producto.precio;
                     } catch { }
@@ -94,7 +94,7 @@ const Cart = () => {
         let errorPrincipal = null;
 
         try {
-            data = await Ecommerce.getAddresses();
+            data = await ecommerceFacade.getAddresses();
         } catch (err) {
             errorPrincipal = err;
             console.error('Error directo al obtener direcciones:', err);
@@ -102,7 +102,7 @@ const Cart = () => {
 
         if ((!data || data.length === 0) && estaAutenticado) {
             try {
-                const perfil = await Ecommerce.auth.getProfile();
+                const perfil = await ecommerceFacade.auth.getProfile();
                 data = perfil?.direcciones || [];
             } catch (perfilError) {
                 console.error('Error al obtener direcciones desde el perfil:', perfilError);
@@ -135,7 +135,7 @@ const Cart = () => {
         if (nuevaCantidad < 1) return;
 
         try {
-            await Ecommerce.updateCartItem(productoId, nuevaCantidad);
+            await ecommerceFacade.updateCartItem(productoId, nuevaCantidad);
             await cargarCarrito();
         } catch (error) {
             console.error('Error updating quantity:', error);
@@ -162,7 +162,7 @@ const Cart = () => {
 
         if (result.isConfirmed) {
             try {
-                await Ecommerce.removeFromCart(productoId);
+                await ecommerceFacade.removeFromCart(productoId);
                 await cargarCarrito();
                 Swal.fire({
                     icon: 'success',
@@ -197,8 +197,8 @@ const Cart = () => {
                 const direccionIdPayload = /^\d+$/.test(direccionSeleccionada)
                     ? Number(direccionSeleccionada)
                     : direccionSeleccionada;
-                await Ecommerce.completePurchase(direccionIdPayload);
-                await Ecommerce.clearCart();
+                await ecommerceFacade.completePurchase(direccionIdPayload);
+                await ecommerceFacade.clearCart();
             } else {
                 const { email, nombre, telefono, direccion } = guestInfo;
 
@@ -219,9 +219,9 @@ const Cart = () => {
                         confirmButtonText: t('button.understood')
                     });
                 }
-                await Ecommerce.completePurchase(null, guestInfo);
-                await Ecommerce.clearCart();
-                await Ecommerce.clearGuestData();
+                await ecommerceFacade.completePurchase(null, guestInfo);
+                await ecommerceFacade.clearCart();
+                await ecommerceFacade.clearGuestData();
             }
 
             Swal.fire({
@@ -305,7 +305,7 @@ const Cart = () => {
                         <button
                             onClick={async () => {
                                 try {
-                                    await Ecommerce.undoCart();
+                                    await ecommerceFacade.undoCart();
                                     await cargarCarrito();
                                     Swal.fire({ icon: 'success', title: t('cart.undo'), timer: 1500, showConfirmButton: false });
                                 } catch (err) {
@@ -320,7 +320,7 @@ const Cart = () => {
                         <button
                             onClick={async () => {
                                 try {
-                                    await Ecommerce.redoCart();
+                                    await ecommerceFacade.redoCart();
                                     await cargarCarrito();
                                     Swal.fire({ icon: 'success', title: t('cart.redo'), timer: 1500, showConfirmButton: false });
                                 } catch (err) {

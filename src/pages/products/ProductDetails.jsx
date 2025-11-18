@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import Ecommerce from '../../patterns/EcommerceFacade';
+import ecommerceFacade from '../../patterns/EcommerceFacade';
 
 function ProductDetails() {
   const { t } = useTranslation();
@@ -10,7 +10,7 @@ function ProductDetails() {
 
   useEffect(() => {
     const cargarProducto = async () => {
-      const catalogo = await Ecommerce.getCatalog();
+      const catalogo = await ecommerceFacade.getCatalog();
       const prod = catalogo.find(p => String(p.idProducto) === String(id));
       setProducto(prod || null);
     };

@@ -2,7 +2,6 @@ import { authService } from '../services/authService';
 import { productService } from '../services/productService';
 import { cartService } from '../services/cartService';
 import { orderService } from '../services/orderService';
-import { addressService } from '../services/addressService';
 import { imageService } from '../services/imageService';
 import { clientService } from '../services/clientService';
 import { fetchEnums } from '../services/api';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import EcommerceFacade from '../../patterns/EcommerceFacade';
+import ecommerceFacade from '../../patterns/EcommerceFacade';
 
 const statusOptions = ['todos', 'pendiente', 'procesando', 'enviado', 'entregado', 'cancelado'];
 
@@ -22,7 +22,7 @@ const Orders = () => {
   useEffect(() => {
     const cargarPedidos = async () => {
       try {
-        const data = await EcommerceFacade.getOrderHistory();
+        const data = await ecommerceFacade.getOrderHistory();
         setPedidos(data);
       } catch (error) {
         console.error('Error al cargar pedidos:', error);
@@ -109,9 +109,8 @@ const Orders = () => {
               <button
                 key={estado}
                 onClick={() => setFiltro(estado)}
-                className={`rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 ${
-                  isActive ? 'border-purple-500 bg-white shadow-lg' : 'border-gray-100 bg-white/80'
-                }`}
+                className={`rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 ${isActive ? 'border-purple-500 bg-white shadow-lg' : 'border-gray-100 bg-white/80'
+                  }`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <span className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide ${meta.badge}`}>
@@ -133,11 +132,10 @@ const Orders = () => {
             <button
               key={estado}
               onClick={() => setFiltro(estado)}
-              className={`px-4 py-2 rounded-full text-sm font-medium border transition ${
-                filtro === estado
+              className={`px-4 py-2 rounded-full text-sm font-medium border transition ${filtro === estado
                   ? 'bg-gray-900 text-white border-gray-900'
                   : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
-              }`}
+                }`}
             >
               {t(`orders.filter.${estado}`)}
             </button>

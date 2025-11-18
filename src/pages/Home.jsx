@@ -4,7 +4,7 @@ import ButtonNav from '../components/ui/ButtonNav';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 
-import Ecommerce from '../patterns/EcommerceFacade';
+import ecommerceFacade from '../patterns/EcommerceFacade';
 import { useSearchPanel } from '../context/SearchPanelContext';
 
 const PRODUCTS_PER_PAGE = 20;
@@ -275,8 +275,8 @@ function Home() {
 	useEffect(() => {
 		const cargarDatos = async () => {
 			const [data, enums] = await Promise.all([
-				Ecommerce.getCatalog(),
-				Ecommerce.getEnums()
+				ecommerceFacade.getCatalog(),
+				ecommerceFacade.getEnums()
 			]);
 			setProductos(data);
 			setCategorias(enums?.CategoriaPerfume || []);
@@ -424,8 +424,8 @@ function Home() {
 																	<div
 																		key={index}
 																		className={`w-1.5 h-1.5 rounded-full transition-colors ${index === (currentImageIndex[producto.idProducto] || 0)
-																				? 'bg-white'
-																				: 'bg-white/50'
+																			? 'bg-white'
+																			: 'bg-white/50'
 																			}`}
 																	/>
 																))}
@@ -450,7 +450,7 @@ function Home() {
 												onClick={async e => {
 													e.stopPropagation();
 													try {
-														await Ecommerce.addToCart(producto.idProducto, 1);
+														await ecommerceFacade.addToCart(producto.idProducto, 1);
 														Swal.fire({
 															icon: 'success',
 															title: t('cart.added'),
@@ -505,8 +505,8 @@ function Home() {
 												<button
 													key={i}
 													className={`px-3 py-2 rounded-lg border text-sm font-semibold ${isCurrent
-															? 'bg-blue-600 text-white'
-															: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+														? 'bg-blue-600 text-white'
+														: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
 														}`}
 													onClick={() => setPagina(pageNum)}
 												>
