@@ -353,7 +353,7 @@ function Home() {
 				<div className="max-w-7xl mx-auto w-full px-4 md:px-0 pt-4 md:pt-8 pb-8 md:pb-10 flex flex-col gap-4 md:gap-6 h-full">
 					<div className="flex flex-1 flex-col md:flex-row gap-4 md:gap-8 md:min-h-[calc(100vh-180px)]">
 
-						<aside className="hidden md:block w-72 bg-white rounded-xl shadow-md p-6 sticky top-24 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide">
+						<aside className="hidden md:block w-72 bg-white rounded-xl shadow-md p-6 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide">
 							<FiltrosContent {...filtroProps} />
 						</aside>
 
