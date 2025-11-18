@@ -29,10 +29,12 @@ class GuestCartService {
 
   addItem(productoId, cantidad, producto) {
     try {
-      this._pushSnapshot();
+      if (this._getHistory().length === 0) {
+        this._pushSnapshot();
+      }
       const cart = this.getCart();
       const itemExistente = cart.items.find(item => item.productoId === productoId);
-      
+
       if (itemExistente) {
         itemExistente.cantidad += cantidad;
       } else {
@@ -48,6 +50,7 @@ class GuestCartService {
       cart.cantidadItems = cart.items.length;
 
       this.saveCart(cart);
+      this._pushSnapshot();
       return cart;
     } catch (error) {
       console.error('Error adding item to guest cart:', error);
@@ -57,11 +60,13 @@ class GuestCartService {
 
   updateQuantity(productoId, nuevaCantidad) {
     try {
-      this._pushSnapshot();
+      if (this._getHistory().length === 0) {
+        this._pushSnapshot();
+      }
       const cart = this.getCart();
-      
+
       const item = cart.items.find(item => item.productoId === productoId);
-      
+
       if (!item) {
         throw new Error('Producto no encontrado en el carrito');
       }
@@ -75,6 +80,7 @@ class GuestCartService {
       cart.cantidadItems = cart.items.length;
 
       this.saveCart(cart);
+      this._pushSnapshot();
       return cart;
     } catch (error) {
       console.error('Error updating guest cart quantity:', error);
@@ -84,11 +90,13 @@ class GuestCartService {
 
   removeItem(productoId) {
     try {
-      this._pushSnapshot();
+      if (this._getHistory().length === 0) {
+        this._pushSnapshot();
+      }
       const cart = this.getCart();
-      
+
       const index = cart.items.findIndex(item => item.productoId === productoId);
-      
+
       if (index === -1) {
         throw new Error('Producto no encontrado en el carrito');
       }
@@ -98,6 +106,7 @@ class GuestCartService {
       cart.cantidadItems = cart.items.length;
 
       this.saveCart(cart);
+      this._pushSnapshot();
       return cart;
     } catch (error) {
       console.error('Error removing item from guest cart:', error);
@@ -107,9 +116,12 @@ class GuestCartService {
 
   clearCart() {
     try {
-      this._pushSnapshot();
+      if (this._getHistory().length === 0) {
+        this._pushSnapshot();
+      }
       localStorage.removeItem(this.CART_KEY);
       window.dispatchEvent(new CustomEvent('cartUpdated'));
+      this._pushSnapshot();
       return { items: [], total: 0, cantidadItems: 0 };
     } catch (error) {
       console.error('Error clearing guest cart:', error);
