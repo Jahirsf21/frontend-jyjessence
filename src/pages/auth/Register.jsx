@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ecommerceFacade from '../../patterns/EcommerceFacade';
 import { useAuth } from '../../context/AuthContext';
+import { useDarkMode } from '../../context/DarkModeContext';
 
 const Register = () => {
   const { t } = useTranslation();
   const navegar = useNavigate();
   const { iniciarSesion } = useAuth();
+  const { isDarkMode } = useDarkMode();
   
   const [datosFormulario, setDatosFormulario] = useState({
     cedula: '',
@@ -359,7 +361,7 @@ const Register = () => {
           aria-label="Ir a inicio"
         >
           <img
-            src="https://res.cloudinary.com/drec8g03e/image/upload/v1762713857/inicio_x1zmf8.svg"
+            src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/home-modo-oscuro_m2aygh.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/home_xudymm.svg"}
             alt="Inicio"
             className="w-6 h-6"
           />

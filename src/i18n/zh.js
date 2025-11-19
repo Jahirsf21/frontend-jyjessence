@@ -394,6 +394,8 @@ const translation = {
   "common.delete": "删除",
   "common.close": "关闭",
   "common.loading": "加载中...",
+  "common.min": "最小",
+  "common.max": "最大",
   "swal.error": "错误",
   "swal.profileLoadError": "无法加载个人资料",
   "swal.success": "成功",

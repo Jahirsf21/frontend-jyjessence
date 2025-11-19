@@ -2,27 +2,47 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/ui/Button.jsx';
+import { useDarkMode } from '../../context/DarkModeContext';
 
 export default function Dashboard() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const location = useLocation();
+  const { isDarkMode } = useDarkMode();
 
   const menuItems = [
     {
       path: '/admin/products',
       label: t('admin.dashboard.productsManagement'),
-      icon: <img src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/producto_ozuzjz.png" alt="Productos" className="w-7 h-7 lg:w-8 lg:h-8" />
+      icon: (
+        <img
+          src={isDarkMode
+            ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763530662/productos-modo-oscuro_rpltzh.svg"
+            : "https://res.cloudinary.com/drec8g03e/image/upload/v1763530661/productos_unwgxp.svg"
+          }
+          alt="Productos"
+          className="w-7 h-7 lg:w-8 lg:h-8"
+        />
+      )
     },
     {
       path: '/admin/clients',
       label: t('admin.dashboard.clientsManagement'),
-      icon: <img src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/clientes_pootfq.png" alt="Clientes" className="w-7 h-7 lg:w-8 lg:h-8" />
+      icon: <img src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763529761/clientes-modo-oscuro_oogiur.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763529760/clientes_vjyon6.svg"} alt="Clientes" className="w-7 h-7 lg:w-8 lg:h-8" />
     },
     {
       path: '/admin/orders',
       label: t('admin.dashboard.ordersManagement'),
-      icon: <img src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/pedidos_yifcqb.png" alt="Pedidos" className="w-7 h-7 lg:w-8 lg:h-8" />
+      icon: (
+        <img
+          src={isDarkMode
+            ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763530816/gestion-pedidos-modo-oscuro_uvt6ja.svg"
+            : "https://res.cloudinary.com/drec8g03e/image/upload/v1763530815/gestion-pedidos_oibft0.svg"
+          }
+          alt="Pedidos"
+          className="w-7 h-7 lg:w-8 lg:h-8"
+        />
+      )
     }
   ];
 

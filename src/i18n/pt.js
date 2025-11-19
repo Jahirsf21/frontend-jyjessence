@@ -394,6 +394,8 @@ const translation = {
   "common.delete": "Excluir",
   "common.close": "Fechar",
   "common.loading": "Carregando...",
+  "common.min": "Mínimo",
+  "common.max": "Máximo",
   "swal.error": "Erro",
   "swal.profileLoadError": "Não foi possível carregar o perfil",
   "swal.success": "Sucesso",

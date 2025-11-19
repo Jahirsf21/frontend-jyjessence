@@ -3,12 +3,14 @@ import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/authService';
 import Swal from 'sweetalert2';
 import Button from './ui/Button.jsx';
+import { useDarkMode } from '../context/DarkModeContext';
 
 const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, t }) => {
 
   const location = window.location.pathname;
   const noEsHome = location !== '/' && location !== '/home';
   const { cerrarSesion } = useAuth();
+  const { isDarkMode } = useDarkMode();
   const [usuario, setUsuario] = useState(usuarioProp || null);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -201,7 +203,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
               className="flex items-center justify-start gap-4 !py-3"
             >
               <img
-                src="https://res.cloudinary.com/drec8g03e/image/upload/v1762713857/inicio_x1zmf8.svg"
+                src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/home-modo-oscuro_m2aygh.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/home_xudymm.svg"}
                 alt={t('home.button')}
                 className="w-6 h-6"
               />
@@ -217,7 +219,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                 className="flex items-center justify-start gap-4 !py-3"
               >
                 <img
-                  src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
+                  src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528571/usuario-modo-oscuro_dhn30k.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528571/usuario_gfurqs.svg"}
                   alt=""
                   className="w-6 h-6"
                 />
@@ -249,7 +251,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                 className="flex items-center justify-start gap-4 !py-3"
               >
                 <img
-                  src="https://res.cloudinary.com/drec8g03e/image/upload/v1762996848/accesibilidad_zoiwzy.svg"
+                  src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528964/accesibilidad-modo-oscuro_x2u1hf.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528964/accesibilidad_tlcoco.svg"}
                   alt="Accesibilidad"
                   className="w-6 h-6"
                 />
@@ -266,7 +268,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                   className="flex items-center justify-start gap-4 !py-3"
                 >
                   <img
-                    src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
+                    src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528571/usuario-modo-oscuro_dhn30k.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528571/usuario_gfurqs.svg"}
                     alt="Perfil"
                     className="w-6 h-6"
                   />
@@ -297,11 +299,11 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                   className="flex items-center justify-start gap-4 !py-3"
                 >
                   <img
-                    src="https://res.cloudinary.com/drec8g03e/image/upload/v1762998627/pedidos_yifcqb.png"
+                    src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763529006/pedidos-modo-oscuro_y11hne.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763529006/pedidos_zwfp2i.svg"}
                     alt="Pedidos"
                     className="w-6 h-6"
                   />
-                  <span>{t('orders', { defaultValue: 'Pedidos' })}</span>
+                  <span>{t('orders')}</span>
                 </Button>
 
                 <Button
@@ -311,7 +313,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                   className="flex items-center justify-start gap-4 !py-3"
                 >
                   <img
-                    src="https://res.cloudinary.com/drec8g03e/image/upload/v1762996848/accesibilidad_zoiwzy.svg"
+                    src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528964/accesibilidad-modo-oscuro_x2u1hf.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528964/accesibilidad_tlcoco.svg"}
                     alt="Accesibilidad"
                     className="w-6 h-6"
                   />

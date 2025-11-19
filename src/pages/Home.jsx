@@ -3,6 +3,7 @@ import { useVoiceReader } from '../hooks/useVoiceReader';
 import ButtonNav from '../components/ui/ButtonNav';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
+import { useDarkMode } from '../context/DarkModeContext';
 
 import ecommerceFacade from '../patterns/EcommerceFacade';
 import { useSearchPanel } from '../context/SearchPanelContext';
@@ -132,6 +133,7 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 	const [listening, setListening] = useState(false);
 
 	const { t, i18n } = useTranslation();
+	const { isDarkMode } = useDarkMode();
 
 	const getSpeechLang = (lang) => {
 		if (!lang) return 'es-CR';
@@ -240,7 +242,7 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 				className={btnClass}
 				title={listening ? 'Stop voice search' : 'Voice search'}
 			>
-				<img src="https://res.cloudinary.com/drec8g03e/image/upload/v1763353745/microfono_jnyork.png" alt="mic" className={imgClass} />
+				<img src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763530306/microfono-modo-oscuro_o987ii.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763530306/microfono_krfs1o.svg"} alt="mic" className={imgClass} />
 			</button>
 			{listening && !compact && <div className="mt-1 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-200">Escuchando...</div>}
 		</div>

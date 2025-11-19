@@ -423,6 +423,8 @@ const translation = {
   "common.delete": "Supprimer",
   "common.close": "Fermer",
   "common.loading": "Chargement...",
+  "common.min": "Min",
+  "common.max": "Max",
   "swal.error": "Erreur",
   "swal.profileLoadError": "Impossible de charger le profil",
   "swal.success": "Succès",

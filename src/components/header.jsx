@@ -7,12 +7,14 @@ import ModalPerfil from './ModalPerfil';
 import LanguageDropdown from './LanguageDropdown';
 import Ecommerce from '../patterns/EcommerceFacade';
 import guestCartService from '../services/guestCartService';
+import { useDarkMode } from '../context/DarkModeContext';
 
 const Header = () => {
   const { t, i18n } = useTranslation();
   const navegar = useNavigate();
   const location = useLocation();
   const { usuario, estaAutenticado } = useAuth();
+  const { isDarkMode } = useDarkMode();
   const voiceReader = useVoiceReader();
   const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -100,7 +102,7 @@ const Header = () => {
               aria-label="Carrito"
             >
               <img
-                src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/carrito_idlvij.svg"
+                src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528570/carrito-modo-oscuro_xa6ice.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/carrito_evxei2.svg"}
                 alt="Carrito"
                 className="h-4 w-4 sm:h-[18px] sm:w-[18px] md:h-5 md:w-5 object-contain flex-shrink-0"
               />
@@ -121,7 +123,7 @@ const Header = () => {
               aria-label="Menú de usuario"
             >
               <img
-                src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
+                src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528571/usuario-modo-oscuro_dhn30k.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528571/usuario_gfurqs.svg"}
                 alt="Perfil"
                 className="h-4 w-4 sm:h-[18px] sm:w-[18px] md:h-5 md:w-5 object-contain flex-shrink-0"
               />

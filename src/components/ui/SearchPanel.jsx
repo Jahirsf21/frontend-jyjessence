@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDarkMode } from '../../context/DarkModeContext';
 import { fetchEnums } from '../../services/api';
 import Ecommerce from '../../patterns/EcommerceFacade';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -32,6 +33,7 @@ export default function SearchPanel() {
     mililitrosMin,
     mililitrosMax
   } = filters;
+  const { isDarkMode } = useDarkMode();
   const [categorias, setCategorias] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [minPrecio, setMinPrecioLocal] = useState(0);
@@ -197,10 +199,14 @@ export default function SearchPanel() {
               onClick={toggleListening}
               aria-pressed={listening}
               title={supportsRecognition ? (listening ? 'Stop voice search' : 'Voice search') : 'Voice search not supported'}
-              className={`w-12 h-12 rounded-lg flex items-center justify-center border ${listening ? 'bg-red-100 border-red-400' : 'bg-white border-gray-200'} hover:bg-gray-50`}
+              className={`w-12 h-12 rounded-lg flex items-center justify-center border transition-colors ${
+                listening
+                  ? 'bg-red-100 border-red-400 dark:bg-red-700 dark:border-red-400'
+                  : (isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200')
+              } hover:bg-gray-50 dark:hover:bg-gray-700`}
             >
               <img
-                src="https://res.cloudinary.com/drec8g03e/image/upload/v1763353745/microfono_jnyork.png"
+                src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763530306/microfono-modo-oscuro_o987ii.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763530306/microfono_krfs1o.svg"}
                 alt="mic"
                 className={`w-6 h-6 object-contain ${listening ? 'opacity-100' : 'opacity-90'}`}
               />

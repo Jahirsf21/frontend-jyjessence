@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useVoiceReader } from '../../hooks/useVoiceReader';
 import EcommerceFacade from '../../patterns/EcommerceFacade';
+import { useDarkMode } from '../../context/DarkModeContext';
 
 const MiInformacion = () => {
   const { t } = useTranslation();
   const voiceReader = useVoiceReader();
+  const { isDarkMode } = useDarkMode();
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -132,7 +134,7 @@ const MiInformacion = () => {
           aria-label="Ir al inicio"
         >
           <img
-            src="https://res.cloudinary.com/drec8g03e/image/upload/v1762713857/inicio_x1zmf8.svg"
+            src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/home-modo-oscuro_m2aygh.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/home_xudymm.svg"}
             alt="Inicio"
             className="w-7 h-7"
           />

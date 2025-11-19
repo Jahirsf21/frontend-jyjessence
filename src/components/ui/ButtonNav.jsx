@@ -6,6 +6,7 @@ import { useSearchPanel } from '../../context/SearchPanelContext';
 import { useTranslation } from 'react-i18next';
 import Ecommerce from '../../patterns/EcommerceFacade';
 import guestCartService from '../../services/guestCartService';
+import { useDarkMode } from '../../context/DarkModeContext';
 
 export default function ButtonNav(props) {
   const { openSearch } = useSearchPanel();
@@ -14,6 +15,7 @@ export default function ButtonNav(props) {
   const { usuario, estaAutenticado } = useAuth();
   const { t } = useTranslation();
   const [cartItemCount, setCartItemCount] = useState(0);
+  const { isDarkMode } = useDarkMode();
 
 
   useEffect(() => {
@@ -51,10 +53,10 @@ export default function ButtonNav(props) {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 py-2 flex justify-around items-center z-50 md:hidden transition-colors duration-200">
-      <button onClick={() => navigate('/')}
+      <button onClick={() => navigate('/')} 
         className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full w-14 h-14 mb-1">
         <img
-          src="https://res.cloudinary.com/drec8g03e/image/upload/v1762713857/inicio_x1zmf8.svg"
+          src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/home-modo-oscuro_m2aygh.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/home_xudymm.svg"}
           alt={t('nav.home', { defaultValue: 'Inicio' })}
           className="h-6 w-6 mb-1"
         />
@@ -67,7 +69,7 @@ export default function ButtonNav(props) {
         }}
       >
         <img
-          src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/search_mntlda.svg"
+          src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/search-modo-oscuro_kzxlgy.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/search_va6rkk.svg"}
           alt={t('nav.search', { defaultValue: 'Buscar' })}
           className="h-6 w-6 mb-1"
         />
@@ -75,7 +77,7 @@ export default function ButtonNav(props) {
       </button>
       <button onClick={() => navigate('/cart')} className="bg-[#2563eb] rounded-full p-3 -mt-8 flex items-center justify-center transition-transform hover:scale-105 active:scale-95 shadow-lg w-16 h-16 relative">
         <img
-          src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/carrito_idlvij.svg"
+          src="https://res.cloudinary.com/drec8g03e/image/upload/v1763528569/carrito_evxei2.svg"
           alt={t('nav.cart', { defaultValue: 'Carrito' })}
           className="h-6 w-6"
           style={{ filter: 'invert(1)' }}
@@ -90,7 +92,7 @@ export default function ButtonNav(props) {
       </button>
       <button onClick={() => navigate('/orders')} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full w-14 h-14 mb-1">
         <img
-          src="https://res.cloudinary.com/drec8g03e/image/upload/v1762986237/pedidos_xdpj84.svg"
+          src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763529006/pedidos-modo-oscuro_y11hne.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763529006/pedidos_zwfp2i.svg"}
           alt={t('orders', { defaultValue: 'Pedidos' })}
           className="h-6 w-6 mb-1"
         />
@@ -98,7 +100,7 @@ export default function ButtonNav(props) {
       </button>
       <button onClick={() => setMostrarModalPerfil(true)} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full w-14 h-14 mb-1">
         <img
-          src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
+          src={isDarkMode ? "https://res.cloudinary.com/drec8g03e/image/upload/v1763528571/usuario-modo-oscuro_dhn30k.svg" : "https://res.cloudinary.com/drec8g03e/image/upload/v1763528571/usuario_gfurqs.svg"}
           alt={t('profile', { defaultValue: 'Perfil' })}
           className="h-6 w-6 mb-1"
         />
