@@ -7,8 +7,6 @@ const IDIOMAS = [
   { codigo: 'fr', etiqueta: 'Français' },
   { codigo: 'pt', etiqueta: 'Português' },
   { codigo: 'zh', etiqueta: '中文' },
-  { codigo: 'cab', etiqueta: 'Cabécar' },
-  { codigo: 'bribri', etiqueta: 'Bribri' },
 ];
 
 export default function LanguageDropdown({ value, onChange }) {
@@ -17,7 +15,6 @@ export default function LanguageDropdown({ value, onChange }) {
   const [abiertoConTeclado, setAbiertoConTeclado] = useState(false);
   const refDropdown = useRef(null);
   const refLista = useRef(null);
-  const refTemporizadorCierre = useRef(null);
 
   useEffect(() => {
     function manejarClickFuera(event) {
@@ -56,7 +53,7 @@ export default function LanguageDropdown({ value, onChange }) {
       ref={refDropdown}
     >
       <button
-        className="flex h-8 sm:h-9 md:h-10 items-center gap-1 rounded-full border border-gray-300 bg-white px-2 py-1.5 transition-all hover:border-gray-400 hover:shadow-sm md:gap-2 md:px-3 lg:px-4"
+        className="flex h-8 sm:h-9 md:h-10 items-center gap-1 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-2 py-1.5 transition-all hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-sm md:gap-2 md:px-3 lg:px-4"
         onClick={() => {
           setAbierto(!abierto);
           setAbiertoConTeclado(false);
@@ -91,7 +88,7 @@ export default function LanguageDropdown({ value, onChange }) {
           <line x1="2" y1="12" x2="22" y2="12" />
           <path d="M12 2a15.3 15.3 0 0 1 0 20a15.3 15.3 0 0 1 0-20" />
         </svg>
-        <span className="hidden lg:inline font-semibold text-gray-800 text-xs lg:text-sm whitespace-nowrap">
+        <span className="hidden lg:inline font-semibold text-gray-800 dark:text-gray-200 text-xs lg:text-sm whitespace-nowrap transition-colors duration-200">
           {actual ? getTranslatedLabel(actual.codigo) : t('language.select')}
         </span>
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +97,7 @@ export default function LanguageDropdown({ value, onChange }) {
       </button>
       {abierto && (
         <ul
-          className="absolute top-full right-0 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[140px] md:min-w-[180px] z-[1001] mt-2 overflow-hidden"
+          className="absolute top-full right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg dark:shadow-gray-900/50 min-w-[140px] md:min-w-[180px] z-[1001] mt-2 overflow-hidden transition-colors duration-200"
           role="listbox"
           ref={refLista}
           tabIndex={0}
@@ -126,7 +123,7 @@ export default function LanguageDropdown({ value, onChange }) {
           {IDIOMAS.map((idioma, idx) => (
             <li
               key={idioma.codigo}
-              className={`block w-full px-4 md:px-5 py-2 md:py-3 text-left bg-none border-none text-gray-700 text-sm md:text-base cursor-pointer transition-colors hover:bg-gray-100 ${idioma.codigo === value ? 'bg-blue-50 font-semibold' : ''} ${indiceEnfocado === idx ? 'bg-blue-100' : ''}`}
+              className={`block w-full px-4 md:px-5 py-2 md:py-3 text-left bg-none border-none text-gray-700 dark:text-gray-300 text-sm md:text-base cursor-pointer transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${idioma.codigo === value ? 'bg-blue-50 dark:bg-blue-900/30 font-semibold' : ''} ${indiceEnfocado === idx ? 'bg-blue-100 dark:bg-blue-900/50' : ''}`}
               onClick={() => { onChange(idioma.codigo); setAbierto(false); }}
               role="option"
               aria-selected={idioma.codigo === value}

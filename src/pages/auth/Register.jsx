@@ -321,7 +321,7 @@ const Register = () => {
   };
 
   return (
-    <div className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 font-['Lato',sans-serif] bg-white">
+    <div className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 font-['Lato',sans-serif] bg-white dark:bg-gray-900 transition-colors duration-200">
       {/* Carrusel (solo md+) */}
       <div className="relative hidden md:flex items-end p-10 overflow-hidden">
         {imagenesCarrusel.map((imagen, indice) => (
@@ -355,7 +355,7 @@ const Register = () => {
       <div className="flex flex-col p-4 sm:p-6 md:p-8 relative">
         <button
           onClick={() => navegar('/')}
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full hover:bg-gray-100 transition-colors"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
           aria-label="Ir a inicio"
         >
           <img
@@ -372,13 +372,13 @@ const Register = () => {
               className="h-28 w-28 object-contain"
             />
           </div>
-          <h1 className="font-['Lato',sans-serif] font-black text-2xl sm:text-3xl text-gray-800 text-center mb-6">
+          <h1 className="font-['Lato',sans-serif] font-black text-2xl sm:text-3xl text-gray-800 dark:text-gray-100 text-center mb-6 transition-colors duration-200">
             {t('auth.registerTitle')}
           </h1>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
-                <label htmlFor="cedula" className="block mb-1 font-bold text-gray-700 text-sm">
+                <label htmlFor="cedula" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                   {t('auth.cedula')} *
                   {cedulaValidada && (
                     <span className="ml-2 text-green-600 text-xs">
@@ -391,8 +391,8 @@ const Register = () => {
                   name="cedula"
                   type="text"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                    errores.cedula ? 'border-red-300' : 'border-gray-300'
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
+                    errores.cedula ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   placeholder="X-XXXX-XXXX"
                   value={datosFormulario.cedula}
@@ -402,7 +402,7 @@ const Register = () => {
                 {errores.cedula && <p className="mt-1 text-xs text-red-600">{errores.cedula}</p>}
               </div>
               <div>
-                <label htmlFor="nombre" className="block mb-1 font-bold text-gray-700 text-sm">
+                <label htmlFor="nombre" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                   {t('auth.name')} *
                 </label>
                 <input
@@ -411,9 +411,9 @@ const Register = () => {
                   type="text"
                   required
                   disabled={cedulaValidada}
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
                     cedulaValidada ? 'opacity-60' : ''
-                  } ${errores.nombre ? 'border-red-300' : 'border-gray-300'}`}
+                  } ${errores.nombre ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                   placeholder={t('auth.name')}
                   value={datosFormulario.nombre}
                   onChange={handleChange}
@@ -430,9 +430,9 @@ const Register = () => {
                   type="text"
                   required
                   disabled={cedulaValidada}
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
                     cedulaValidada ? 'opacity-60' : ''
-                  } ${errores.apellidos ? 'border-red-300' : 'border-gray-300'}`}
+                  } ${errores.apellidos ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                   placeholder={t('auth.lastName')}
                   value={datosFormulario.apellidos}
                   onChange={handleChange}
@@ -449,8 +449,8 @@ const Register = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                    errores.email ? 'border-red-300' : 'border-gray-300'
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
+                    errores.email ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   placeholder={t('auth.email')}
                   value={datosFormulario.email}
@@ -466,8 +466,8 @@ const Register = () => {
                   id="genero"
                   name="genero"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                    errores.genero ? 'border-red-300' : 'border-gray-300'
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
+                    errores.genero ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   value={datosFormulario.genero}
                   onChange={handleChange}
@@ -487,8 +487,8 @@ const Register = () => {
                   name="telefono"
                   type="tel"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                    errores.telefono ? 'border-red-300' : 'border-gray-300'
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
+                    errores.telefono ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   placeholder="XXXX-XXXX"
                   value={datosFormulario.telefono}
@@ -505,7 +505,7 @@ const Register = () => {
                     onChange={(e) => setAgregarDireccion(e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-gray-700 text-sm font-medium">
+                  <span className="text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors duration-200">
                     {t('address.addAddress')}
                   </span>
                 </label>
@@ -574,7 +574,7 @@ const Register = () => {
                       id="barrio"
                       name="barrio"
                       type="text"
-                      className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200"
                       placeholder={t('address.neighborhoodPlaceholder')}
                       value={datosDireccion.barrio}
                       onChange={handleDireccionChange}
@@ -606,7 +606,7 @@ const Register = () => {
                       id="codigoPostal"
                       name="codigoPostal"
                       type="text"
-                      className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200"
                       placeholder={t('address.postalCodePlaceholder')}
                       value={datosDireccion.codigoPostal}
                       onChange={handleDireccionChange}
@@ -620,7 +620,7 @@ const Register = () => {
                       id="referencia"
                       name="referencia"
                       type="text"
-                      className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200"
                       placeholder={t('address.referencePlaceholder')}
                       value={datosDireccion.referencia}
                       onChange={handleDireccionChange}
@@ -668,17 +668,17 @@ const Register = () => {
             <button
               type="submit"
               disabled={cargando || !cedulaValidada}
-              className="w-full py-3 px-4 rounded-lg border-none bg-blue-600 text-white text-base sm:text-lg font-bold cursor-pointer transition-colors shadow-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed mt-2"
+              className="w-full py-3 px-4 rounded-lg border-none bg-blue-600 dark:bg-blue-500 text-white text-base sm:text-lg font-bold cursor-pointer transition-colors duration-200 shadow-md hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed mt-2"
             >
               {cargando ? t('common.loading') : t('auth.register')}
             </button>
           </form>
-          <div className="text-center mt-6 text-gray-700 text-sm">
+          <div className="text-center mt-6 text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
             <span>
               {t('auth.hasAccount')}{' '}
               <button
                 onClick={() => navegar('/auth/login')}
-                className="text-blue-600 font-bold hover:underline"
+                className="text-blue-600 dark:text-blue-400 font-bold hover:underline transition-colors duration-200"
               >
                 {t('auth.login')}
               </button>

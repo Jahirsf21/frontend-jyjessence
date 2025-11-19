@@ -53,46 +53,46 @@ const Orders = () => {
   const formatCurrency = valor => `₡${Number(valor || 0).toLocaleString('es-CR', { minimumFractionDigits: 2 })}`;
 
   const renderEmptyState = () => (
-    <div className="bg-white/80 backdrop-blur rounded-2xl shadow-lg p-12 text-center border border-gray-100">
+    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-2xl shadow-lg dark:shadow-gray-900/50 p-12 text-center border border-gray-100 dark:border-gray-700 transition-colors duration-200">
       <div className="mx-auto h-20 w-20 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center mb-6">
         <svg className="h-10 w-10 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
         </svg>
       </div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('orders.none')}</h2>
-      <p className="text-gray-500 max-w-md mx-auto">{t('cart.emptySubtitle')}</p>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2 transition-colors duration-200">{t('orders.none')}</h2>
+      <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto transition-colors duration-200">{t('cart.emptySubtitle')}</p>
     </div>
   );
 
   const renderLoader = () => (
     <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
       <div className="w-16 h-16 rounded-full border-4 border-blue-100 border-t-blue-500 animate-spin" />
-      <p className="text-sm text-gray-500">{t('common.loading')}</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">{t('common.loading')}</p>
     </div>
   );
 
   const countText = t('orders.countSimple', { count: pedidos.length });
 
   return (
-    <div className="min-h-screen bg-white py-10">
+    <div className="min-h-screen bg-white dark:bg-gray-900 py-10 transition-colors duration-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <header className="space-y-3">
-          <p className="text-sm uppercase tracking-[0.35em] text-blue-400 font-semibold">{t('orders.sectionLabel', { defaultValue: 'Historial' })}</p>
+          <p className="text-sm uppercase tracking-[0.35em] text-blue-400 dark:text-blue-500 font-semibold transition-colors duration-200">{t('orders.sectionLabel', { defaultValue: 'Historial' })}</p>
           <div className="flex flex-wrap items-end gap-4 justify-between">
             <div>
-              <h1 className="text-3xl md:text-4xl font-black text-gray-900">{t('orders.title')}</h1>
-              <p className="text-gray-500">{countText}</p>
+              <h1 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-gray-100 transition-colors duration-200">{t('orders.title')}</h1>
+              <p className="text-gray-500 dark:text-gray-400 transition-colors duration-200">{countText}</p>
             </div>
             <div className="flex gap-2">
               <button
                 onClick={() => setFiltro('todos')}
-                className="px-4 py-2 text-sm font-semibold text-blue-700 bg-blue-50 rounded-full border border-blue-100 hover:bg-blue-100 transition-colors"
+                className="px-4 py-2 text-sm font-semibold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full border border-blue-100 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors duration-200"
               >
                 {t('orders.showAll', { defaultValue: 'Ver todos' })}
               </button>
               <button
                 onClick={() => setFiltro('pendiente')}
-                className="px-4 py-2 text-sm font-semibold text-blue-700 bg-white rounded-full border border-blue-100 hover:border-blue-300 transition-colors"
+                className="px-4 py-2 text-sm font-semibold text-blue-700 dark:text-blue-400 bg-white dark:bg-gray-800 rounded-full border border-blue-100 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-600 transition-colors duration-200"
               >
                 {t('orders.resume', { defaultValue: 'Pendientes' })}
               </button>
@@ -109,18 +109,18 @@ const Orders = () => {
               <button
                 key={estado}
                 onClick={() => setFiltro(estado)}
-                className={`rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 ${isActive ? 'border-purple-500 bg-white shadow-lg' : 'border-gray-100 bg-white/80'
-                  }`}
+                className={`rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 ${isActive ? 'border-purple-500 dark:border-purple-400 bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-900/50' : 'border-gray-100 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80'
+                  } transition-colors duration-200`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <span className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide ${meta.badge}`}>
                     <span className={`w-2 h-2 rounded-full ${meta.dot}`} />
                     {t(`orders.filter.${estado}`)}
                   </span>
-                  <span className="text-xs text-gray-400">{t('orders.statusLabel', { defaultValue: 'Estado' })}</span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-200">{t('orders.statusLabel', { defaultValue: 'Estado' })}</span>
                 </div>
-                <p className="text-2xl font-black text-gray-900">{stats[estado]}</p>
-                <p className="text-xs text-gray-500 mt-1">{t('orders.cards', { defaultValue: 'Pedidos' })}</p>
+                <p className="text-2xl font-black text-gray-900 dark:text-gray-100 transition-colors duration-200">{stats[estado]}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 transition-colors duration-200">{t('orders.cards', { defaultValue: 'Pedidos' })}</p>
               </button>
             );
           })}
@@ -132,9 +132,9 @@ const Orders = () => {
             <button
               key={estado}
               onClick={() => setFiltro(estado)}
-              className={`px-4 py-2 rounded-full text-sm font-medium border transition ${filtro === estado
-                  ? 'bg-gray-900 text-white border-gray-900'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
+              className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-200 ${filtro === estado
+                  ? 'bg-gray-900 dark:bg-gray-700 text-white border-gray-900 dark:border-gray-600'
+                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
                 }`}
             >
               {t(`orders.filter.${estado}`)}
@@ -150,8 +150,8 @@ const Orders = () => {
           {!loading && pedidos.length > 0 && (
             <div className="space-y-6">
               {pedidosFiltrados.length === 0 && (
-                <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-8 text-center">
-                  <p className="text-gray-500">{t('orders.emptyFilter', { estado: t(`orders.filter.${filtro}`) })}</p>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 p-8 text-center transition-colors duration-200">
+                  <p className="text-gray-500 dark:text-gray-400 transition-colors duration-200">{t('orders.emptyFilter', { estado: t(`orders.filter.${filtro}`) })}</p>
                 </div>
               )}
 
@@ -161,18 +161,18 @@ const Orders = () => {
                 // Soporta distintas claves para los artículos dentro del pedido
                 const detalles = pedido.detalles || pedido.articulos || pedido.items || pedido.detallesPedido || pedido.detalle || [];
                 return (
-                  <article key={pedido.id} className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 px-6 py-4 bg-white">
+                  <article key={pedido.id} className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm dark:shadow-lg dark:shadow-gray-900/50 border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors duration-200">
+                    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-700 px-6 py-4 bg-white dark:bg-gray-800 transition-colors duration-200">
                       <div>
-                        <p className="text-xs uppercase tracking-[0.3em] text-gray-400">{t('orders.orderLabel', { defaultValue: 'Pedido' })}</p>
-                        <p className="text-lg font-semibold text-gray-900">#{pedido.idPedido || pedido.id}</p>
-                        <p className="text-sm text-gray-500">{pedido.fechaFormateada}</p>
+                        <p className="text-xs uppercase tracking-[0.3em] text-gray-400 dark:text-gray-500 transition-colors duration-200">{t('orders.orderLabel', { defaultValue: 'Pedido' })}</p>
+                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">#{pedido.idPedido || pedido.id}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">{pedido.fechaFormateada}</p>
                       </div>
                       <div className="text-right">
                         {!!pedido.montoTotal && (
-                          <p className="text-sm text-gray-400">{t('orders.amountTotal')}</p>
+                          <p className="text-sm text-gray-400 dark:text-gray-500 transition-colors duration-200">{t('orders.amountTotal')}</p>
                         )}
-                        <p className="text-2xl font-black text-gray-900">{formatCurrency(pedido.montoTotal)}</p>
+                        <p className="text-2xl font-black text-gray-900 dark:text-gray-100 transition-colors duration-200">{formatCurrency(pedido.montoTotal)}</p>
                       </div>
                       <span className={`px-4 py-1.5 rounded-full text-sm font-semibold border ${meta.badge}`}>
                         {t(`orders.filter.${estado}`)}
@@ -181,19 +181,19 @@ const Orders = () => {
 
                     <div className="px-6 py-5 space-y-6">
                       <div className="grid md:grid-cols-2 gap-5">
-                        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                          <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">{t('orders.shippingAddress')}</p>
-                          <p className="text-sm text-gray-700">
+                        <div className="p-4 rounded-2xl bg-slate-50 dark:bg-gray-700/50 border border-slate-100 dark:border-gray-700 transition-colors duration-200">
+                          <p className="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-1 transition-colors duration-200">{t('orders.shippingAddress')}</p>
+                          <p className="text-sm text-gray-700 dark:text-gray-300 transition-colors duration-200">
                             {pedido.direccion
                               ? `${pedido.direccion.provincia}, ${pedido.direccion.canton}, ${pedido.direccion.distrito}${pedido.direccion.barrio ? ' - ' + pedido.direccion.barrio : ''}`
                               : t('address.noAddresses')}
                           </p>
                         </div>
 
-                        <div className="p-4 rounded-2xl border border-gray-100 bg-white flex items-center justify-between">
+                        <div className="p-4 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-between transition-colors duration-200">
                           <div>
-                            <p className="text-xs uppercase tracking-widest text-gray-400">{t('orders.statusLabel', { defaultValue: 'Estado' })}</p>
-                            <p className="text-lg font-semibold text-gray-800">{t(`orders.filter.${estado}`)}</p>
+                            <p className="text-xs uppercase tracking-widest text-gray-400 dark:text-gray-500 transition-colors duration-200">{t('orders.statusLabel', { defaultValue: 'Estado' })}</p>
+                            <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 transition-colors duration-200">{t(`orders.filter.${estado}`)}</p>
                           </div>
                           <span className={`w-12 h-12 rounded-2xl flex items-center justify-center text-gray-900 font-black ${meta.badge.split(' ')[0]}`}>{stats[estado] || 1}</span>
                         </div>
@@ -201,30 +201,30 @@ const Orders = () => {
 
                       {detalles.length > 0 && (
                         <div>
-                          <p className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-3">{t('orders.products')}</p>
+                          <p className="text-xs uppercase tracking-[0.3em] text-gray-400 dark:text-gray-500 mb-3 transition-colors duration-200">{t('orders.products')}</p>
                           <div className="space-y-3">
                             {detalles.map((detalle, index) => {
                               const imageSrc = detalle.producto?.primaryImage || detalle.producto?.primaryImageUrl || detalle.producto?.imagenesUrl?.[0] || detalle.producto?.imagen || detalle.imagen || detalle.imagenUrl || null;
                               const nombreProducto = detalle.producto?.nombre || detalle.nombre || `Producto #${detalle.productoId || detalle.productoId}`;
                               const precioUnit = (detalle.precioUnitario ?? detalle.precio ?? 0);
                               return (
-                                <div key={`${pedido.id}-${index}`} className="flex items-center justify-between gap-3 p-4 rounded-2xl border border-gray-100 bg-white/70">
+                                <div key={`${pedido.id}-${index}`} className="flex items-center justify-between gap-3 p-4 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/70 transition-colors duration-200">
                                   <div className="flex items-center gap-4">
                                     {imageSrc ? (
                                       <img src={imageSrc} alt={nombreProducto} className="w-12 h-12 rounded-2xl object-cover" />
                                     ) : (
-                                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
-                                        <svg className="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100 dark:from-purple-900/30 to-blue-100 dark:to-blue-900/30 flex items-center justify-center transition-colors duration-200">
+                                        <svg className="h-6 w-6 text-purple-600 dark:text-purple-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7a2 2 0 012-2h4l2 3h6a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
                                         </svg>
                                       </div>
                                     )}
                                     <div>
-                                      <p className="text-sm font-semibold text-gray-900">{nombreProducto}</p>
-                                      <p className="text-xs text-gray-500">₡{precioUnit.toLocaleString('es-CR')} • {t('orders.quantity')} {detalle.cantidad}</p>
+                                      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">{nombreProducto}</p>
+                                      <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-200">₡{precioUnit.toLocaleString('es-CR')} • {t('orders.quantity')} {detalle.cantidad}</p>
                                     </div>
                                   </div>
-                                  <p className="text-base font-bold text-gray-900">{formatCurrency(precioUnit * (detalle.cantidad ?? 0))}</p>
+                                  <p className="text-base font-bold text-gray-900 dark:text-gray-100 transition-colors duration-200">{formatCurrency(precioUnit * (detalle.cantidad ?? 0))}</p>
                                 </div>
                               );
                             })}

@@ -200,11 +200,11 @@ export default function ProductsManagement() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('admin.products.title')}</h2>
-      <div className="bg-white border rounded-lg shadow-sm p-4 mb-6">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 transition-colors duration-200">{t('admin.products.title')}</h2>
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm dark:shadow-lg dark:shadow-gray-900/50 p-4 mb-6 transition-colors duration-200">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-nombre">{t('products.filter.name')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200" htmlFor="filtro-nombre">{t('products.filter.name')}</label>
             <input
               id="filtro-nombre"
               name="nombre"
@@ -212,11 +212,11 @@ export default function ProductsManagement() {
               value={filtros.nombre}
               onChange={handleFiltroChange}
               placeholder={t('products.filter.namePlaceholder')}
-              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors duration-200"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-categoria">{t('products.filter.category')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200" htmlFor="filtro-categoria">{t('products.filter.category')}</label>
             <input
               id="filtro-categoria"
               name="categoria"
@@ -224,11 +224,11 @@ export default function ProductsManagement() {
               value={filtros.categoria}
               onChange={handleFiltroChange}
               placeholder={t('products.filter.categoryPlaceholder')}
-              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors duration-200"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="filtro-precio">{t('products.filter.price')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200" htmlFor="filtro-precio">{t('products.filter.price')}</label>
             <input
               id="filtro-precio"
               name="precio"
@@ -236,7 +236,7 @@ export default function ProductsManagement() {
               value={filtros.precio}
               onChange={handleFiltroChange}
               placeholder={t('products.filter.pricePlaceholder')}
-              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors duration-200"
             />
           </div>
           <div className="flex items-end">
@@ -251,17 +251,17 @@ export default function ProductsManagement() {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-100 border-b">
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.product')}</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.category')}</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.price')}</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.stock')}</th>
-              <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">{t('admin.products.tableHeaders.actions')}</th>
+            <tr className="bg-gray-100 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.products.tableHeaders.product')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.products.tableHeaders.category')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.products.tableHeaders.price')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.products.tableHeaders.stock')}</th>
+              <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.products.tableHeaders.actions')}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
             {productosPagina.map((producto) => (
-              <tr key={producto.idProducto} className="hover:bg-gray-50">
+              <tr key={producto.idProducto} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     {producto.imagenesUrl?.[0] && (
@@ -272,13 +272,13 @@ export default function ProductsManagement() {
                       />
                     )}
                     <div>
-                      <div className="font-medium text-gray-900">{producto.nombre}</div>
-                      <div className="text-sm text-gray-500">{producto.mililitros}ml - {producto.genero}</div>
+                      <div className="font-medium text-gray-900 dark:text-gray-100 transition-colors duration-200">{producto.nombre}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">{producto.mililitros}ml - {producto.genero}</div>
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-700">{producto.categoria}</td>
-                <td className="px-4 py-3 text-sm text-gray-900 font-medium">{producto.precioFormateado}</td>
+                <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 transition-colors duration-200">{producto.categoria}</td>
+                <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-medium transition-colors duration-200">{producto.precioFormateado}</td>
                 <td className="px-4 py-3">
                   <button
                     onClick={() => handleStockUpdate(producto.idProducto, producto.stock)}
@@ -300,7 +300,7 @@ export default function ProductsManagement() {
         </table>
 
         {productosFiltrados.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-gray-500 dark:text-gray-400 transition-colors duration-200">
             {t('products.empty')}
           </div>
         )}
@@ -310,7 +310,7 @@ export default function ProductsManagement() {
       {totalPaginas > 1 && (
         <div className="flex justify-center items-center gap-2 mt-6">
           <button
-            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
             onClick={() => handlePaginaChange(paginaActual - 1)}
             disabled={paginaActual === 1}
           >
@@ -319,14 +319,18 @@ export default function ProductsManagement() {
           {[...Array(totalPaginas)].map((_, idx) => (
             <button
               key={idx}
-              className={`px-3 py-1 rounded ${paginaActual === idx + 1 ? 'bg-indigo-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${
+                paginaActual === idx + 1 
+                  ? 'bg-blue-600 dark:bg-blue-500 text-white' 
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
               onClick={() => handlePaginaChange(idx + 1)}
             >
               {idx + 1}
             </button>
           ))}
           <button
-            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
             onClick={() => handlePaginaChange(paginaActual + 1)}
             disabled={paginaActual === totalPaginas}
           >

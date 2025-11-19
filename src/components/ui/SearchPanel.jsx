@@ -167,10 +167,10 @@ export default function SearchPanel() {
   }, [i18n.language]);
 
   return (
-    <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[1002] transition-all duration-300 ${openSearchPanel ? 'translate-x-0' : 'translate-x-full'} flex flex-col`}>
-      <div className="flex items-center p-4 border-b bg-gray-50">
-        <h2 className="text-lg font-bold flex-1">{t('filters.title')}</h2>
-        <button onClick={closeSearch} className="p-2 rounded-full hover:bg-gray-200" aria-label={t('search.close')}>
+    <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-2xl dark:shadow-gray-900/50 z-[1002] transition-all duration-300 ${openSearchPanel ? 'translate-x-0' : 'translate-x-full'} flex flex-col`}>
+      <div className="flex items-center p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+        <h2 className="text-lg font-bold flex-1 text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('filters.title')}</h2>
+        <button onClick={closeSearch} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-200" aria-label={t('search.close')}>
           <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -179,7 +179,7 @@ export default function SearchPanel() {
           <input
             type="text"
             placeholder={t('search.placeholder')}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 mb-4 transition-colors duration-200"
             value={busqueda}
             onChange={e => setBusqueda(e.target.value)}
           />
@@ -214,7 +214,7 @@ export default function SearchPanel() {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-3 text-gray-700">
+          <label className="block text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300 transition-colors duration-200">
             {t('product.category')}
           </label>
           <div className="flex flex-wrap gap-2">
@@ -222,8 +222,8 @@ export default function SearchPanel() {
               onClick={() => setCategoriaFiltro([])}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 categoriaFiltro.length === 0
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {t('nav.all')}
@@ -241,8 +241,8 @@ export default function SearchPanel() {
                   }}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                     selected
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {t(`category.${cat}`)}
@@ -252,7 +252,7 @@ export default function SearchPanel() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-3 text-gray-700">
+          <label className="block text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300 transition-colors duration-200">
             {t('product.gender')}
           </label>
           <div className="flex flex-wrap gap-2">
@@ -260,8 +260,8 @@ export default function SearchPanel() {
               onClick={() => setGeneroFiltro([])}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 generoFiltro.length === 0 
-                  ? 'bg-blue-600 text-white shadow-md' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md' 
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {t('nav.all')}
@@ -272,8 +272,8 @@ export default function SearchPanel() {
                 onClick={() => setGeneroFiltro(generoFiltro.includes(gen) ? generoFiltro.filter(g => g !== gen) : [...generoFiltro, gen])}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   generoFiltro.includes(gen) 
-                    ? 'bg-blue-600 text-white shadow-md' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md' 
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {t(`gender.${gen}`)}
@@ -288,7 +288,7 @@ export default function SearchPanel() {
               type="number"
               value={precioMin}
               onChange={e => setPrecioMin(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
               placeholder={minPrecio.toString()}
             />
           </div>
@@ -298,7 +298,7 @@ export default function SearchPanel() {
               type="number"
               value={precioMax}
               onChange={e => setPrecioMax(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
               placeholder={maxPrecio.toString()}
             />
           </div>
@@ -311,7 +311,7 @@ export default function SearchPanel() {
               type="number"
               value={mililitrosMin}
               onChange={e => setMililitrosMin(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
               placeholder={t('common.min')}
             />
           </div>
@@ -321,7 +321,7 @@ export default function SearchPanel() {
               type="number"
               value={mililitrosMax}
               onChange={e => setMililitrosMax(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
               placeholder={t('common.max')}
             />
           </div>
@@ -331,7 +331,7 @@ export default function SearchPanel() {
           <button
             type="button"
             onClick={limpiarFiltros}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800 transition-colors duration-200"
           >
             {t('filters.clearFilters')}
           </button>

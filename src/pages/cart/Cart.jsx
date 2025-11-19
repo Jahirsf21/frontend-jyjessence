@@ -249,10 +249,10 @@ const Cart = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Cargando carrito...</p>
+                    <p className="text-gray-600 dark:text-gray-300 transition-colors duration-200">Cargando carrito...</p>
                 </div>
             </div>
         );
@@ -260,13 +260,13 @@ const Cart = () => {
 
     if (error) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="bg-white rounded-lg shadow-md p-8 max-w-md text-center">
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-900/50 p-8 max-w-md text-center transition-colors duration-200">
                     <svg className="mx-auto h-16 w-16 text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('cart.loadErrorTitle')}</h2>
-                    <p className="text-gray-600 mb-6">{error}</p>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2 transition-colors duration-200">{t('cart.loadErrorTitle')}</h2>
+                    <p className="text-gray-600 dark:text-gray-300 mb-6 transition-colors duration-200">{error}</p>
                     <button
                         onClick={cargarCarrito}
                         className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -289,13 +289,13 @@ const Cart = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white py-8">
+        <div className="min-h-screen bg-white dark:bg-gray-900 py-8 transition-colors duration-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
-                        <h1 className="text-4xl font-bold text-gray-900 mb-2">{t('cart.title')}</h1>
-                        <p className="text-gray-600">
+                        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 transition-colors duration-200">{t('cart.title')}</h1>
+                        <p className="text-gray-600 dark:text-gray-300 transition-colors duration-200">
                             {carrito.cantidadItems > 0
                                 ? `${carrito.cantidadItems} ${t('cart.itemsInCart')}`
                                 : t('cart.emptyTitle')}
@@ -312,7 +312,7 @@ const Cart = () => {
                                     Swal.fire({ icon: 'error', title: t('error'), text: err.response?.data?.error || err.message || t('error'), confirmButtonText: t('button.understood') });
                                 }
                             }}
-                            className="px-3 py-2 rounded-lg border bg-gray-50 text-sm hover:bg-gray-100"
+                            className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
                         >
                             {t('cart.undo')}
                         </button>
@@ -327,7 +327,7 @@ const Cart = () => {
                                     Swal.fire({ icon: 'error', title: t('error'), text: err.response?.data?.error || err.message || t('error'), confirmButtonText: t('button.understood') });
                                 }
                             }}
-                            className="px-3 py-2 rounded-lg border bg-gray-50 text-sm hover:bg-gray-100"
+                            className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
                         >
                             {t('cart.redo')}
                         </button>
@@ -335,12 +335,12 @@ const Cart = () => {
                 </div>
 
                 {carrito.items.length === 0 ? (
-                    <div className="bg-white rounded-lg shadow-md p-12 text-center">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-900/50 p-12 text-center transition-colors duration-200">
                         <svg className="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
-                        <h2 className="text-2xl font-semibold text-gray-900 mb-2">{t('cart.emptyTitle')}</h2>
-                        <p className="text-gray-600 mb-6">{t('cart.emptySubtitle')}</p>
+                        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2 transition-colors duration-200">{t('cart.emptyTitle')}</h2>
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 transition-colors duration-200">{t('cart.emptySubtitle')}</p>
                         <button
                             onClick={() => navigate('/products')}
                             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -354,7 +354,7 @@ const Cart = () => {
                         <div className="lg:col-span-2">
                             <div className="space-y-4 max-h-[480px] overflow-y-auto pr-3 bg-gray-50 border border-gray-200 rounded-2xl p-4 shadow-inner scrollbar-elegant">
                                 {carrito.items.map((item) => (
-                                    <div key={item.productoId} className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+                                    <div key={item.productoId} className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-900/50 p-4 sm:p-6 transition-colors duration-200">
                                         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                                             {/* Imagen */}
                                             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center flex-shrink-0 bg-white border border-gray-200">
@@ -370,27 +370,27 @@ const Cart = () => {
 
                                             {/* Información */}
                                             <div className="flex-1 min-w-0">
-                                                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 truncate">{item.nombre}</h3>
-                                                <p className="text-xs sm:text-sm text-gray-500 mb-3">
+                                                <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-1 truncate transition-colors duration-200">{item.nombre}</h3>
+                                                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 transition-colors duration-200">
                                                     {t('cart.unitPrice')}: ₡{item.precioUnitario.toFixed(2)}
                                                 </p>
 
                                                 {/* Controles de Cantidad */}
                                                 <div className="flex items-center gap-2 sm:gap-4">
-                                                    <div className="flex items-center border border-gray-300 rounded-lg">
+                                                    <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg transition-colors duration-200">
                                                         <button
                                                             onClick={() => actualizarCantidad(item.productoId, item.cantidad - 1)}
-                                                            className="px-2 sm:px-3 py-2 hover:bg-gray-100 transition-colors"
+                                                            className="px-2 sm:px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-200"
                                                             disabled={item.cantidad <= 1}
                                                         >
                                                             <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
                                                             </svg>
                                                         </button>
-                                                        <span className="px-2 sm:px-4 py-2 text-sm sm:font-medium">{item.cantidad}</span>
+                                                        <span className="px-2 sm:px-4 py-2 text-sm sm:font-medium text-gray-800 dark:text-gray-200 transition-colors duration-200">{item.cantidad}</span>
                                                         <button
                                                             onClick={() => actualizarCantidad(item.productoId, item.cantidad + 1)}
-                                                            className="px-2 sm:px-3 py-2 hover:bg-gray-100 transition-colors"
+                                                            className="px-2 sm:px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-200"
                                                         >
                                                             <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -424,19 +424,19 @@ const Cart = () => {
 
                         {/* Resumen del Pedido */}
                         <div className="lg:col-span-1">
-                            <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-                                <h2 className="text-xl font-bold text-gray-900 mb-4">{t('cart.summaryTitle')}</h2>
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-900/50 p-6 sticky top-4 transition-colors duration-200">
+                                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 transition-colors duration-200">{t('cart.summaryTitle')}</h2>
 
                                 <div className="space-y-3 mb-6">
-                                    <div className="flex justify-between text-gray-600">
+                                    <div className="flex justify-between text-gray-600 dark:text-gray-300 transition-colors duration-200">
                                         <span>{t('cart.subtotal')}</span>
                                         <span>₡{carrito.total.toFixed(2)}</span>
                                     </div>
-                                    <div className="flex justify-between text-gray-600">
+                                    <div className="flex justify-between text-gray-600 dark:text-gray-300 transition-colors duration-200">
                                         <span>{t('cart.shipping')}</span>
                                         <span className="text-green-600">{t('cart.shippingFree')}</span>
                                     </div>
-                                    <div className="border-t pt-3 flex justify-between text-lg font-bold">
+                                    <div className="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between text-lg font-bold text-gray-900 dark:text-gray-100 transition-colors duration-200">
                                         <span>{t('cart.total')}</span>
                                         <span className="text-blue-600">₡{carrito.total.toFixed(2)}</span>
                                     </div>
@@ -446,11 +446,11 @@ const Cart = () => {
                                 <div className="mb-6">
                                     {estaAutenticado ? (
                                         <>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                                                 {t('cart.selectAddress')}
                                             </label>
                                             {direcciones.length === 0 && (
-                                                <p className="text-sm text-gray-500 mb-2">{t('address.noAddresses')}</p>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 transition-colors duration-200">{t('address.noAddresses')}</p>
                                             )}
                                             {direcciones.length > 0 && (
                                                 <select
@@ -469,57 +469,57 @@ const Cart = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                                                <p className="text-sm text-blue-800 font-medium mb-2">
+                                            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4 transition-colors duration-200">
+                                                <p className="text-sm text-blue-800 dark:text-blue-300 font-medium mb-2 transition-colors duration-200">
                                                     {t('cart.guestCheckout')}
                                                 </p>
-                                                <p className="text-sm text-blue-600">
+                                                <p className="text-sm text-blue-600 dark:text-blue-400 transition-colors duration-200">
                                                     {t('cart.guestInstructions')}
                                                 </p>
                                             </div>
 
                                             <div className="space-y-4">
                                                 <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                                                         {t('cart.guestEmail')}
                                                     </label>
                                                     <input
                                                         type="email"
                                                         value={guestInfo.email}
                                                         onChange={(e) => setGuestInfo({ ...guestInfo, email: e.target.value })}
-                                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                        className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
                                                         placeholder={t('cart.guestEmailPlaceholder')}
                                                     />
                                                 </div>
 
                                                 <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                                                         {t('cart.guestName')}
                                                     </label>
                                                     <input
                                                         type="text"
                                                         value={guestInfo.nombre}
                                                         onChange={(e) => setGuestInfo({ ...guestInfo, nombre: e.target.value })}
-                                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                        className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
                                                         placeholder={t('cart.guestNamePlaceholder')}
                                                     />
                                                 </div>
 
                                                 <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                                                         {t('cart.guestPhone')}
                                                     </label>
                                                     <input
                                                         type="tel"
                                                         value={guestInfo.telefono}
                                                         onChange={(e) => setGuestInfo({ ...guestInfo, telefono: e.target.value })}
-                                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                        className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
                                                         placeholder={t('cart.guestPhonePlaceholder')}
                                                     />
                                                 </div>
 
                                                 <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                                                         {t('cart.guestAddress')} *
                                                     </label>
                                                     <AddressForm
@@ -529,8 +529,8 @@ const Cart = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                                                <p className="text-xs text-gray-600">
+                                            <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors duration-200">
+                                                <p className="text-xs text-gray-600 dark:text-gray-400 transition-colors duration-200">
                                                     {t('cart.guestLoginPrompt')} <button
                                                         onClick={() => navigate('/auth/login')}
                                                         className="text-blue-600 hover:text-blue-800 underline"
@@ -547,9 +547,9 @@ const Cart = () => {
                                 <button
                                     onClick={finalizarPedido}
                                     disabled={estaAutenticado ? !direccionSeleccionada : !isGuestFormValid()}
-                                    className={`w-full px-6 py-3 rounded-lg font-medium mb-3 transition-colors ${(estaAutenticado ? direccionSeleccionada : isGuestFormValid())
-                                        ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                    className={`w-full px-6 py-3 rounded-lg font-medium mb-3 transition-colors duration-200 ${(estaAutenticado ? direccionSeleccionada : isGuestFormValid())
+                                        ? 'bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
+                                        : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                                         }`}
                                 >
                                     {t('cart.finalizeButton')}
@@ -557,13 +557,13 @@ const Cart = () => {
 
                                 <button
                                     onClick={() => navigate('/products')}
-                                    className="w-full px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                                    className="w-full px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800 transition-colors duration-200 font-medium"
                                 >
                                     {t('cart.keepBuying')}
                                 </button>
 
-                                <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                                    <p className="text-sm text-gray-600">
+                                <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors duration-200">
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">
                                         {t('cart.securePlaceholderRemoved')}
                                     </p>
                                 </div>

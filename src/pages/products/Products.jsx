@@ -140,16 +140,16 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">{t('products.catalogTitle')}</h1>
-          <p className="text-gray-600">{t('products.catalogSubtitle')}</p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 transition-colors duration-200">{t('products.catalogTitle')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">{t('products.catalogSubtitle')}</p>
         </div>
 
         {/* Barra de Búsqueda y Filtros */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-900/50 p-6 mb-8 transition-colors duration-200">
           {/* Búsqueda */}
           <div className="mb-4">
             <input
@@ -157,7 +157,7 @@ const Products = () => {
               placeholder={t('header.searchPlaceholder')}
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
             />
           </div>
 
@@ -165,11 +165,11 @@ const Products = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Categoría */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t('product.category')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">{t('product.category')}</label>
               <select
                 value={categoriaFiltro}
                 onChange={(e) => setCategoriaFiltro(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
               >
                 <option value="">{t('common.clear')}</option>
                 {categorias.map(cat => (
@@ -180,11 +180,11 @@ const Products = () => {
 
             {/* Género */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t('product.gender')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">{t('product.gender')}</label>
               <select
                 value={generoFiltro}
                 onChange={(e) => setGeneroFiltro(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
               >
                 <option value="">{t('common.clear')}</option>
                 {generos.map(gen => (
@@ -195,42 +195,42 @@ const Products = () => {
 
             {/* Precio */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t('product.price')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">{t('product.price')}</label>
               <div className="flex gap-2">
                 <input
                   type="number"
                   placeholder={t('common.min')}
                   value={precioMin}
                   onChange={(e) => setPrecioMin(e.target.value)}
-                  className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-1/2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
                 />
                 <input
                   type="number"
                   placeholder={t('common.max')}
                   value={precioMax}
                   onChange={(e) => setPrecioMax(e.target.value)}
-                  className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-1/2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
                 />
               </div>
             </div>
 
             {/* Mililitros */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t('product.volume')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">{t('product.volume')}</label>
               <div className="flex gap-2">
                 <input
                   type="number"
                   placeholder={t('common.min')}
                   value={mililitrosMin}
                   onChange={(e) => setMililitrosMin(e.target.value)}
-                  className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-1/2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
                 />
                 <input
                   type="number"
                   placeholder={t('common.max')}
                   value={mililitrosMax}
                   onChange={(e) => setMililitrosMax(e.target.value)}
-                  className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-1/2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
                 />
               </div>
             </div>
@@ -239,7 +239,7 @@ const Products = () => {
             <div className="flex items-end md:col-span-2 lg:col-span-1">
               <button
                 onClick={limpiarFiltros}
-                className="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                className="w-full px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors duration-200 font-medium"
               >
                 {t('filters.clearFilters')}
               </button>
@@ -247,23 +247,23 @@ const Products = () => {
           </div>
 
           {/* Contador de resultados */}
-          <div className="mt-4 text-sm text-gray-600">
+          <div className="mt-4 text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">
             {t('products.foundCount', { count: productosFiltrados.length })}
           </div>
         </div>
 
         {/* Grid de Productos */}
         {productosFiltrados.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <svg className="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-900/50 p-12 text-center transition-colors duration-200">
+            <svg className="mx-auto h-24 w-24 text-gray-400 dark:text-gray-500 mb-4 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
-            <p className="text-gray-600 text-lg">{t('products.noResults')}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-lg transition-colors duration-200">{t('products.noResults')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {productosFiltrados.map((producto) => (
-              <div key={producto.idProducto} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+              <div key={producto.idProducto} className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-900/50 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900/70 transition-all duration-200">
                 {/* Imagen */}
                 <div className="h-64 bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
                   {(() => {
@@ -286,17 +286,17 @@ const Products = () => {
 
                 {/* Información */}
                 <div className="p-4">
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 truncate">{producto.nombre}</h3>
-                  <p className="text-sm text-gray-600 mb-2 line-clamp-2">{producto.descripcion}</p>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 truncate transition-colors duration-200">{producto.nombre}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2 transition-colors duration-200">{producto.descripcion}</p>
 
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-gray-500">{producto.mililitros} ml</span>
-                    <span className="text-sm text-gray-500">{producto.genero === 'Female' ? t('gender.FEMENINO') : producto.genero === 'Male' ? t('gender.MASCULINO') : t('gender.UNISEX')}</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">{producto.mililitros} ml</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">{producto.genero === 'Female' ? t('gender.FEMENINO') : producto.genero === 'Male' ? t('gender.MASCULINO') : t('gender.UNISEX')}</span>
                   </div>
 
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-2xl font-bold text-blue-600">₡{producto.precio.toFixed(2)}</span>
-                    <span className={`text-sm px-2 py-1 rounded ${producto.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400 transition-colors duration-200">₡{producto.precio.toFixed(2)}</span>
+                    <span className={`text-sm px-2 py-1 rounded transition-colors duration-200 ${producto.stock > 0 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'}`}>
                       {producto.stock > 0 ? t('products.stock', { stock: producto.stock }) : t('product.outOfStock')}
                     </span>
                   </div>
@@ -304,7 +304,7 @@ const Products = () => {
                   <button
                     onClick={() => agregarAlCarrito(producto.idProducto, producto.nombre)}
                     disabled={producto.stock === 0}
-                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="w-full px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200 font-medium disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
                   >
                     {producto.stock === 0 ? t('product.outOfStock') : t('product.addToCart')}
                   </button>

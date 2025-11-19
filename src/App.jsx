@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
+import { DarkModeProvider } from './context/DarkModeContext';
 import { ToastContainer } from 'react-toastify';
 import Header from './components/header';
 import Footer from './components/footer';
@@ -58,7 +59,7 @@ function AppLayout() {
   return (
     <>
       {!ocultarHeader && <Header />}
-      <main className={!ocultarHeader ? "w-full px-4 py-8" : ""}>
+      <main className={`${!ocultarHeader ? "w-full px-4 py-8" : ""} bg-white dark:bg-gray-900 min-h-screen transition-colors duration-200`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth/login" element={<Login />} />
@@ -90,25 +91,26 @@ function AppLayout() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <SearchPanelProvider>
-          <Router>
-            <AppLayout />
-            <ToastContainer
-              position="top-right"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
-          </Router>
-        </SearchPanelProvider>
-      </AuthProvider>
+      <DarkModeProvider>
+        <AuthProvider>
+          <SearchPanelProvider>
+            <Router>
+              <AppLayout />
+              <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+              />
+            </Router>
+          </SearchPanelProvider>
+        </AuthProvider>
+      </DarkModeProvider>
     </QueryClientProvider>
   );
 }

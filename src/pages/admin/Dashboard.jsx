@@ -29,11 +29,11 @@ export default function Dashboard() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">{t('admin.dashboard.title')}</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 transition-colors duration-200">{t('admin.dashboard.title')}</h1>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">
             {t('admin.dashboard.welcome')}, {user?.email}
           </p>
         </div>
@@ -41,19 +41,19 @@ export default function Dashboard() {
         <div className="flex flex-col lg:flex-row gap-6">
 
           <aside className="w-full lg:w-64 flex-shrink-0">
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="flex lg:hidden justify-between items-center px-4 py-3 border-b">
-                <h2 className="font-semibold text-gray-700">{t('admin.dashboard.menu')}</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-900/50 overflow-hidden transition-colors duration-200">
+              <div className="flex lg:hidden justify-between items-center px-4 py-3 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
+                <h2 className="font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.dashboard.menu')}</h2>
               </div>
-              <ul className="divide-y divide-gray-200">
+              <ul className="divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
                 {menuItems.map((item) => (
                   <li key={item.path}>
                     <Link
                       to={item.path}
-                      className={`flex items-center gap-3 px-4 lg:px-6 py-3 lg:py-4 text-sm lg:text-base transition-colors ${
+                      className={`flex items-center gap-3 px-4 lg:px-6 py-3 lg:py-4 text-sm lg:text-base transition-colors duration-200 ${
                         isActive(item.path)
-                          ? 'bg-indigo-50 text-indigo-700 font-medium'
-                          : 'text-gray-700 hover:bg-gray-50'
+                          ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-medium'
+                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                       }`}
                     >
                       <span className="flex items-center justify-center">{item.icon}</span>
@@ -70,7 +70,7 @@ export default function Dashboard() {
           </aside>
 
           <main className="flex-1 min-w-0">
-            <div className="bg-white rounded-lg shadow-md p-4 lg:p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-900/50 p-4 lg:p-6 transition-colors duration-200">
               <Outlet />
             </div>
           </main>

@@ -5,7 +5,7 @@ export default function Footer() {
 	const { t } = useTranslation();
 	
 	return (
-		<footer className="w-full bg-gray-900 text-white">
+		<footer className="w-full bg-gray-900 dark:bg-gray-950 text-white dark:text-gray-100 transition-colors duration-200">
 			<div className="max-w-7xl mx-auto px-4 py-12">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 					
@@ -17,15 +17,15 @@ export default function Footer() {
 							className="w-20 h-20 mb-4 rounded-lg"
 						/>
 						<h3 className="text-xl font-bold mb-2">JyJ Essence</h3>
-						<p className="text-gray-300 text-sm text-left">
-							{t('footer.description', { defaultValue: 'Tu tienda especializada en fragancias de alta calidad' })}
-						</p>
+					<p className="text-gray-300 dark:text-gray-400 text-sm text-left transition-colors duration-200">
+						{t('footer.description', { defaultValue: 'Tu tienda especializada en fragancias de alta calidad' })}
+					</p>
 					</div>
 
 					{/* Horario de atención */}
 					<div className="flex flex-col items-start">
 						<h4 className="text-lg font-semibold mb-4">{t('footer.hours', { defaultValue: 'Horario de Atención' })}</h4>
-						<div className="text-gray-300 text-sm space-y-1 text-left">
+						<div className="text-gray-300 dark:text-gray-400 text-sm space-y-1 text-left transition-colors duration-200">
 							<p>{t('footer.hours.week', { defaultValue: 'Lunes a Domingo' })}</p>
 							<p className="font-medium">7:00 AM - 12:00 PM</p>
 						</div>
@@ -34,7 +34,7 @@ export default function Footer() {
 					{/* Contacto */}
 					<div className="flex flex-col items-start">
 						<h4 className="text-lg font-semibold mb-4">{t('footer.contact', { defaultValue: 'Contacto' })}</h4>
-						<div className="text-gray-300 text-sm space-y-2 text-left">
+						<div className="text-gray-300 dark:text-gray-400 text-sm space-y-2 text-left transition-colors duration-200">
 							<div className="flex items-center gap-2">
 								<svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
 									<path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
@@ -74,7 +74,7 @@ export default function Footer() {
 								href="https://www.instagram.com/jyj.essence/" 
 								target="_blank" 
 								rel="noopener noreferrer"
-								className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+								className="flex items-center gap-2 text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-gray-200 transition-colors duration-200"
 							>
 								<img 
 									src="https://res.cloudinary.com/drec8g03e/image/upload/v1762661193/instagram_znvg6o.svg" 
@@ -85,7 +85,7 @@ export default function Footer() {
 							</a>
 
 							{/* Información de envíos */}
-							<div className="text-gray-300 text-sm">
+							<div className="text-gray-300 dark:text-gray-400 text-sm transition-colors duration-200">
 								<p className="font-medium mb-1">
 									{t('footer.shipping', { defaultValue: 'Envíos a todo el país' })}
 								</p>
@@ -98,7 +98,7 @@ export default function Footer() {
 				</div>
 
 				{/* Copyright */}
-				<div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+				<div className="border-t border-gray-800 dark:border-gray-700 mt-8 pt-8 text-center text-gray-400 dark:text-gray-500 text-sm transition-colors duration-200">
 					<p>
 						{t('footer.copyright', { defaultValue: '© 2025 JyJ Essence. Todos los derechos reservados.' })}
 					</p>

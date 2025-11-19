@@ -174,21 +174,21 @@ export default function OrdersManagement() {
   };
 
   if (cargando) {
-    return <div className="text-center py-8">{t('admin.loadingOrders')}</div>;
+    return <div className="text-center py-8 text-gray-600 dark:text-gray-400 transition-colors duration-200">{t('admin.loadingOrders')}</div>;
   }
 
   if (error) {
-    return <div className="text-red-600 text-center py-8">{t('admin.errorPrefix')}: {error}</div>;
+    return <div className="text-red-600 dark:text-red-400 text-center py-8 transition-colors duration-200">{t('admin.errorPrefix')}: {error}</div>;
   }
 
   const renderListaPedidos = () => (
     <>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">{t('admin.orders.title')}</h2>
-        <p className="text-sm text-gray-600 mt-1">{t('admin.orders.total')}: {pedidos.length}</p>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 transition-colors duration-200">{t('admin.orders.title')}</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-200">{t('admin.orders.total')}: {pedidos.length}</p>
       </div>
 
-      <div className="bg-white border rounded-lg shadow-sm p-4 mb-6">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm dark:shadow-lg dark:shadow-gray-900/50 p-4 mb-6 transition-colors duration-200">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { name: 'id', label: t('admin.orders.filter.id'), placeholder: t('admin.orders.filter.idPlaceholder') },
@@ -199,7 +199,7 @@ export default function OrdersManagement() {
             { name: 'items', label: t('admin.orders.filter.items'), placeholder: t('admin.orders.filter.itemsPlaceholder') }
           ].map((campo) => (
             <div key={campo.name}>
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor={`filtro-${campo.name}`}>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200" htmlFor={`filtro-${campo.name}`}>
                 {campo.label}
               </label>
               <input
@@ -209,7 +209,7 @@ export default function OrdersManagement() {
                 value={filtros[campo.name]}
                 onChange={handleFiltroChange}
                 placeholder={campo.placeholder}
-                className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors duration-200"
               />
             </div>
           ))}
@@ -219,32 +219,32 @@ export default function OrdersManagement() {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-100 border-b">
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.orders.tableHeaders.id')}</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.orders.tableHeaders.client')}</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.orders.tableHeaders.date')}</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.orders.tableHeaders.status')}</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.orders.tableHeaders.total')}</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t('admin.orders.tableHeaders.items')}</th>
-              <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">{t('admin.orders.tableHeaders.actions')}</th>
+            <tr className="bg-gray-100 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 transition-colors duration-200">
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.orders.tableHeaders.id')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.orders.tableHeaders.client')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.orders.tableHeaders.date')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.orders.tableHeaders.status')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.orders.tableHeaders.total')}</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.orders.tableHeaders.items')}</th>
+              <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors duration-200">{t('admin.orders.tableHeaders.actions')}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-200">
             {pedidosPagina.map((pedido) => (
-              <tr key={pedido.idPedido} className="hover:bg-gray-50">
-                <td className="px-4 py-3 text-sm font-medium text-gray-900">#{pedido.idPedido}</td>
+              <tr key={pedido.idPedido} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
+                <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors duration-200">#{pedido.idPedido}</td>
                 <td className="px-4 py-3">
-                  <div className="text-sm text-gray-900">{pedido.cliente?.nombre} {pedido.cliente?.apellido}</div>
-                  <div className="text-xs text-gray-500">{pedido.cliente?.email}</div>
+                  <div className="text-sm text-gray-900 dark:text-gray-100 transition-colors duration-200">{pedido.cliente?.nombre} {pedido.cliente?.apellido}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-200">{pedido.cliente?.email}</div>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-700">{pedido.fechaFormateada}</td>
+                <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 transition-colors duration-200">{pedido.fechaFormateada}</td>
                 <td className="px-4 py-3">
                   <span className={`px-2 py-1 text-xs rounded ${getEstadoColor(pedido.estado)}`}>
                     {getEstadoLabel(pedido.estado)}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-sm font-medium text-gray-900">{pedido.totalFormateado}</td>
-                <td className="px-4 py-3 text-sm text-gray-700">
+                <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors duration-200">{pedido.totalFormateado}</td>
+                <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 transition-colors duration-200">
                   {pedido.itemCount} {t('admin.orders.article')}{pedido.itemCount !== 1 ? 's' : ''}
                 </td>
                 <td className="px-4 py-3 text-right">
@@ -253,7 +253,7 @@ export default function OrdersManagement() {
                     <select
                       value={normalizeEstadoValue(pedido.estado)}
                       onChange={(e) => handleUpdateStatus(pedido.idPedido, e.target.value)}
-                      className="text-sm border border-gray-300 rounded px-2 py-1"
+                      className="text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors duration-200"
                     >
                       {estados.map(estado => (
                         <option key={estado.value} value={estado.value}>{estado.label}</option>
@@ -267,7 +267,7 @@ export default function OrdersManagement() {
         </table>
 
         {pedidosFiltrados.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-gray-500 dark:text-gray-400 transition-colors duration-200">
             {t('admin.orders.noOrders')}
           </div>
         )}
@@ -276,7 +276,7 @@ export default function OrdersManagement() {
       {pedidosFiltrados.length > pedidosPorPagina && (
         <div className="flex justify-center items-center gap-2 mt-6">
           <button
-            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
             onClick={() => handlePaginaChange(paginaActual - 1)}
             disabled={paginaActual === 1}
           >
@@ -285,14 +285,18 @@ export default function OrdersManagement() {
           {[...Array(totalPaginas)].map((_, idx) => (
             <button
               key={idx}
-              className={`px-3 py-1 rounded ${paginaActual === idx + 1 ? 'bg-indigo-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+              className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${
+                paginaActual === idx + 1 
+                  ? 'bg-blue-600 dark:bg-blue-500 text-white' 
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
               onClick={() => handlePaginaChange(idx + 1)}
             >
               {idx + 1}
             </button>
           ))}
           <button
-            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
             onClick={() => handlePaginaChange(paginaActual + 1)}
             disabled={paginaActual === totalPaginas}
           >
@@ -309,11 +313,11 @@ export default function OrdersManagement() {
         <div>
           <button
             onClick={cerrarDetalles}
-            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors duration-200"
           >
             ← {t('admin.orders.backToList', 'Volver a la lista')}
           </button>
-          <h2 className="text-2xl font-bold text-gray-900 mt-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-2 transition-colors duration-200">
             {t('admin.orders.details')} #{pedidoSeleccionado?.idPedido}
           </h2>
         </div>
@@ -322,15 +326,15 @@ export default function OrdersManagement() {
         </Button>
       </div>
 
-      <div className="bg-white border rounded-lg shadow-sm p-6">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm dark:shadow-lg dark:shadow-gray-900/50 p-6 transition-colors duration-200">
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b pb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-gray-200 dark:border-gray-700 pb-4 transition-colors duration-200">
             <div>
-              <p className="text-sm text-gray-600">{t('admin.orders.date')}</p>
-              <p className="font-semibold text-gray-900 text-lg">{pedidoSeleccionado?.fechaFormateada || ''}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">{t('admin.orders.date')}</p>
+              <p className="font-semibold text-gray-900 dark:text-gray-100 text-lg transition-colors duration-200">{pedidoSeleccionado?.fechaFormateada || ''}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">{t('admin.orders.statusLabel')}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">{t('admin.orders.statusLabel')}</p>
               <div className="flex flex-wrap items-center gap-3 mt-2">
                 <span className={`px-2 py-1 text-xs rounded ${getEstadoColor(pedidoSeleccionado?.estado)}`}>
                   {getEstadoLabel(pedidoSeleccionado?.estado)}
@@ -338,7 +342,7 @@ export default function OrdersManagement() {
                 <select
                   value={normalizeEstadoValue(pedidoSeleccionado?.estado)}
                   onChange={(e) => handleUpdateStatus(pedidoSeleccionado.idPedido, e.target.value)}
-                  className="text-sm border border-gray-300 rounded px-3 py-2"
+                  className="text-sm border border-gray-300 dark:border-gray-600 rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors duration-200"
                 >
                   {estados.map(estado => (
                     <option key={estado.value} value={estado.value}>{estado.label}</option>
@@ -349,56 +353,56 @@ export default function OrdersManagement() {
           </div>
 
           <div>
-            <p className="text-sm text-gray-600 mb-2">{t('admin.orders.client')}</p>
-            <div className="bg-gray-50 p-4 rounded-lg border">
-              <p className="font-semibold text-gray-900">{pedidoSeleccionado?.cliente?.nombre} {pedidoSeleccionado?.cliente?.apellido}</p>
-              <p className="text-sm text-gray-600">{pedidoSeleccionado?.cliente?.email}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-200">{t('admin.orders.client')}</p>
+            <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-200 dark:border-gray-600 transition-colors duration-200">
+              <p className="font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">{pedidoSeleccionado?.cliente?.nombre} {pedidoSeleccionado?.cliente?.apellido}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">{pedidoSeleccionado?.cliente?.email}</p>
               {pedidoSeleccionado?.cliente?.cedula && (
-                <p className="text-sm text-gray-500">{t('admin.orders.idCard')}: {pedidoSeleccionado?.cliente?.cedula}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 transition-colors duration-200">{t('admin.orders.idCard')}: {pedidoSeleccionado?.cliente?.cedula}</p>
               )}
               {pedidoSeleccionado?.cliente?.telefono && (
-                <p className="text-sm text-gray-500">{t('admin.orders.phone')}: {pedidoSeleccionado?.cliente?.telefono}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 transition-colors duration-200">{t('admin.orders.phone')}: {pedidoSeleccionado?.cliente?.telefono}</p>
               )}
             </div>
           </div>
 
           {pedidoSeleccionado?.direccion && (
             <div>
-              <p className="text-sm text-gray-600 mb-2">{t('admin.orders.shippingAddress')}</p>
-              <div className="bg-gray-50 p-4 rounded-lg border">
-                <p className="font-semibold text-gray-800">{t('admin.orders.selectedAddress')}</p>
-                <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-200">{t('admin.orders.shippingAddress')}</p>
+              <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-200 dark:border-gray-600 transition-colors duration-200">
+                <p className="font-semibold text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('admin.orders.selectedAddress')}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200">
                   {pedidoSeleccionado.direccion.provincia}, {pedidoSeleccionado.direccion.canton}, {pedidoSeleccionado.direccion.distrito}{pedidoSeleccionado.direccion.barrio ? `, ${pedidoSeleccionado.direccion.barrio}` : ''}
                 </p>
-                <p className="text-sm text-gray-500">{t('admin.clientDirections')}: {pedidoSeleccionado.direccion.senas}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 transition-colors duration-200">{t('admin.clientDirections')}: {pedidoSeleccionado.direccion.senas}</p>
                 {pedidoSeleccionado.direccion.referencia && (
-                  <p className="text-sm text-gray-500">{t('admin.clientReference')}: {pedidoSeleccionado.direccion.referencia}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-500 transition-colors duration-200">{t('admin.clientReference')}: {pedidoSeleccionado.direccion.referencia}</p>
                 )}
               </div>
             </div>
           )}
 
           <div>
-            <p className="text-sm text-gray-600 mb-2">{t('admin.orders.items')} ({pedidoSeleccionado?.articulos?.length || 0})</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-200">{t('admin.orders.items')} ({pedidoSeleccionado?.articulos?.length || 0})</p>
             <div className="space-y-3">
               {(pedidoSeleccionado?.articulos || []).map((articulo, index) => (
-                <div key={index} className="flex flex-wrap justify-between items-center p-4 rounded-lg border bg-gray-50">
+                <div key={index} className="flex flex-wrap justify-between items-center p-4 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 transition-colors duration-200">
                   <div>
-                    <p className="font-semibold text-gray-900">{articulo.producto?.nombre || `Producto #${articulo.productoId}`}</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">{articulo.producto?.nombre || `Producto #${articulo.productoId}`}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">
                       {articulo.cantidad} × ₡{(articulo.precioUnitario ?? 0).toFixed(2)}
                     </p>
                   </div>
-                  <p className="text-lg font-semibold text-gray-900">₡{((articulo.precioUnitario ?? 0) * (articulo.cantidad ?? 0)).toFixed(2)}</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">₡{((articulo.precioUnitario ?? 0) * (articulo.cantidad ?? 0)).toFixed(2)}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="pt-4 border-t">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
             <div className="flex flex-wrap justify-between items-center">
-              <p className="text-xl font-bold text-gray-900">{t('admin.orders.total')}</p>
-              <p className="text-3xl font-extrabold text-indigo-600">{pedidoSeleccionado?.totalFormateado || `₡${(pedidoSeleccionado?.montoTotal ?? 0).toFixed(2)}`}</p>
+              <p className="text-xl font-bold text-gray-900 dark:text-gray-100 transition-colors duration-200">{t('admin.orders.total')}</p>
+              <p className="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 transition-colors duration-200">{pedidoSeleccionado?.totalFormateado || `₡${(pedidoSeleccionado?.montoTotal ?? 0).toFixed(2)}`}</p>
             </div>
           </div>
         </div>

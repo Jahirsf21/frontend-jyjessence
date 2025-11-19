@@ -7,8 +7,7 @@ import en from './en';
 import fr from './fr';
 import pt from './pt';
 import zh from './zh';
-import cab from './cab';
-import bribri from './bribri';
+
 
 // Each language file must export: export default { translation: { ... } }
 const resources = {
@@ -17,8 +16,6 @@ const resources = {
   fr,
   pt,
   zh,
-  cab,
-  bribri
 };
 
 

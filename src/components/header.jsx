@@ -70,12 +70,12 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 left-0 w-full z-[1000] border-b border-gray-200 bg-white/90 backdrop-blur font-['Lato',sans-serif]">
+      <header className="sticky top-0 left-0 w-full z-[1000] border-b border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/90 backdrop-blur font-['Lato',sans-serif] transition-colors duration-200">
         {/* Contenedor principal del header */}
         <div className="mx-auto flex w-full items-center gap-2 px-3 py-2 md:gap-4 md:px-6 md:py-3 max-w-[1280px]">
           {/* Logo */}
           <Link to="/" className="no-underline flex-shrink-0">
-            <h1 className="flex items-center gap-2 m-0 text-blue-600 text-xl sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
+            <h1 className="flex items-center gap-2 m-0 text-blue-600 dark:text-blue-400 text-xl sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold transition-colors duration-200">
               <img
                 src="https://res.cloudinary.com/drec8g03e/image/upload/v1762655746/jyjessence_y75wqc.webp"
                 alt="JyJ Essence Logo"
@@ -96,7 +96,7 @@ const Header = () => {
             {/* Cart button - oculto en móvil */}
             <Link 
               to="/cart" 
-              className="hidden md:flex bg-white border border-gray-300 rounded-full px-2 py-1.5 items-center gap-1 transition-all hover:shadow-sm hover:border-gray-400 h-8 sm:h-9 md:h-10 no-underline md:gap-2 md:px-3 lg:px-4 relative" 
+              className="hidden md:flex bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-full px-2 py-1.5 items-center gap-1 transition-all hover:shadow-sm hover:border-gray-400 dark:hover:border-gray-500 h-8 sm:h-9 md:h-10 no-underline md:gap-2 md:px-3 lg:px-4 relative" 
               aria-label="Carrito"
             >
               <img
@@ -104,7 +104,7 @@ const Header = () => {
                 alt="Carrito"
                 className="h-4 w-4 sm:h-[18px] sm:w-[18px] md:h-5 md:w-5 object-contain flex-shrink-0"
               />
-              <span className="hidden lg:inline font-semibold text-gray-800 text-xs lg:text-sm whitespace-nowrap">{t('nav.cart')}</span>
+              <span className="hidden lg:inline font-semibold text-gray-800 dark:text-gray-200 text-xs lg:text-sm whitespace-nowrap transition-colors duration-200">{t('nav.cart')}</span>
               
               {/* Badge con contador de items */}
               {cartItemCount > 0 && (
@@ -116,7 +116,7 @@ const Header = () => {
 
             {/* Profile button - oculto en móvil */}
             <button
-              className="hidden md:flex bg-white border border-gray-300 rounded-full px-2 py-1.5 items-center gap-1 transition-all hover:shadow-sm hover:border-gray-400 h-8 sm:h-9 md:h-10 md:gap-2 md:px-3 lg:px-4"
+              className="hidden md:flex bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-full px-2 py-1.5 items-center gap-1 transition-all hover:shadow-sm hover:border-gray-400 dark:hover:border-gray-500 h-8 sm:h-9 md:h-10 md:gap-2 md:px-3 lg:px-4"
               onClick={() => setMostrarModalPerfil(true)}
               aria-label="Menú de usuario"
             >
@@ -125,7 +125,7 @@ const Header = () => {
                 alt="Perfil"
                 className="h-4 w-4 sm:h-[18px] sm:w-[18px] md:h-5 md:w-5 object-contain flex-shrink-0"
               />
-              <span className="hidden lg:inline font-semibold text-gray-800 text-xs lg:text-sm truncate max-w-[60px] xl:max-w-[80px]">
+              <span className="hidden lg:inline font-semibold text-gray-800 dark:text-gray-200 text-xs lg:text-sm truncate max-w-[60px] xl:max-w-[80px] transition-colors duration-200">
                 {nombrePerfil}
               </span>
             </button>

@@ -42,19 +42,19 @@ function FiltrosContent({
 	return (
 		<>
 			<div className="flex items-center justify-between mb-6">
-				<h2 className="text-xl font-bold text-gray-800">{t('filters.title')}</h2>
-				<button className="text-blue-600 font-semibold text-sm" onClick={limpiarFiltros}>
+				<h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-200">{t('filters.title')}</h2>
+				<button className="text-blue-600 dark:text-blue-400 font-semibold text-sm hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200" onClick={limpiarFiltros}>
 					{t('filters.clearFilters')}
 				</button>
 			</div>
 
 			<div className="mb-6">
-				<h3 className="font-semibold mb-2">{t('search.title')}</h3>
+				<h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('search.title')}</h3>
 				<div className="flex gap-2">
 					<input
 						type="text"
 						placeholder={t('search.placeholder')}
-						className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
 						value={busqueda}
 						onChange={e => {
 							setBusqueda(e.target.value);
@@ -69,7 +69,7 @@ function FiltrosContent({
 			</div>
 
 			<div className="mb-6">
-				<h3 className="font-semibold mb-2">{t('product.category')}</h3>
+				<h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('product.category')}</h3>
 				<div className="flex flex-col gap-2 max-h-60 overflow-y-auto pr-2 scrollbar-hide">
 					<button onClick={() => setCategoriaFiltro([])} className={`text-left px-4 py-2 rounded-lg text-sm font-medium transition-all ${categoriaFiltro.length === 0 ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
 						{t('nav.all')}
@@ -83,7 +83,7 @@ function FiltrosContent({
 			</div>
 
 			<div className="mb-6">
-				<h3 className="font-semibold mb-2">{t('product.gender')}</h3>
+				<h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('product.gender')}</h3>
 				<div className="flex flex-col gap-2">
 					<button onClick={() => setGeneroFiltro([])} className={`text-left px-4 py-2 rounded-lg text-sm font-medium transition-all ${generoFiltro.length === 0 ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
 						{t('nav.all')}
@@ -97,7 +97,7 @@ function FiltrosContent({
 			</div>
 
 			<div>
-				<h3 className="font-semibold mb-2">{t('product.price')}</h3>
+				<h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('product.price')}</h3>
 				<div className="flex gap-2">
 					<input type="number" min={minPrecio} max={maxPrecio} value={precioMin} onChange={e => setPrecioMin(e.target.value)} className="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder={minPrecio.toString()} />
 					<input type="number" min={minPrecio} max={maxPrecio} value={precioMax} onChange={e => setPrecioMax(e.target.value)} className="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder={maxPrecio.toString()} />
@@ -105,20 +105,20 @@ function FiltrosContent({
 			</div>
 
 			<div>
-				<h3 className="font-semibold mb-2">{t('product.volume')}</h3>
+				<h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('product.volume')}</h3>
 				<div className="flex gap-2">
 					<input
 						type="number"
 						value={mililitrosMin}
 						onChange={e => setMililitrosMin(e.target.value)}
-						className="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						className="w-1/2 px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
 						placeholder={t('common.min')}
 					/>
 					<input
 						type="number"
 						value={mililitrosMax}
 						onChange={e => setMililitrosMax(e.target.value)}
-						className="w-1/2 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						className="w-1/2 px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200"
 						placeholder={t('common.max')}
 					/>
 				</div>
@@ -225,9 +225,9 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 
 	if (!supportsRecognition) return null;
 
-	const btnClass = compact
-		? `w-8 h-8 p-1 rounded-md border flex items-center justify-center ${listening ? 'bg-red-100 border-red-400' : 'bg-white border-gray-200'} hover:bg-gray-50`
-		: `w-12 h-12 rounded-lg flex items-center justify-center border ${listening ? 'bg-red-100 border-red-400' : 'bg-white border-gray-200'} hover:bg-gray-50`;
+		const btnClass = compact
+		? `w-8 h-8 p-1 rounded-md border flex items-center justify-center transition-colors duration-200 ${listening ? 'bg-red-100 dark:bg-red-900/30 border-red-400 dark:border-red-500' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'} hover:bg-gray-50 dark:hover:bg-gray-600`
+		: `w-12 h-12 rounded-lg flex items-center justify-center border transition-colors duration-200 ${listening ? 'bg-red-100 dark:bg-red-900/30 border-red-400 dark:border-red-500' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'} hover:bg-gray-50 dark:hover:bg-gray-600`;
 
 	const imgClass = compact ? `w-4 h-4 object-contain ${listening ? 'opacity-100' : 'opacity-90'}` : `w-5 h-5 object-contain ${listening ? 'opacity-100' : 'opacity-90'}`;
 
@@ -242,7 +242,7 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 			>
 				<img src="https://res.cloudinary.com/drec8g03e/image/upload/v1763353745/microfono_jnyork.png" alt="mic" className={imgClass} />
 			</button>
-			{listening && !compact && <div className="mt-1 text-xs text-gray-500">Escuchando...</div>}
+			{listening && !compact && <div className="mt-1 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-200">Escuchando...</div>}
 		</div>
 	);
 }
@@ -348,33 +348,33 @@ function Home() {
 	const filtroProps = { t, limpiarFiltros, busqueda, setBusqueda, setPagina, categorias, categoriaFiltro, setCategoriaFiltro, generos, generoFiltro, setGeneroFiltro, precioMin, setPrecioMin, precioMax, setPrecioMax, mililitrosMin, setMililitrosMin, mililitrosMax, setMililitrosMax, minPrecio, maxPrecio };
 
 	return (
-		<div className="min-h-screen bg-white flex flex-col">
-			<div className="w-full flex-1 bg-white">
+		<div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col transition-colors duration-200">
+			<div className="w-full flex-1 bg-white dark:bg-gray-900 transition-colors duration-200">
 				<div className="max-w-7xl mx-auto w-full px-4 md:px-0 pt-4 md:pt-8 pb-8 md:pb-10 flex flex-col gap-4 md:gap-6 h-full">
 					<div className="flex flex-1 flex-col md:flex-row gap-4 md:gap-8 md:min-h-[calc(100vh-180px)]">
 
-						<aside className="hidden md:block w-72 bg-white rounded-xl shadow-md p-6 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide">
+						<aside className="hidden md:block w-72 bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-lg dark:shadow-gray-900/50 p-6 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide transition-colors duration-200">
 							<FiltrosContent {...filtroProps} />
 						</aside>
 
-						<section className="flex-1 flex flex-col bg-white rounded-2xl shadow-md overflow-hidden min-h-[60vh] md:max-h-[calc(100vh-160px)]">
+						<section className="flex-1 flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md dark:shadow-lg dark:shadow-gray-900/50 overflow-hidden min-h-[60vh] md:max-h-[calc(100vh-160px)] transition-colors duration-200">
 							<div className="px-4 md:px-8 py-4 md:py-6 border-b flex flex-col md:flex-row md:items-center justify-between gap-4">
 								<div>
-									<h1 className="text-xl md:text-2xl font-bold text-gray-900">
+									<h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 transition-colors duration-200">
 										{t('products.catalogTitle')}
 									</h1>
-									<span className="text-gray-500 text-xs md:text-sm">
+									<span className="text-gray-500 dark:text-gray-400 text-xs md:text-sm transition-colors duration-200">
 										({productosFiltrados.length}{' '}
 										{t('products.productCount')})
 									</span>
 								</div>
 
 								<div className="flex flex-wrap items-center gap-2">
-									<label className="text-sm text-gray-600 font-medium whitespace-nowrap">
+									<label className="text-sm text-gray-600 dark:text-gray-300 font-medium whitespace-nowrap transition-colors duration-200">
 										{t('products.sortBy')}
 									</label>
 									<select
-										className="border rounded-lg px-3 py-2 text-sm flex-1 md:flex-initial"
+										className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-3 py-2 text-sm flex-1 md:flex-initial transition-colors duration-200"
 										value={orden}
 										onChange={e => {
 											setOrden(e.target.value);
@@ -396,7 +396,7 @@ function Home() {
 									{productosPagina.map(producto => (
 										<div
 											key={producto.idProducto}
-											className="bg-white rounded-xl shadow-md p-3 md:p-4 flex flex-col relative h-full"
+											className="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-lg dark:shadow-gray-900/50 p-3 md:p-4 flex flex-col relative h-full transition-colors duration-200"
 											tabIndex={0}
 											onMouseEnter={() => {
 												if (mouseReadingEnabled) {
@@ -417,28 +417,14 @@ function Home() {
 															alt={producto.nombre}
 															className="w-full h-32 md:h-48 object-cover rounded mb-2 md:mb-4 transition-opacity duration-500"
 														/>
-
-														{imagenes.length > 1 && (
-															<div className="absolute top-3 right-3 flex gap-1">
-																{imagenes.map((_, index) => (
-																	<div
-																		key={index}
-																		className={`w-1.5 h-1.5 rounded-full transition-colors ${index === (currentImageIndex[producto.idProducto] || 0)
-																			? 'bg-white'
-																			: 'bg-white/50'
-																			}`}
-																	/>
-																))}
-															</div>
-														)}
 													</>
 												);
 											})()}
 											<div className="flex-1 flex flex-col">
-												<div className="font-bold text-gray-900 text-sm md:text-base mb-1 min-h-[2.5rem] md:min-h-[3rem] line-clamp-2 text-left">
+												<div className="font-bold text-gray-900 dark:text-gray-100 text-sm md:text-base mb-1 min-h-[2.5rem] md:min-h-[3rem] line-clamp-2 text-left transition-colors duration-200">
 													{producto.nombre}
 												</div>
-												<div className="text-xs text-gray-600 mb-2 text-left">
+												<div className="text-xs text-gray-600 dark:text-gray-400 mb-2 text-left transition-colors duration-200">
 													{t(`category.${producto.categoria}`, { defaultValue: producto.categoria })} • {t(`gender.${producto.genero}`, { defaultValue: producto.genero })} • {producto.mililitros} ml
 												</div>
 											</div>
@@ -446,7 +432,7 @@ function Home() {
 												₡{producto.precio.toLocaleString('es-CR')}
 											</div>
 											<button
-												className="mt-auto bg-blue-600 text-white py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-blue-700 transition-colors"
+												className="mt-auto bg-blue-600 dark:bg-blue-500 text-white py-2 rounded-lg text-xs md:text-sm font-semibold hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200"
 												onClick={async e => {
 													e.stopPropagation();
 													try {
@@ -477,7 +463,7 @@ function Home() {
 								{totalPaginas > 1 && (
 									<div className="flex justify-center items-center gap-1 md:gap-2 py-6 flex-wrap px-2">
 										<button
-											className="px-3 md:px-4 py-2 rounded-lg border bg-gray-100 text-gray-700 text-sm font-semibold disabled:opacity-50"
+											className="px-3 md:px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-semibold disabled:opacity-50 transition-colors duration-200"
 											onClick={() => setPagina(pagina - 1)}
 											disabled={pagina === 1}
 										>
@@ -494,7 +480,7 @@ function Home() {
 											if (isMobile && !isCurrent && !isAdjacent && !isFirstOrLast) {
 												if (isEllipsis)
 													return (
-														<span key={`dots-${i}`} className="px-2 py-2 text-gray-500">
+														<span key={`dots-${i}`} className="px-2 py-2 text-gray-500 dark:text-gray-400 transition-colors duration-200">
 															...
 														</span>
 													);
@@ -504,9 +490,9 @@ function Home() {
 											return (
 												<button
 													key={i}
-													className={`px-3 py-2 rounded-lg border text-sm font-semibold ${isCurrent
-														? 'bg-blue-600 text-white'
-														: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+													className={`px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-sm font-semibold transition-colors duration-200 ${isCurrent
+														? 'bg-blue-600 dark:bg-blue-500 text-white'
+														: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
 														}`}
 													onClick={() => setPagina(pageNum)}
 												>
@@ -516,7 +502,7 @@ function Home() {
 										})}
 
 										<button
-											className="px-3 md:px-4 py-2 rounded-lg border bg-gray-100 text-gray-700 text-sm font-semibold disabled:opacity-50"
+											className="px-3 md:px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-semibold disabled:opacity-50 transition-colors duration-200"
 											onClick={() => setPagina(pagina + 1)}
 											disabled={pagina === totalPaginas}
 										>

@@ -116,19 +116,19 @@ const MiInformacion = () => {
     }
   };
 
-  const inputClass = "border border-gray-300 rounded-lg px-4 py-2.5 w-full text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed";
-  const labelClass = "block font-semibold mb-2 text-gray-700";
-  const buttonPrimaryClass = "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed font-medium";
-  const buttonSecondaryClass = "bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors disabled:bg-gray-200 disabled:cursor-not-allowed font-medium";
-  const buttonDangerClass = "bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed font-medium";
+  const inputClass = "border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 w-full text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed transition-colors duration-200";
+  const labelClass = "block font-semibold mb-2 text-gray-700 dark:text-gray-300 transition-colors duration-200";
+  const buttonPrimaryClass = "bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed font-medium";
+  const buttonSecondaryClass = "bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors duration-200 disabled:bg-gray-200 dark:disabled:bg-gray-700 disabled:cursor-not-allowed font-medium";
+  const buttonDangerClass = "bg-red-600 dark:bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors duration-200 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed font-medium";
 
   return (
-    <div className="w-full min-h-screen bg-white pt-24 px-4 pb-8">
+    <div className="w-full min-h-screen bg-white dark:bg-gray-900 pt-24 px-4 pb-8 transition-colors duration-200">
       <div className="max-w-6xl mx-auto relative">
         {/* Botón de inicio en la esquina superior derecha */}
         <button
           onClick={() => navigate('/')}
-          className="absolute top-0 right-0 mt-2 mr-2 bg-white rounded-full p-2 shadow hover:bg-gray-100 transition-colors"
+          className="absolute top-0 right-0 mt-2 mr-2 bg-white dark:bg-gray-800 rounded-full p-2 shadow dark:shadow-lg dark:shadow-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
           aria-label="Ir al inicio"
         >
           <img
@@ -137,7 +137,7 @@ const MiInformacion = () => {
             className="w-7 h-7"
           />
         </button>
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">{t('profile.title')}</h1>
+        <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-gray-100 transition-colors duration-200">{t('profile.title')}</h1>
         
         {loading && (
           <div className="flex items-center justify-center py-8">
@@ -148,8 +148,8 @@ const MiInformacion = () => {
         {usuario && (
           <div className="space-y-8">
             {/* Sección de datos personales */}
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-xl font-semibold mb-6 text-gray-800 border-b pb-3">{t('profile.personalData')}</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm dark:shadow-lg dark:shadow-gray-900/50 p-6 transition-colors duration-200">
+              <h2 className="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-3 transition-colors duration-200">{t('profile.personalData')}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Correo electrónico */}
                 <div>
@@ -212,9 +212,9 @@ const MiInformacion = () => {
             </div>
 
             {/* Sección de direcciones */}
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <div className="flex items-center justify-between mb-6 border-b pb-3">
-                <h2 className="text-xl font-semibold text-gray-800">{t('profile.addresses')}</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm dark:shadow-lg dark:shadow-gray-900/50 p-6 transition-colors duration-200">
+              <div className="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700 pb-3">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-200">{t('profile.addresses')}</h2>
                 {!mostrarFormAgregar && (
                   <button 
                     onClick={() => setMostrarFormAgregar(true)} 
@@ -230,10 +230,10 @@ const MiInformacion = () => {
               {direcciones.length > 0 && (
                 <div className="space-y-4 mb-6">
                   {direcciones.map((dir) => (
-                    <div key={dir.idDireccion} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div key={dir.idDireccion} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/50 transition-colors duration-200">
                       {editandoDireccion?.idDireccion === dir.idDireccion ? (
                         <form onSubmit={handleEditarDireccion} className="space-y-4">
-                          <h3 className="font-semibold text-lg mb-3 text-gray-800">{t('profile.editAddress')}</h3>
+                          <h3 className="font-semibold text-lg mb-3 text-gray-800 dark:text-gray-100 transition-colors duration-200">{t('profile.editAddress')}</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <label className={labelClass}>{t('profile.province')} *</label>
@@ -326,14 +326,14 @@ const MiInformacion = () => {
                         </form>
                       ) : (
                         <div>
-                          <p className="font-semibold text-lg mb-2 text-gray-800">
+                          <p className="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-100 transition-colors duration-200">
                             {dir.provincia}, {dir.canton}, {dir.distrito}
                           </p>
-                          {dir.barrio && <p className="text-gray-600 text-sm mb-1">{t('profile.neighborhood')}: {dir.barrio}</p>}
-                          <p className="text-gray-600 mb-2">{dir.senas}</p>
-                          {dir.codigoPostal && <p className="text-gray-500 text-sm">{t('profile.postalCode')}: {dir.codigoPostal}</p>}
-                          {dir.referencia && <p className="text-gray-500 text-sm">{t('profile.reference')}: {dir.referencia}</p>}
-                          <div className="flex gap-3 mt-4 pt-3 border-t border-gray-200">
+                          {dir.barrio && <p className="text-gray-600 dark:text-gray-400 text-sm mb-1 transition-colors duration-200">{t('profile.neighborhood')}: {dir.barrio}</p>}
+                          <p className="text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-200">{dir.senas}</p>
+                          {dir.codigoPostal && <p className="text-gray-500 dark:text-gray-500 text-sm transition-colors duration-200">{t('profile.postalCode')}: {dir.codigoPostal}</p>}
+                          {dir.referencia && <p className="text-gray-500 dark:text-gray-500 text-sm transition-colors duration-200">{t('profile.reference')}: {dir.referencia}</p>}
+                          <div className="flex gap-3 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
                             <button 
                               onClick={() => setEditandoDireccion(dir)} 
                               className={buttonPrimaryClass}
@@ -358,9 +358,9 @@ const MiInformacion = () => {
 
               {/* Formulario para agregar nueva dirección */}
               {mostrarFormAgregar && (
-                <div className="border border-blue-200 rounded-lg p-6 bg-blue-50">
+                <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-6 bg-blue-50 dark:bg-blue-900/20 transition-colors duration-200">
                   <form onSubmit={handleAddDireccion} className="space-y-4">
-                    <h3 className="font-semibold text-lg mb-3 text-gray-800">{t('profile.addNewAddress')}</h3>
+                    <h3 className="font-semibold text-lg mb-3 text-gray-800 dark:text-gray-100 transition-colors duration-200">{t('profile.addNewAddress')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className={labelClass}>{t('profile.province')} *</label>
@@ -458,13 +458,13 @@ const MiInformacion = () => {
               )}
 
               {direcciones.length === 0 && !mostrarFormAgregar && (
-                <div className="text-center py-8 text-gray-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400 transition-colors duration-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-gray-400 dark:text-gray-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <p className="text-lg font-medium">{t('profile.noAddresses')}</p>
-                  <p className="text-sm mt-2">{t('profile.noAddressesSubtitle')}</p>
+                  <p className="text-lg font-medium text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('profile.noAddresses')}</p>
+                  <p className="text-sm mt-2 text-gray-600 dark:text-gray-400 transition-colors duration-200">{t('profile.noAddressesSubtitle')}</p>
                 </div>
               )}
             </div>

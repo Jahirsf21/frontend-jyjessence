@@ -152,20 +152,20 @@ export default function ProductForm() {
   };
 
   if (cargando) {
-    return <div className="text-center py-8">{t('common.loading')}</div>;
+    return <div className="text-center py-8 text-gray-600 dark:text-gray-400 transition-colors duration-200">{t('common.loading')}</div>;
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+    <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-lg dark:shadow-gray-900/50 p-6 transition-colors duration-200">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 transition-colors duration-200">
         {id ? t('admin.products.editProduct') : t('admin.products.newProduct')}
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('product.name')} <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200">
+              {t('product.name')} <span className="text-red-500 dark:text-red-400 transition-colors duration-200">*</span>
             </label>
             <input
               type="text"
@@ -173,13 +173,13 @@ export default function ProductForm() {
               value={formulario.nombre}
               onChange={handleInputChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors duration-200"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('product.description')} <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200">
+              {t('product.description')} <span className="text-red-500 dark:text-red-400 transition-colors duration-200">*</span>
             </label>
             <textarea
               name="descripcion"
@@ -187,20 +187,20 @@ export default function ProductForm() {
               onChange={handleInputChange}
               required
               rows="3"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors duration-200"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200">
                 {t('product.category')}
               </label>
               <select
                 name="categoria"
                 value={formulario.categoria}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors duration-200"
               >
                 <option value="Parfum">Parfum</option>
                 <option value="Elixir">Elixir</option>
@@ -212,14 +212,14 @@ export default function ProductForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200">
                 {t('product.gender')}
               </label>
               <select
                 name="genero"
                 value={formulario.genero}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors duration-200"
               >
                 <option value="Hombre">Hombre</option>
                 <option value="Mujer">Mujer</option>
@@ -230,8 +230,8 @@ export default function ProductForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('product.mililiters')} <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200">
+                {t('product.mililiters')} <span className="text-red-500 dark:text-red-400 transition-colors duration-200">*</span>
               </label>
               <input
                 type="number"
@@ -240,13 +240,13 @@ export default function ProductForm() {
                 onChange={handleInputChange}
                 required
                 min="1"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors duration-200"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('product.price')} <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200">
+                {t('product.price')} <span className="text-red-500 dark:text-red-400 transition-colors duration-200">*</span>
               </label>
               <input
                 type="number"
@@ -256,13 +256,13 @@ export default function ProductForm() {
                 required
                 min="0"
                 step="0.01"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors duration-200"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('product.stock')} <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200">
+                {t('product.stock')} <span className="text-red-500 dark:text-red-400 transition-colors duration-200">*</span>
               </label>
               <input
                 type="number"
@@ -271,17 +271,17 @@ export default function ProductForm() {
                 onChange={handleInputChange}
                 required
                 min="0"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors duration-200"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200">
               {t('product.images')}
             </label>
             <div className="mt-1 flex items-center">
-              <label className="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <label className="cursor-pointer bg-white dark:bg-gray-700 py-2 px-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:shadow-gray-900/50 text-sm leading-4 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors duration-200">
                 {t('admin.products.chooseImages', 'Elegir fotos')}
                 <input
                   type="file"
@@ -293,12 +293,12 @@ export default function ProductForm() {
                 />
               </label>
               {subiendoImagenes && (
-                <span className="ml-2 text-sm text-gray-500">{t('admin.products.uploadingImages')}</span>
+                <span className="ml-2 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">{t('admin.products.uploadingImages')}</span>
               )}
             </div>
 
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-200">
                 {t('admin.products.imageUrlsLabel')}
               </label>
               <textarea
@@ -307,13 +307,13 @@ export default function ProductForm() {
                 onChange={handleImageUrlInputChange}
                 rows="3"
                 placeholder={t('admin.products.imageUrlsPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors duration-200"
               />
             </div>
 
             {formulario.imagenesUrl.length > 0 && (
               <div className="mt-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">
+                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-200">
                   {t('admin.products.preview')}
                 </h4>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">

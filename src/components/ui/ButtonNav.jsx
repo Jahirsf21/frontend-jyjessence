@@ -50,18 +50,18 @@ export default function ButtonNav(props) {
   }, [estaAutenticado]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 flex justify-around items-center z-50 md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 py-2 flex justify-around items-center z-50 md:hidden transition-colors duration-200">
       <button onClick={() => navigate('/')}
-        className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 rounded-full w-14 h-14 mb-1">
+        className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full w-14 h-14 mb-1">
         <img
           src="https://res.cloudinary.com/drec8g03e/image/upload/v1762713857/inicio_x1zmf8.svg"
           alt={t('nav.home', { defaultValue: 'Inicio' })}
           className="h-6 w-6 mb-1"
         />
-        <div className="text-xs">{t('nav.home', { defaultValue: 'Inicio' })}</div>
+        <div className="text-xs text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('nav.home', { defaultValue: 'Inicio' })}</div>
       </button>
       <button 
-        className="flex flex-col items-center text-gray-600 hover:text-blue-600 transition-colors"
+        className="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         onClick={() => {
           openSearch();
         }}
@@ -88,21 +88,21 @@ export default function ButtonNav(props) {
           </span>
         )}
       </button>
-      <button onClick={() => navigate('/orders')} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 rounded-full w-14 h-14 mb-1">
+      <button onClick={() => navigate('/orders')} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full w-14 h-14 mb-1">
         <img
           src="https://res.cloudinary.com/drec8g03e/image/upload/v1762986237/pedidos_xdpj84.svg"
           alt={t('orders', { defaultValue: 'Pedidos' })}
           className="h-6 w-6 mb-1"
         />
-        <div className="text-xs">{t('orders', { defaultValue: 'Pedidos' })}</div>
+        <div className="text-xs text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('orders', { defaultValue: 'Pedidos' })}</div>
       </button>
-      <button onClick={() => setMostrarModalPerfil(true)} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 rounded-full w-14 h-14 mb-1">
+      <button onClick={() => setMostrarModalPerfil(true)} className="flex flex-col items-center justify-center transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full w-14 h-14 mb-1">
         <img
           src="https://res.cloudinary.com/drec8g03e/image/upload/v1762674408/account_r3kxej.svg"
           alt={t('profile', { defaultValue: 'Perfil' })}
           className="h-6 w-6 mb-1"
         />
-        <div className="text-xs">{t('profile', { defaultValue: 'Perfil' })}</div>
+        <div className="text-xs text-gray-800 dark:text-gray-200 transition-colors duration-200">{t('profile', { defaultValue: 'Perfil' })}</div>
       </button>
       {mostrarModalPerfil && (
         <ModalPerfil

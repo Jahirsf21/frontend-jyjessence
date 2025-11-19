@@ -142,7 +142,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 font-['Lato',sans-serif] bg-white">
+    <div className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 font-['Lato',sans-serif] bg-white dark:bg-gray-900 transition-colors duration-200">
       {/* Carrusel (solo md+) */}
       <div className="relative hidden md:flex items-end p-10 overflow-hidden">
         {imagenesCarrusel.map((imagen, indice) => (
@@ -177,7 +177,7 @@ const Login = () => {
       <div className="flex flex-col p-4 sm:p-6 md:p-8 relative">
         <button
           onClick={() => navegar('/')}
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full hover:bg-gray-100 transition-colors"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
           aria-label="Ir a inicio"
         >
           <img
@@ -194,12 +194,12 @@ const Login = () => {
               className="h-24 w-24 md:h-28 md:w-28 object-contain"
             />
           </div>
-          <h1 className="font-['Lato',sans-serif] font-black text-2xl sm:text-3xl md:text-4xl text-gray-800 text-center mb-6 md:mb-10">
+          <h1 className="font-['Lato',sans-serif] font-black text-2xl sm:text-3xl md:text-4xl text-gray-800 dark:text-gray-100 text-center mb-6 md:mb-10 transition-colors duration-200">
             {t('auth.loginTitle')}
           </h1>
           <form className="space-y-5" onSubmit={manejarEnvio}>
             <div className="text-left">
-              <label htmlFor="email" className="block mb-2 font-bold text-gray-700 text-sm">
+              <label htmlFor="email" className="block mb-2 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                 {t('auth.email')}
               </label>
               <input
@@ -208,8 +208,8 @@ const Login = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className={`w-full px-4 py-3 border rounded-lg bg-gray-50 text-sm sm:text-base text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                  errores.email ? 'border-red-300' : 'border-gray-300'
+                className={`w-full px-4 py-3 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm sm:text-base text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
+                  errores.email ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
                 placeholder={t('auth.email')}
                 value={datosFormulario.email}
@@ -220,7 +220,7 @@ const Login = () => {
               )}
             </div>
             <div className="text-left">
-              <label htmlFor="password" className="block mb-2 font-bold text-gray-700 text-sm">
+              <label htmlFor="password" className="block mb-2 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                 {t('auth.password')}
               </label>
               <input
@@ -229,8 +229,8 @@ const Login = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className={`w-full px-4 py-3 border rounded-lg bg-gray-50 text-sm sm:text-base text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                  errores.password ? 'border-red-300' : 'border-gray-300'
+                className={`w-full px-4 py-3 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm sm:text-base text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
+                  errores.password ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
                 placeholder={t('auth.password')}
                 value={datosFormulario.password}
@@ -243,17 +243,17 @@ const Login = () => {
             <button
               type="submit"
               disabled={cargando}
-              className="w-full py-3 px-4 rounded-lg border-none bg-blue-600 text-white text-base sm:text-lg font-bold cursor-pointer transition-colors shadow-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed mt-2"
+              className="w-full py-3 px-4 rounded-lg border-none bg-blue-600 dark:bg-blue-500 text-white text-base sm:text-lg font-bold cursor-pointer transition-colors duration-200 shadow-md hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed mt-2"
             >
               {cargando ? t('common.loading') : t('auth.login')}
             </button>
           </form>
-          <div className="text-center mt-6 md:mt-8 text-gray-700 text-sm">
+          <div className="text-center mt-6 md:mt-8 text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
             <span>
               {t('auth.noAccount')}{' '}
               <button
                 onClick={() => navegar('/auth/register')}
-                className="text-blue-600 font-bold hover:underline"
+                className="text-blue-600 dark:text-blue-400 font-bold hover:underline transition-colors duration-200"
               >
                 {t('auth.register')}
               </button>

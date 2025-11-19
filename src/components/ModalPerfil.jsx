@@ -166,23 +166,23 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
 
   return (
     <div 
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[2000] font-['Lato',sans-serif]"
+      className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center z-[2000] font-['Lato',sans-serif] transition-colors duration-200"
       onClick={onClose}
     >
       <div 
         ref={modalRef}
-        className="w-full max-w-[500px] bg-white rounded-2xl shadow-2xl flex flex-col"
+        className="w-full max-w-[500px] bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-gray-900/50 flex flex-col transition-colors duration-200"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
       >
         <header className="flex items-center px-5 py-4 gap-4 justify-between">
-          <h1 className="text-2xl font-bold text-gray-800 m-0">
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 m-0 transition-colors duration-200">
             {t('profile', { defaultValue: 'Perfil' })}
           </h1>
           <button
             onClick={onClose}
-            className="bg-none border-none cursor-pointer p-2 text-gray-500 flex items-center justify-center transition-all hover:bg-gray-200 rounded-full"
+            className="bg-none border-none cursor-pointer p-2 text-gray-500 dark:text-gray-400 flex items-center justify-center transition-all hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors duration-200"
             aria-label="Cerrar modal"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -239,7 +239,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
                 <span>{t('nav.register') || 'Crear Cuenta'}</span>
               </Button>
 
-              <h2 className="text-base font-semibold text-gray-600 m-0 mb-2.5 uppercase px-2.5">
+              <h2 className="text-base font-semibold text-gray-600 dark:text-gray-400 m-0 mb-2.5 uppercase px-2.5 transition-colors duration-200">
                 {t('profile.general') || 'General'}
               </h2>
               <Button
@@ -258,7 +258,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
             </>
           ) : (
             <>
-              <div className="border-t border-gray-300 pt-4 flex flex-col gap-6">
+              <div className="border-t border-gray-300 dark:border-gray-700 pt-4 flex flex-col gap-6 transition-colors duration-200">
                 <Button
                   onClick={() => { navegar('/account/mi-informacion'); onClose(); }}
                   variant="light"
@@ -320,7 +320,7 @@ const ModalPerfil = ({ onClose, estaAutenticado, usuario: usuarioProp, navegar, 
               </div>
 
               {(usuario?.rol === 'ADMIN' || usuario?.role === 'ADMIN') && (
-                <div className="border-t border-gray-300 pt-4">
+                <div className="border-t border-gray-300 dark:border-gray-700 pt-4 transition-colors duration-200">
                   <Button
                     onClick={() => { navegar('/admin'); onClose(); }}
                     variant="light"
