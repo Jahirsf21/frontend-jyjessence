@@ -160,8 +160,9 @@ const Orders = () => {
                 const meta = statusMeta[estado] || statusMeta.default;
                 // Soporta distintas claves para los artículos dentro del pedido
                 const detalles = pedido.detalles || pedido.articulos || pedido.items || pedido.detallesPedido || pedido.detalle || [];
+                const pedidoKey = pedido.idPedido || pedido.id || JSON.stringify(pedido);
                 return (
-                  <article key={pedido.id} className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm dark:shadow-lg dark:shadow-gray-900/50 border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors duration-200">
+                  <article key={pedidoKey} className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm dark:shadow-lg dark:shadow-gray-900/50 border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors duration-200">
                     <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-700 px-6 py-4 bg-white dark:bg-gray-800 transition-colors duration-200">
                       <div>
                         <p className="text-xs uppercase tracking-[0.3em] text-gray-400 dark:text-gray-500 transition-colors duration-200">{t('orders.orderLabel', { defaultValue: 'Pedido' })}</p>
@@ -207,8 +208,9 @@ const Orders = () => {
                               const imageSrc = detalle.producto?.primaryImage || detalle.producto?.primaryImageUrl || detalle.producto?.imagenesUrl?.[0] || detalle.producto?.imagen || detalle.imagen || detalle.imagenUrl || null;
                               const nombreProducto = detalle.producto?.nombre || detalle.nombre || `Producto #${detalle.productoId || detalle.productoId}`;
                               const precioUnit = (detalle.precioUnitario ?? detalle.precio ?? 0);
+                              const detalleKey = `${pedidoKey}-${index}`;
                               return (
-                                <div key={`${pedido.id}-${index}`} className="flex items-center justify-between gap-3 p-4 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/70 transition-colors duration-200">
+                                <div key={detalleKey} className="flex items-center justify-between gap-3 p-4 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/70 transition-colors duration-200">
                                   <div className="flex items-center gap-4">
                                     {imageSrc ? (
                                       <img src={imageSrc} alt={nombreProducto} className="w-12 h-12 rounded-2xl object-cover" />
