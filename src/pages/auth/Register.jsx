@@ -423,7 +423,7 @@ const Register = () => {
                 {errores.nombre && <p className="mt-1 text-xs text-red-600">{errores.nombre}</p>}
               </div>
               <div>
-                <label htmlFor="apellidos" className="block mb-1 font-bold text-gray-700 text-sm">
+                <label htmlFor="apellidos" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                   {t('auth.lastName')} *
                 </label>
                 <input
@@ -432,9 +432,7 @@ const Register = () => {
                   type="text"
                   required
                   disabled={cedulaValidada}
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
-                    cedulaValidada ? 'opacity-60' : ''
-                  } ${errores.apellidos ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${cedulaValidada ? 'opacity-60' : ''} ${errores.apellidos ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                   placeholder={t('auth.lastName')}
                   value={datosFormulario.apellidos}
                   onChange={handleChange}
@@ -442,7 +440,7 @@ const Register = () => {
                 {errores.apellidos && <p className="mt-1 text-xs text-red-600">{errores.apellidos}</p>}
               </div>
               <div>
-                <label htmlFor="email" className="block mb-1 font-bold text-gray-700 text-sm">
+                <label htmlFor="email" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                   {t('auth.email')} *
                 </label>
                 <input
@@ -451,9 +449,7 @@ const Register = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
-                    errores.email ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.email ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                   placeholder={t('auth.email')}
                   value={datosFormulario.email}
                   onChange={handleChange}
@@ -461,16 +457,14 @@ const Register = () => {
                 {errores.email && <p className="mt-1 text-xs text-red-600">{errores.email}</p>}
               </div>
               <div>
-                <label htmlFor="genero" className="block mb-1 font-bold text-gray-700 text-sm">
+                <label htmlFor="genero" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                   {t('auth.gender')} *
                 </label>
                 <select
                   id="genero"
                   name="genero"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
-                    errores.genero ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.genero ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                   value={datosFormulario.genero}
                   onChange={handleChange}
                 >
@@ -481,7 +475,7 @@ const Register = () => {
                 {errores.genero && <p className="mt-1 text-xs text-red-600">{errores.genero}</p>}
               </div>
               <div className="sm:col-span-2">
-                <label htmlFor="telefono" className="block mb-1 font-bold text-gray-700 text-sm">
+                <label htmlFor="telefono" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                   {t('auth.phone')} *
                 </label>
                 <input
@@ -489,9 +483,7 @@ const Register = () => {
                   name="telefono"
                   type="tel"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
-                    errores.telefono ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.telefono ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                   placeholder="XXXX-XXXX"
                   value={datosFormulario.telefono}
                   onChange={handleChange}
@@ -515,7 +507,7 @@ const Register = () => {
               {agregarDireccion && (
                 <>
                   <div>
-                    <label htmlFor="provincia" className="block mb-1 font-bold text-gray-700 text-sm">
+                    <label htmlFor="provincia" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                       {t('address.province')} *
                     </label>
                     <input
@@ -523,9 +515,7 @@ const Register = () => {
                       name="provincia"
                       type="text"
                       required={agregarDireccion}
-                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                        errores.provincia ? 'border-red-300' : 'border-gray-300'
-                      }`}
+                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.provincia ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                       placeholder={t('address.provincePlaceholder')}
                       value={datosDireccion.provincia}
                       onChange={handleDireccionChange}
@@ -533,7 +523,7 @@ const Register = () => {
                     {errores.provincia && <p className="mt-1 text-xs text-red-600">{errores.provincia}</p>}
                   </div>
                   <div>
-                    <label htmlFor="canton" className="block mb-1 font-bold text-gray-700 text-sm">
+                    <label htmlFor="canton" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                       {t('address.canton')} *
                     </label>
                     <input
@@ -541,9 +531,7 @@ const Register = () => {
                       name="canton"
                       type="text"
                       required={agregarDireccion}
-                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                        errores.canton ? 'border-red-300' : 'border-gray-300'
-                      }`}
+                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.canton ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                       placeholder={t('address.cantonPlaceholder')}
                       value={datosDireccion.canton}
                       onChange={handleDireccionChange}
@@ -551,7 +539,7 @@ const Register = () => {
                     {errores.canton && <p className="mt-1 text-xs text-red-600">{errores.canton}</p>}
                   </div>
                   <div>
-                    <label htmlFor="distrito" className="block mb-1 font-bold text-gray-700 text-sm">
+                    <label htmlFor="distrito" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                       {t('address.district')} *
                     </label>
                     <input
@@ -559,9 +547,7 @@ const Register = () => {
                       name="distrito"
                       type="text"
                       required={agregarDireccion}
-                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                        errores.distrito ? 'border-red-300' : 'border-gray-300'
-                      }`}
+                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.distrito ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                       placeholder={t('address.districtPlaceholder')}
                       value={datosDireccion.distrito}
                       onChange={handleDireccionChange}
@@ -569,7 +555,7 @@ const Register = () => {
                     {errores.distrito && <p className="mt-1 text-xs text-red-600">{errores.distrito}</p>}
                   </div>
                   <div>
-                    <label htmlFor="barrio" className="block mb-1 font-bold text-gray-700 text-sm">
+                    <label htmlFor="barrio" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                       {t('address.neighborhood')}
                     </label>
                     <input
@@ -583,7 +569,7 @@ const Register = () => {
                     />
                   </div>
                   <div className="sm:col-span-2">
-                    <label htmlFor="senas" className="block mb-1 font-bold text-gray-700 text-sm">
+                    <label htmlFor="senas" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                       {t('address.directions')} *
                     </label>
                     <textarea
@@ -591,9 +577,7 @@ const Register = () => {
                       name="senas"
                       rows={2}
                       required={agregarDireccion}
-                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                        errores.senas ? 'border-red-300' : 'border-gray-300'
-                      }`}
+                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.senas ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                       placeholder={t('address.directionsPlaceholder')}
                       value={datosDireccion.senas}
                       onChange={handleDireccionChange}
@@ -601,28 +585,28 @@ const Register = () => {
                     {errores.senas && <p className="mt-1 text-xs text-red-600">{errores.senas}</p>}
                   </div>
                   <div>
-                    <label htmlFor="codigoPostal" className="block mb-1 font-bold text-gray-700 text-sm">
+                    <label htmlFor="codigoPostal" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                       {t('address.postalCode')}
                     </label>
                     <input
                       id="codigoPostal"
                       name="codigoPostal"
                       type="text"
-                      className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200"
+                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.codigoPostal ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                       placeholder={t('address.postalCodePlaceholder')}
                       value={datosDireccion.codigoPostal}
                       onChange={handleDireccionChange}
                     />
                   </div>
                   <div>
-                    <label htmlFor="referencia" className="block mb-1 font-bold text-gray-700 text-sm">
+                    <label htmlFor="referencia" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                       {t('address.reference')}
                     </label>
                     <input
                       id="referencia"
                       name="referencia"
                       type="text"
-                      className="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200"
+                      className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.referencia ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                       placeholder={t('address.referencePlaceholder')}
                       value={datosDireccion.referencia}
                       onChange={handleDireccionChange}
@@ -631,7 +615,7 @@ const Register = () => {
                 </>
               )}
               <div>
-                <label htmlFor="password" className="block mb-1 font-bold text-gray-700 text-sm">
+                <label htmlFor="password" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                   {t('auth.password')} *
                 </label>
                 <input
@@ -639,9 +623,7 @@ const Register = () => {
                   name="password"
                   type="password"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                    errores.password ? 'border-red-300' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.password ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                   placeholder={t('auth.password')}
                   value={datosFormulario.password}
                   onChange={handleChange}
@@ -649,7 +631,7 @@ const Register = () => {
                 {errores.password && <p className="mt-1 text-xs text-red-600">{errores.password}</p>}
               </div>
               <div>
-                <label htmlFor="confirmPassword" className="block mb-1 font-bold text-gray-700 text-sm">
+                <label htmlFor="confirmPassword" className="block mb-1 font-bold text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
                   {t('auth.confirmPassword')} *
                 </label>
                 <input
@@ -657,9 +639,7 @@ const Register = () => {
                   name="confirmPassword"
                   type="password"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                    errores.confirmPassword ? 'border-red-300' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.confirmPassword ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                   placeholder={t('auth.confirmPassword')}
                   value={datosFormulario.confirmPassword}
                   onChange={handleChange}
