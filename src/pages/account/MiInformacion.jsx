@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -16,14 +16,14 @@ const MiInformacion = () => {
   const [telefono, setTelefono] = useState('');
   const [password, setPassword] = useState('');
   const [direcciones, setDirecciones] = useState([]);
-  const [nuevaDireccion, setNuevaDireccion] = useState({ 
-    provincia: '', 
-    canton: '', 
-    distrito: '', 
-    barrio: '', 
-    senas: '', 
-    codigoPostal: '', 
-    referencia: '' 
+  const [nuevaDireccion, setNuevaDireccion] = useState({
+    provincia: '',
+    canton: '',
+    distrito: '',
+    barrio: '',
+    senas: '',
+    codigoPostal: '',
+    referencia: ''
   });
   const [editandoDireccion, setEditandoDireccion] = useState(null);
   const [mostrarFormAgregar, setMostrarFormAgregar] = useState(false);
@@ -49,9 +49,9 @@ const MiInformacion = () => {
     try {
       const updated = await EcommerceFacade.auth.updateProfile({ [field]: value });
       setUsuario(updated);
-      Swal.fire(t('swal.success'), t('swal.profileUpdated', {field: field.charAt(0).toUpperCase() + field.slice(1)}), 'success');
+      Swal.fire(t('swal.success'), t('swal.profileUpdated', { field: field.charAt(0).toUpperCase() + field.slice(1) }), 'success');
     } catch {
-      Swal.fire(t('swal.error'), t('swal.profileUpdateError', {field: field}), 'error');
+      Swal.fire(t('swal.error'), t('swal.profileUpdateError', { field: field }), 'error');
     } finally {
       setLoading(false);
     }
@@ -140,13 +140,13 @@ const MiInformacion = () => {
           />
         </button>
         <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-gray-100 transition-colors duration-200">{t('profile.title')}</h1>
-        
+
         {loading && (
           <div className="flex items-center justify-center py-8">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
         )}
-        
+
         {usuario && (
           <div className="space-y-8">
             {/* Sección de datos personales */}
@@ -156,15 +156,15 @@ const MiInformacion = () => {
                 {/* Correo electrónico */}
                 <div>
                   <label className={labelClass}>{t('profile.email')}</label>
-                  <input 
-                    type="email" 
-                    value={email} 
-                    onChange={e => setEmail(e.target.value)} 
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                     className={inputClass}
-                    disabled={loading} 
+                    disabled={loading}
                   />
-                  <button 
-                    onClick={() => handleUpdate('email', email)} 
+                  <button
+                    onClick={() => handleUpdate('email', email)}
                     className={`${buttonPrimaryClass} mt-3`}
                     disabled={loading}
                   >
@@ -175,15 +175,15 @@ const MiInformacion = () => {
                 {/* Teléfono */}
                 <div>
                   <label className={labelClass}>{t('profile.phone')}</label>
-                  <input 
-                    type="tel" 
-                    value={telefono} 
-                    onChange={e => setTelefono(e.target.value)} 
+                  <input
+                    type="tel"
+                    value={telefono}
+                    onChange={e => setTelefono(e.target.value)}
                     className={inputClass}
-                    disabled={loading} 
+                    disabled={loading}
                   />
-                  <button 
-                    onClick={() => handleUpdate('telefono', telefono)} 
+                  <button
+                    onClick={() => handleUpdate('telefono', telefono)}
                     className={`${buttonPrimaryClass} mt-3`}
                     disabled={loading}
                   >
@@ -194,16 +194,16 @@ const MiInformacion = () => {
                 {/* Restaurar contraseña */}
                 <div className="md:col-span-2">
                   <label className={labelClass}>{t('profile.resetPassword')}</label>
-                  <input 
-                    type="password" 
-                    placeholder={t('profile.newPassword')} 
-                    value={password} 
-                    onChange={e => setPassword(e.target.value)} 
+                  <input
+                    type="password"
+                    placeholder={t('profile.newPassword')}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     className={inputClass}
-                    disabled={loading} 
+                    disabled={loading}
                   />
-                  <button 
-                    onClick={() => handleUpdate('contrasena', password)} 
+                  <button
+                    onClick={() => handleUpdate('contrasena', password)}
                     className={`${buttonPrimaryClass} mt-3`}
                     disabled={loading || !password}
                   >
@@ -218,8 +218,8 @@ const MiInformacion = () => {
               <div className="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700 pb-3">
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 transition-colors duration-200">{t('profile.addresses')}</h2>
                 {!mostrarFormAgregar && (
-                  <button 
-                    onClick={() => setMostrarFormAgregar(true)} 
+                  <button
+                    onClick={() => setMostrarFormAgregar(true)}
                     className={buttonPrimaryClass}
                     disabled={loading}
                   >
@@ -239,74 +239,74 @@ const MiInformacion = () => {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <label className={labelClass}>{t('profile.province')} *</label>
-                              <input 
-                                type="text" 
-                                value={editandoDireccion.provincia} 
-                                onChange={e => setEditandoDireccion({ ...editandoDireccion, provincia: e.target.value })} 
+                              <input
+                                type="text"
+                                value={editandoDireccion.provincia}
+                                onChange={e => setEditandoDireccion({ ...editandoDireccion, provincia: e.target.value })}
                                 className={inputClass}
-                                required 
+                                required
                                 disabled={loading}
                               />
                             </div>
                             <div>
                               <label className={labelClass}>{t('profile.canton')} *</label>
-                              <input 
-                                type="text" 
-                                value={editandoDireccion.canton} 
-                                onChange={e => setEditandoDireccion({ ...editandoDireccion, canton: e.target.value })} 
+                              <input
+                                type="text"
+                                value={editandoDireccion.canton}
+                                onChange={e => setEditandoDireccion({ ...editandoDireccion, canton: e.target.value })}
                                 className={inputClass}
-                                required 
+                                required
                                 disabled={loading}
                               />
                             </div>
                             <div>
                               <label className={labelClass}>{t('profile.district')} *</label>
-                              <input 
-                                type="text" 
-                                value={editandoDireccion.distrito} 
-                                onChange={e => setEditandoDireccion({ ...editandoDireccion, distrito: e.target.value })} 
+                              <input
+                                type="text"
+                                value={editandoDireccion.distrito}
+                                onChange={e => setEditandoDireccion({ ...editandoDireccion, distrito: e.target.value })}
                                 className={inputClass}
-                                required 
+                                required
                                 disabled={loading}
                               />
                             </div>
                             <div>
                               <label className={labelClass}>{t('profile.neighborhood')}</label>
-                              <input 
-                                type="text" 
-                                value={editandoDireccion.barrio || ''} 
-                                onChange={e => setEditandoDireccion({ ...editandoDireccion, barrio: e.target.value })} 
+                              <input
+                                type="text"
+                                value={editandoDireccion.barrio || ''}
+                                onChange={e => setEditandoDireccion({ ...editandoDireccion, barrio: e.target.value })}
                                 className={inputClass}
                                 disabled={loading}
                               />
                             </div>
                             <div className="md:col-span-2">
                               <label className={labelClass}>{t('profile.directions')} *</label>
-                              <input 
-                                type="text" 
-                                value={editandoDireccion.senas} 
-                                onChange={e => setEditandoDireccion({ ...editandoDireccion, senas: e.target.value })} 
+                              <input
+                                type="text"
+                                value={editandoDireccion.senas}
+                                onChange={e => setEditandoDireccion({ ...editandoDireccion, senas: e.target.value })}
                                 className={inputClass}
-                                required 
+                                required
                                 disabled={loading}
                               />
                             </div>
                             <div>
                               <label className={labelClass}>{t('profile.postalCode')}</label>
-                              <input 
-                                type="text" 
-                                value={editandoDireccion.codigoPostal || ''} 
-                                onChange={e => setEditandoDireccion({ ...editandoDireccion, codigoPostal: e.target.value })} 
+                              <input
+                                type="text"
+                                value={editandoDireccion.codigoPostal || ''}
+                                onChange={e => setEditandoDireccion({ ...editandoDireccion, codigoPostal: e.target.value })}
                                 className={inputClass}
                                 disabled={loading}
                               />
                             </div>
                             <div>
                               <label className={labelClass}>{t('profile.reference')}</label>
-                              <input 
-                                type="text" 
-                                value={editandoDireccion.referencia || ''} 
-                                onChange={e => setEditandoDireccion({ ...editandoDireccion, referencia: e.target.value })} 
+                              <input
+                                type="text"
+                                value={editandoDireccion.referencia || ''}
+                                onChange={e => setEditandoDireccion({ ...editandoDireccion, referencia: e.target.value })}
                                 className={inputClass}
                                 disabled={loading}
                               />
@@ -316,9 +316,9 @@ const MiInformacion = () => {
                             <button type="submit" className={buttonPrimaryClass} disabled={loading}>
                               {t('profile.saveChanges')}
                             </button>
-                            <button 
-                              type="button" 
-                              onClick={() => setEditandoDireccion(null)} 
+                            <button
+                              type="button"
+                              onClick={() => setEditandoDireccion(null)}
                               className={buttonSecondaryClass}
                               disabled={loading}
                             >
@@ -336,15 +336,15 @@ const MiInformacion = () => {
                           {dir.codigoPostal && <p className="text-gray-500 dark:text-gray-500 text-sm transition-colors duration-200">{t('profile.postalCode')}: {dir.codigoPostal}</p>}
                           {dir.referencia && <p className="text-gray-500 dark:text-gray-500 text-sm transition-colors duration-200">{t('profile.reference')}: {dir.referencia}</p>}
                           <div className="flex gap-3 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
-                            <button 
-                              onClick={() => setEditandoDireccion(dir)} 
+                            <button
+                              onClick={() => setEditandoDireccion(dir)}
                               className={buttonPrimaryClass}
                               disabled={loading}
                             >
                               {t('profile.edit')}
                             </button>
-                            <button 
-                              onClick={() => handleEliminarDireccion(dir.idDireccion)} 
+                            <button
+                              onClick={() => handleEliminarDireccion(dir.idDireccion)}
                               className={buttonDangerClass}
                               disabled={loading}
                             >
@@ -366,74 +366,74 @@ const MiInformacion = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className={labelClass}>{t('profile.province')} *</label>
-                        <input 
-                          type="text" 
-                          value={nuevaDireccion.provincia} 
-                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, provincia: e.target.value })} 
+                        <input
+                          type="text"
+                          value={nuevaDireccion.provincia}
+                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, provincia: e.target.value })}
                           className={inputClass}
-                          required 
+                          required
                           disabled={loading}
                         />
                       </div>
                       <div>
                         <label className={labelClass}>{t('profile.canton')} *</label>
-                        <input 
-                          type="text" 
-                          value={nuevaDireccion.canton} 
-                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, canton: e.target.value })} 
+                        <input
+                          type="text"
+                          value={nuevaDireccion.canton}
+                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, canton: e.target.value })}
                           className={inputClass}
-                          required 
+                          required
                           disabled={loading}
                         />
                       </div>
                       <div>
                         <label className={labelClass}>{t('profile.district')} *</label>
-                        <input 
-                          type="text" 
-                          value={nuevaDireccion.distrito} 
-                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, distrito: e.target.value })} 
+                        <input
+                          type="text"
+                          value={nuevaDireccion.distrito}
+                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, distrito: e.target.value })}
                           className={inputClass}
-                          required 
+                          required
                           disabled={loading}
                         />
                       </div>
                       <div>
                         <label className={labelClass}>{t('profile.neighborhood')}</label>
-                        <input 
-                          type="text" 
-                          value={nuevaDireccion.barrio} 
-                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, barrio: e.target.value })} 
+                        <input
+                          type="text"
+                          value={nuevaDireccion.barrio}
+                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, barrio: e.target.value })}
                           className={inputClass}
                           disabled={loading}
                         />
                       </div>
                       <div className="md:col-span-2">
                         <label className={labelClass}>{t('profile.directions')} *</label>
-                        <input 
-                          type="text" 
-                          value={nuevaDireccion.senas} 
-                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, senas: e.target.value })} 
+                        <input
+                          type="text"
+                          value={nuevaDireccion.senas}
+                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, senas: e.target.value })}
                           className={inputClass}
-                          required 
+                          required
                           disabled={loading}
                         />
                       </div>
                       <div>
                         <label className={labelClass}>{t('profile.postalCode')}</label>
-                        <input 
-                          type="text" 
-                          value={nuevaDireccion.codigoPostal} 
-                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, codigoPostal: e.target.value })} 
+                        <input
+                          type="text"
+                          value={nuevaDireccion.codigoPostal}
+                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, codigoPostal: e.target.value })}
                           className={inputClass}
                           disabled={loading}
                         />
                       </div>
                       <div>
                         <label className={labelClass}>{t('profile.reference')}</label>
-                        <input 
-                          type="text" 
-                          value={nuevaDireccion.referencia} 
-                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, referencia: e.target.value })} 
+                        <input
+                          type="text"
+                          value={nuevaDireccion.referencia}
+                          onChange={e => setNuevaDireccion({ ...nuevaDireccion, referencia: e.target.value })}
                           className={inputClass}
                           disabled={loading}
                         />
@@ -443,12 +443,12 @@ const MiInformacion = () => {
                       <button type="submit" className={buttonPrimaryClass} disabled={loading}>
                         {t('profile.addAddress')}
                       </button>
-                      <button 
-                        type="button" 
-                        onClick={() => { 
-                          setMostrarFormAgregar(false); 
-                          setNuevaDireccion({ provincia: '', canton: '', distrito: '', barrio: '', senas: '', codigoPostal: '', referencia: '' }); 
-                        }} 
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMostrarFormAgregar(false);
+                          setNuevaDireccion({ provincia: '', canton: '', distrito: '', barrio: '', senas: '', codigoPostal: '', referencia: '' });
+                        }}
                         className={buttonSecondaryClass}
                         disabled={loading}
                       >

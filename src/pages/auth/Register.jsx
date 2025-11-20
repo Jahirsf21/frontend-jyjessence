@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -11,7 +11,7 @@ const Register = () => {
   const navegar = useNavigate();
   const { iniciarSesion } = useAuth();
   const { isDarkMode } = useDarkMode();
-  
+
   const [datosFormulario, setDatosFormulario] = useState({
     cedula: '',
     nombre: '',
@@ -22,7 +22,7 @@ const Register = () => {
     password: '',
     confirmPassword: ''
   });
-  
+
   const [datosDireccion, setDatosDireccion] = useState({
     provincia: '',
     canton: '',
@@ -32,14 +32,14 @@ const Register = () => {
     codigoPostal: '',
     referencia: ''
   });
-  
+
   const [cargando, setCargando] = useState(false);
   const [cargandoCedula, setCargandoCedula] = useState(false);
   const [errores, setErrores] = useState({});
   const [cedulaValidada, setCedulaValidada] = useState(false);
   const [agregarDireccion, setAgregarDireccion] = useState(false);
   const [indiceCarrusel, setIndiceCarrusel] = useState(0);
-  
+
   const imagenesCarrusel = [
     {
       url: 'https://res.cloudinary.com/drec8g03e/image/upload/v1762667317/perfumes_hrhw7k.jpg',
@@ -59,7 +59,7 @@ const Register = () => {
     const intervalo = setInterval(() => {
       setIndiceCarrusel((prevIndice) => (prevIndice + 1) % imagenesCarrusel.length);
     }, 5000);
-    
+
     return () => clearInterval(intervalo);
   }, []);
 
@@ -70,7 +70,7 @@ const Register = () => {
 
   const formatCedula = (value) => {
     const limpia = value.replace(/\D/g, '');
-    
+
     if (limpia.length <= 1) {
       return limpia;
     } else if (limpia.length <= 5) {
@@ -82,22 +82,22 @@ const Register = () => {
 
   const consultarDatosCedula = async (cedula) => {
     setCargandoCedula(true);
-    
+
     try {
       const cedulaLimpia = cedula.replace(/\D/g, '');
-      
+
       const datos = await ecommerceFacade.consultarCedula(cedulaLimpia);
-      
+
       if (!datos || !datos.valida) {
         throw new Error(t('error.register.cedulaNotFound'));
       }
-      
+
       setDatosFormulario(prev => ({
         ...prev,
         nombre: datos.nombre || '',
         apellidos: datos.apellidos || ''
       }));
-      
+
       setCedulaValidada(true);
       await Swal.fire({
         icon: 'success',
@@ -107,7 +107,7 @@ const Register = () => {
         timer: 2000,
         showConfirmButton: false
       });
-      
+
     } catch (error) {
       console.error('Error consultando cédula:', error);
       await Swal.fire({
@@ -125,12 +125,12 @@ const Register = () => {
 
   const manejarCambioCedula = (e) => {
     const cedulaFormateada = formatCedula(e.target.value);
-    
+
     setDatosFormulario(prev => ({
       ...prev,
       cedula: cedulaFormateada
     }));
-    
+
     if (cedulaValidada) {
       setCedulaValidada(false);
       setDatosFormulario(prev => ({
@@ -139,7 +139,7 @@ const Register = () => {
         apellidos: ''
       }));
     }
-    
+
     if (validarFormatoCedula(cedulaFormateada)) {
       consultarDatosCedula(cedulaFormateada);
     }
@@ -147,43 +147,43 @@ const Register = () => {
 
   const validateForm = () => {
     const nuevosErrores = {};
-    
+
     if (!datosFormulario.cedula) {
       nuevosErrores.cedula = t('auth.cedulaRequired');
     } else if (!validarFormatoCedula(datosFormulario.cedula)) {
       nuevosErrores.cedula = t('auth.cedulaInvalidFormat');
     }
-    
+
     if (!datosFormulario.nombre) {
       nuevosErrores.nombre = t('auth.nameRequired');
     }
-    
+
     if (!datosFormulario.apellidos) {
       nuevosErrores.apellidos = t('auth.lastNameRequired');
     }
-    
+
     if (!datosFormulario.email) {
       nuevosErrores.email = t('auth.emailRequired');
     } else if (!/\S+@\S+\.\S+/.test(datosFormulario.email)) {
       nuevosErrores.email = t('auth.emailInvalid');
     }
-    
+
     if (!datosFormulario.genero) {
       nuevosErrores.genero = t('auth.genderRequired');
     }
-    
+
     if (!datosFormulario.telefono) {
       nuevosErrores.telefono = t('auth.phoneRequired');
     } else if (!/^\d{4}-\d{4}$/.test(datosFormulario.telefono)) {
       nuevosErrores.telefono = t('auth.phoneInvalidFormat');
     }
-    
+
     if (!datosFormulario.password) {
       nuevosErrores.password = t('auth.passwordRequired');
     } else if (datosFormulario.password.length < 6) {
       nuevosErrores.password = t('auth.passwordMinLength');
     }
-    
+
     if (!datosFormulario.confirmPassword) {
       nuevosErrores.confirmPassword = t('auth.confirmPasswordRequired');
     } else if (datosFormulario.password !== datosFormulario.confirmPassword) {
@@ -197,14 +197,14 @@ const Register = () => {
         confirmButtonText: t('button.understood')
       });
     }
-    
+
     setErrores(nuevosErrores);
     return Object.keys(nuevosErrores).length === 0;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name === 'telefono') {
       const limpia = value.replace(/\D/g, '');
       const formateado = limpia.length <= 4 ? limpia : `${limpia.slice(0, 4)}-${limpia.slice(4, 8)}`;
@@ -218,7 +218,7 @@ const Register = () => {
         [name]: value
       }));
     }
-    
+
     if (errores[name]) {
       setErrores(prev => ({
         ...prev,
@@ -233,7 +233,7 @@ const Register = () => {
       ...prev,
       [name]: value
     }));
-    
+
     if (errores[name]) {
       setErrores(prev => ({
         ...prev,
@@ -244,15 +244,15 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setCargando(true);
-    
+
     try {
       const cedulaLimpia = datosFormulario.cedula.replace(/\D/g, '');
       const telefonoLimpio = datosFormulario.telefono.replace(/\D/g, '');
-      
+
       const datosRegistro = {
         cedula: cedulaLimpia,
         nombre: datosFormulario.nombre,
@@ -266,9 +266,9 @@ const Register = () => {
       if (agregarDireccion) {
         datosRegistro.direccion = datosDireccion;
       }
-      
+
       await ecommerceFacade.registerUser(datosRegistro);
-      
+
       await Swal.fire({
         icon: 'success',
         title: t('success.register.title'),
@@ -276,18 +276,18 @@ const Register = () => {
         confirmButtonColor: '#2563eb',
         confirmButtonText: t('success.register.button')
       });
-      
+
       navegar('/auth/login');
-      
+
     } catch (error) {
       console.error('Error en registro:', error);
-      
+
       let mensajeError = t('error.register.title');
       let tituloError = t('error.register.title');
       let iconoError = 'error';
-      
+
       const codigoError = error.response?.data?.codigo;
-      
+
       if (codigoError === 'CEDULA_DUPLICADA') {
         tituloError = t('error.register.cedulaDuplicateTitle');
         mensajeError = error.response.data.error || t('error.register.cedulaDuplicate');
@@ -309,7 +309,7 @@ const Register = () => {
         mensajeError = t('error.register.emailDuplicate');
         iconoError = 'warning';
       }
-      
+
       await Swal.fire({
         icon: iconoError,
         title: tituloError,
@@ -331,9 +331,8 @@ const Register = () => {
             key={indice}
             src={imagen.url}
             alt={`Perfume ${indice + 1}`}
-            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              indice === indiceCarrusel ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${indice === indiceCarrusel ? 'opacity-100' : 'opacity-0'
+              }`}
           />
         ))}
         <div className="relative z-10">
@@ -345,9 +344,8 @@ const Register = () => {
               <span
                 key={indice}
                 onClick={() => setIndiceCarrusel(indice)}
-                className={`w-3.5 h-3.5 rounded-full border-2 border-white cursor-pointer transition-all ${
-                  indice === indiceCarrusel ? 'bg-white' : 'bg-white/30'
-                }`}
+                className={`w-3.5 h-3.5 rounded-full border-2 border-white cursor-pointer transition-all ${indice === indiceCarrusel ? 'bg-white' : 'bg-white/30'
+                  }`}
               />
             ))}
           </div>
@@ -393,9 +391,8 @@ const Register = () => {
                   name="cedula"
                   type="text"
                   required
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
-                    errores.cedula ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.cedula ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    }`}
                   placeholder="X-XXXX-XXXX"
                   value={datosFormulario.cedula}
                   onChange={manejarCambioCedula}
@@ -413,9 +410,8 @@ const Register = () => {
                   type="text"
                   required
                   disabled={cedulaValidada}
-                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
-                    cedulaValidada ? 'opacity-60' : ''
-                  } ${errores.nombre ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                  className={`w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${cedulaValidada ? 'opacity-60' : ''
+                    } ${errores.nombre ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
                   placeholder={t('auth.name')}
                   value={datosFormulario.nombre}
                   onChange={handleChange}

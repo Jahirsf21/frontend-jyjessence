@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -10,16 +10,16 @@ const Login = () => {
   const navegar = useNavigate();
   const { iniciarSesion } = useAuth();
   const { isDarkMode } = useDarkMode();
-  
+
   const [datosFormulario, setDatosFormulario] = useState({
     email: '',
     password: ''
   });
-  
+
   const [cargando, setCargando] = useState(false);
   const [errores, setErrores] = useState({});
   const [indiceCarrusel, setIndiceCarrusel] = useState(0);
-  
+
   const imagenesCarrusel = [
     {
       url: 'https://res.cloudinary.com/drec8g03e/image/upload/v1762667317/perfumes_hrhw7k.jpg',
@@ -39,25 +39,25 @@ const Login = () => {
     const intervalo = setInterval(() => {
       setIndiceCarrusel((prevIndice) => (prevIndice + 1) % imagenesCarrusel.length);
     }, 5000);
-    
+
     return () => clearInterval(intervalo);
   }, []);
 
   const validarFormulario = () => {
     const nuevosErrores = {};
-    
+
     if (!datosFormulario.email) {
       nuevosErrores.email = t('auth.emailRequired');
     } else if (!/\S+@\S+\.\S+/.test(datosFormulario.email)) {
       nuevosErrores.email = t('auth.emailInvalid');
     }
-    
+
     if (!datosFormulario.password) {
       nuevosErrores.password = t('auth.passwordRequired');
     } else if (datosFormulario.password.length < 6) {
       nuevosErrores.password = t('auth.passwordMinLength');
     }
-    
+
     setErrores(nuevosErrores);
     return Object.keys(nuevosErrores).length === 0;
   };
@@ -68,7 +68,7 @@ const Login = () => {
       ...prev,
       [name]: value
     }));
-    
+
     if (errores[name]) {
       setErrores(prev => ({
         ...prev,
@@ -79,14 +79,14 @@ const Login = () => {
 
   const manejarEnvio = async (e) => {
     e.preventDefault();
-    
+
     if (!validarFormulario()) return;
-    
+
     setCargando(true);
-    
+
     try {
       const datosUsuario = await iniciarSesion(datosFormulario.email, datosFormulario.password);
-      
+
       await Swal.fire({
         icon: 'success',
         title: t('success.login.title'),
@@ -95,22 +95,22 @@ const Login = () => {
         timer: 2000,
         showConfirmButton: false
       });
-      
+
       if (datosUsuario.role === 'ADMIN') {
         navegar('/admin');
       } else {
         navegar('/');
       }
-      
+
     } catch (error) {
       console.error(t('error.login'), error);
-      
+
       let mensajeError = t('error.login.title');
       let tituloError = t('error.login.title');
       let iconoError = 'error';
-      
+
       const codigoError = error.response?.data?.codigo;
-      
+
       if (codigoError === 'EMAIL_NO_ENCONTRADO') {
         tituloError = t('error.login.emailNotFoundTitle');
         mensajeError = error.response.data.error || t('error.login.emailNotFound');
@@ -130,7 +130,7 @@ const Login = () => {
         mensajeError = t('error.login.emailNotFound');
         iconoError = 'warning';
       }
-      
+
       await Swal.fire({
         icon: iconoError,
         title: tituloError,
@@ -152,9 +152,8 @@ const Login = () => {
             key={indice}
             src={imagen.url}
             alt={`Perfume ${indice + 1}`}
-            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              indice === indiceCarrusel ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${indice === indiceCarrusel ? 'opacity-100' : 'opacity-0'
+              }`}
           />
         ))}
         <div className="relative z-10">
@@ -166,9 +165,8 @@ const Login = () => {
               <span
                 key={indice}
                 onClick={() => setIndiceCarrusel(indice)}
-                className={`w-3.5 h-3.5 rounded-full border-2 border-white cursor-pointer transition-all ${
-                  indice === indiceCarrusel ? 'bg-white' : 'bg-white/30'
-                }`}
+                className={`w-3.5 h-3.5 rounded-full border-2 border-white cursor-pointer transition-all ${indice === indiceCarrusel ? 'bg-white' : 'bg-white/30'
+                  }`}
               />
             ))}
           </div>
@@ -210,9 +208,8 @@ const Login = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className={`w-full px-4 py-3 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm sm:text-base text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
-                  errores.email ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
-                }`}
+                className={`w-full px-4 py-3 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm sm:text-base text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.email ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  }`}
                 placeholder={t('auth.email')}
                 value={datosFormulario.email}
                 onChange={manejarCambio}
@@ -231,9 +228,8 @@ const Login = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className={`w-full px-4 py-3 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm sm:text-base text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${
-                  errores.password ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
-                }`}
+                className={`w-full px-4 py-3 border rounded-lg bg-gray-50 dark:bg-gray-800 text-sm sm:text-base text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition-colors duration-200 ${errores.password ? 'border-red-300 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  }`}
                 placeholder={t('auth.password')}
                 value={datosFormulario.password}
                 onChange={manejarCambio}

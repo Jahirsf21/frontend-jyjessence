@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useVoiceReader } from '../hooks/useVoiceReader';
-import ButtonNav from '../components/ui/ButtonNav';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import { useDarkMode } from '../context/DarkModeContext';
-
 import ecommerceFacade from '../patterns/EcommerceFacade';
 import { useSearchPanel } from '../context/SearchPanelContext';
 
@@ -227,7 +225,7 @@ function VoiceButton({ setBusqueda, setPagina, compact = false }) {
 
 	if (!supportsRecognition) return null;
 
-		const btnClass = compact
+	const btnClass = compact
 		? `w-8 h-8 p-1 rounded-md border flex items-center justify-center transition-colors duration-200 ${listening ? 'bg-red-100 dark:bg-red-900/30 border-red-400 dark:border-red-500' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'} hover:bg-gray-50 dark:hover:bg-gray-600`
 		: `w-12 h-12 rounded-lg flex items-center justify-center border transition-colors duration-200 ${listening ? 'bg-red-100 dark:bg-red-900/30 border-red-400 dark:border-red-500' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'} hover:bg-gray-50 dark:hover:bg-gray-600`;
 
@@ -346,6 +344,11 @@ function Home() {
 	useEffect(() => {
 		setPagina(1);
 	}, [busqueda, categoriaFiltro, generoFiltro, precioMin, precioMax, mililitrosMin, mililitrosMax]);
+
+	// Scroll to top when pagination changes
+	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}, [pagina]);
 
 	const filtroProps = { t, limpiarFiltros, busqueda, setBusqueda, setPagina, categorias, categoriaFiltro, setCategoriaFiltro, generos, generoFiltro, setGeneroFiltro, precioMin, setPrecioMin, precioMax, setPrecioMax, mililitrosMin, setMililitrosMin, mililitrosMax, setMililitrosMax, minPrecio, maxPrecio };
 

@@ -71,7 +71,7 @@ export default function OrdersManagement() {
 
     // If already capitalized and matches, return as-is
     const capitalized = raw.charAt(0).toUpperCase() + raw.slice(1);
-    if (['Pendiente','Procesando','Enviado','Entregado','Cancelado'].includes(capitalized)) return capitalized;
+    if (['Pendiente', 'Procesando', 'Enviado', 'Entregado', 'Cancelado'].includes(capitalized)) return capitalized;
 
     // Fallback: capitalize first letter
     return capitalized;
@@ -99,6 +99,11 @@ export default function OrdersManagement() {
   useEffect(() => {
     cargarPedidos();
   }, []);
+
+  // Scroll to top when pagination changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [paginaActual]);
 
   const cargarPedidos = async () => {
     try {
@@ -285,11 +290,10 @@ export default function OrdersManagement() {
           {[...Array(totalPaginas)].map((_, idx) => (
             <button
               key={idx}
-              className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${
-                paginaActual === idx + 1 
-                  ? 'bg-blue-600 dark:bg-blue-500 text-white' 
+              className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${paginaActual === idx + 1
+                  ? 'bg-blue-600 dark:bg-blue-500 text-white'
                   : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-              }`}
+                }`}
               onClick={() => handlePaginaChange(idx + 1)}
             >
               {idx + 1}
